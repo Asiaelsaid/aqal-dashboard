@@ -1,9 +1,7 @@
-import LogInComponent from "@components/auth/Login";
+import LogInComponent from "@components/auth/pages/LogIn";
 import AuthLayout from "@layouts/AuthLayout";
 
-interface IProps {}
-
-const Login: React.FC<IProps> = () => {
+const Login = () => {
     return <AuthLayout children={<LogInComponent/>}/>;
 };
 
