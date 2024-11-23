@@ -1,7 +1,7 @@
 interface IProps {}
 
 const Financials: React.FC<IProps> = () => {
-    return <div>Financials</div>;
+    return <div></div>;
 };
 
 export default Financials;

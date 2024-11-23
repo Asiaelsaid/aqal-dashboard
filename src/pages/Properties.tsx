@@ -1,7 +1,7 @@
 interface IProps {}
 
 const Properties: React.FC<IProps> = () => {
-    return <div>Properties</div>;
+    return <div>PropertiesPage</div>;
 };
 
 export default Properties;

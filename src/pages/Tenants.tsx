@@ -1,7 +1,7 @@
 interface IProps {}
 
 const Tenants: React.FC<IProps> = () => {
-    return <div>Tenants</div>;
+    return <div></div>;
 };
 
 export default Tenants;

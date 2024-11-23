@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSearch, FiLayers, FiPieChart, FiSettings } from "react-icons/fi";
-import HeaderLogo from "../assets/images/HeaderLogo.png";
+import Logo from "../assets/images/Logo.png";
 import { BiSolidSelectMultiple } from "react-icons/bi";
 import { BsClipboard2Data, BsDatabaseCheck } from "react-icons/bs";
 import { CgSupport } from "react-icons/cg";
@@ -20,7 +20,7 @@ export default function Sidebar() {
           setIsOpen(!isOpen);
         }}
       >
-        <img src={HeaderLogo} alt="header logo" className="mr-2" />
+        <img src={Logo} alt="header logo" className="mr-2" />
         <span className={` ${isOpen ? "" : "hidden"}`}>Aqal Management</span>
       </div>
 
@@ -37,7 +37,7 @@ export default function Sidebar() {
 
       <div className="mt-6 space-y-4 flex-grow">
         {[
-          { label: "Dashboard", icon: <BsClipboard2Data />, path: "dashboard" },
+          { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
           { label: "Properties", icon: <FiLayers />, path: "properties" },
           {
             label: "Tenants",

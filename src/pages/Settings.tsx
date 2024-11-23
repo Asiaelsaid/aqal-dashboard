@@ -1,7 +1,7 @@
 interface IProps {}
 
 const Settings: React.FC<IProps> = () => {
-    return <div>Settings</div>;
+    return <div></div>;
 };
 
 export default Settings;
