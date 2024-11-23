@@ -1,6 +1,8 @@
+import ProtectedRoute from "@components/auth/ProtectedRoute";
 import RootLayout from "@layouts/RootLayout";
 import Dashboard from "@pages";
 import Financials from "@pages/Financials";
+import Login from "@pages/Login";
 import Properties from "@pages/Properties";
 import Reporting from "@pages/Reporting";
 import Settings from "@pages/Settings";
@@ -12,11 +14,19 @@ import {
   Route,
 } from "react-router-dom";
 
+const isLoggedIn: boolean = false;
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<RootLayout />}>
-        <Route index element={<Dashboard />} />
+        <Route
+          index
+          element={
+            <ProtectedRoute isAllowed={isLoggedIn} redirectPath="login">
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="properties" element={<Properties />} />
         <Route path="tenants" element={<Tenants />} />
         <Route path="financials" element={<Financials />} />
@@ -24,7 +34,7 @@ const router = createBrowserRouter(
         <Route path="support" element={<Support />} />
         <Route path="settings" element={<Settings />} />
       </Route>
-      
+        <Route path="/login" element={<Login />} />
     </>
   )
 );
