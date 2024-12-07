@@ -75,12 +75,12 @@ const PasswordReset = () => {
             Sign up with Google
           </button>
         </div>
-        <p className="text-sm text-gray-600 mt-4 text-center">
+        {/* <p className="text-sm text-gray-600 mt-4 text-center">
           Don’t have an account?{" "}
           <NavLink to="/sign-up" className="text-purple-600 hover:underline">
             Sign up
           </NavLink>
-        </p>
+        </p> */}
       </form>
     </div>
   );

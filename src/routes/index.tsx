@@ -17,7 +17,9 @@ import {
   Route,
 } from "react-router-dom";
 
-const isLoggedIn: boolean = true;
+const isLoggedIn = () => {
+  return !!localStorage?.getItem("authToken");
+};
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -25,20 +27,62 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <ProtectedRoute isAllowed={isLoggedIn} redirectPath="login">
+            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
               <Dashboard />
             </ProtectedRoute>
           }
         />
-        <Route path="properties" element={<Properties />} />
-        <Route path="tenants" element={<Tenants />} />
-        <Route path="financials" element={<Financials />} />
-        <Route path="reporting" element={<Reporting />} />
-        <Route path="support" element={<Support />} />
-        <Route path="settings" element={<Settings />} />
+        <Route
+          path="properties"
+          element={
+            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+              <Properties />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="tenants"
+          element={
+            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+              <Tenants />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="financials"
+          element={
+            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+              <Financials />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="reporting"
+          element={
+            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+              <Reporting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="support"
+          element={
+            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+              <Support />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="settings"
+          element={
+            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
       </Route>
       <Route path="/login" element={<Login />} />
-      <Route path="/sign-up" element={<Signup />} />
+      {/* <Route path="/sign-up" element={<Signup />} /> */}
       <Route path="/password-recovery" element={<PasswordRecoveryPage />} />
       <Route path="/password-reset" element={<PasswordResetPage />} />
     </>

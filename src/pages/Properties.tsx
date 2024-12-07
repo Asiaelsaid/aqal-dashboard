@@ -4,7 +4,8 @@ import PropertyCard from "@components/Properties/PropertyCard";
 import { useState } from "react";
 import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
 import ReactPaginate from "react-paginate";
-
+import imageOne from "@assets/images/Image (1).png"
+import imagetwo from "@assets/images/Image (2).png"
 interface IProps {}
 
 const properties = [
@@ -14,7 +15,7 @@ const properties = [
     condition: "Good",
     location: "Nairobi, Kenya",
     units: "6 units (2 sold, 4 vacant)",
-    image: "https://via.placeholder.com/150",
+    image: imageOne,
   },
   {
     title: "Maple Heights Apartments",
@@ -22,7 +23,7 @@ const properties = [
     condition: "Good",
     location: "Nairobi, Kenya",
     units: "6 units (2 sold, 4 vacant)",
-    image: "https://via.placeholder.com/150",
+    image: imagetwo,
   },
   {
     title: "Fairview Estate",
@@ -85,12 +86,14 @@ const Properties: React.FC<IProps> = () => {
       <ReactPaginate
         previousLabel={
           <span className="flex items-center space-x-1">
+            <FaArrowLeftLong className="mr-1"/>
             <span className="text-gray-600">Previous</span>
           </span>
         }
         nextLabel={
           <span className="flex items-center space-x-1">
             <span className="text-gray-600">Next</span>
+            <FaArrowRight className="ml-1"/>
           </span>
         }
         breakLabel={"..."}
