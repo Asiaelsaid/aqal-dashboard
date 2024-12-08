@@ -1,17 +1,19 @@
+import { useAuth } from "@hooks/useAuth";
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
 interface IProps {
-    isAllowed: boolean;
-    redirectPath: string;
     children: ReactNode;
 }
 
-const ProtectedRoute: React.FC<IProps> = ({isAllowed,redirectPath,children}) => {
-    if (!isAllowed) {
-        return <Navigate to={redirectPath} />;
+const ProtectedRoute: React.FC<IProps> = ({children}) => {
+    const isAuthenticated = useAuth();
+
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace />;
     }
-    return children;
+  
+    return <>{children}</>;
 };
 
 export default ProtectedRoute;

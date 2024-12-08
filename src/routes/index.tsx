@@ -17,9 +17,6 @@ import {
   Route,
 } from "react-router-dom";
 
-const isLoggedIn = () => {
-  return !!localStorage?.getItem("authToken");
-};
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -27,7 +24,7 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+            <ProtectedRoute  >
               <Dashboard />
             </ProtectedRoute>
           }
@@ -35,7 +32,7 @@ const router = createBrowserRouter(
         <Route
           path="properties"
           element={
-            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+            <ProtectedRoute  >
               <Properties />
             </ProtectedRoute>
           }
@@ -43,7 +40,7 @@ const router = createBrowserRouter(
         <Route
           path="tenants"
           element={
-            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+            <ProtectedRoute  >
               <Tenants />
             </ProtectedRoute>
           }
@@ -51,7 +48,7 @@ const router = createBrowserRouter(
         <Route
           path="financials"
           element={
-            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+            <ProtectedRoute  >
               <Financials />
             </ProtectedRoute>
           }
@@ -59,7 +56,7 @@ const router = createBrowserRouter(
         <Route
           path="reporting"
           element={
-            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+            <ProtectedRoute  >
               <Reporting />
             </ProtectedRoute>
           }
@@ -67,7 +64,7 @@ const router = createBrowserRouter(
         <Route
           path="support"
           element={
-            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+            <ProtectedRoute  >
               <Support />
             </ProtectedRoute>
           }
@@ -75,7 +72,7 @@ const router = createBrowserRouter(
         <Route
           path="settings"
           element={
-            <ProtectedRoute isAllowed={isLoggedIn()} redirectPath="login">
+            <ProtectedRoute  >
               <Settings />
             </ProtectedRoute>
           }

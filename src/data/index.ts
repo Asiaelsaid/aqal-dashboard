@@ -3,6 +3,7 @@ import { ILoginInput } from "@interfaces";
 export const LoginFormData: ILoginInput[] = [
   {
     placeholder: "Enter your email",
+    type: "email",
     name: "email",
     validation: {
       required: true,
@@ -11,6 +12,7 @@ export const LoginFormData: ILoginInput[] = [
   },
   {
     placeholder: "Enter your password",
+    type: "password",
     name: "password",
     validation: {
       required: true,
