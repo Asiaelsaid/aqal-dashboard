@@ -5,7 +5,8 @@ import Financials from "@pages/Financials";
 import Login from "@pages/Login";
 import PasswordRecoveryPage from "@pages/PasswordRecovery";
 import PasswordResetPage from "@pages/PasswordReset";
-import Properties from "@pages/Properties";
+import Properties from "@pages/Properties/Properties";
+import PropertyDetails from "@pages/Properties/PropertyDetails";
 import Reporting from "@pages/Reporting";
 import Settings from "@pages/Settings";
 import Signup from "@pages/Signup";
@@ -24,7 +25,7 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <ProtectedRoute  >
+            <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           }
@@ -32,15 +33,23 @@ const router = createBrowserRouter(
         <Route
           path="properties"
           element={
-            <ProtectedRoute  >
+            <ProtectedRoute>
               <Properties />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="property/:id"
+          element={
+            <ProtectedRoute>
+              <PropertyDetails />
             </ProtectedRoute>
           }
         />
         <Route
           path="tenants"
           element={
-            <ProtectedRoute  >
+            <ProtectedRoute>
               <Tenants />
             </ProtectedRoute>
           }
@@ -48,7 +57,7 @@ const router = createBrowserRouter(
         <Route
           path="financials"
           element={
-            <ProtectedRoute  >
+            <ProtectedRoute>
               <Financials />
             </ProtectedRoute>
           }
@@ -56,7 +65,7 @@ const router = createBrowserRouter(
         <Route
           path="reporting"
           element={
-            <ProtectedRoute  >
+            <ProtectedRoute>
               <Reporting />
             </ProtectedRoute>
           }
@@ -64,7 +73,7 @@ const router = createBrowserRouter(
         <Route
           path="support"
           element={
-            <ProtectedRoute  >
+            <ProtectedRoute>
               <Support />
             </ProtectedRoute>
           }
@@ -72,7 +81,7 @@ const router = createBrowserRouter(
         <Route
           path="settings"
           element={
-            <ProtectedRoute  >
+            <ProtectedRoute>
               <Settings />
             </ProtectedRoute>
           }

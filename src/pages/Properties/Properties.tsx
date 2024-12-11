@@ -4,44 +4,32 @@ import PropertyCard from "@components/Properties/PropertyCard";
 import { useState } from "react";
 import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
 import ReactPaginate from "react-paginate";
-import imageOne from "@assets/images/Image (1).png"
-import imagetwo from "@assets/images/Image (2).png"
-interface IProps {}
+import imageOne from "@assets/images/Image (1).png";
+import useCustomQuery from "@hooks/useCustomQuery";
 
-const properties = [
-  {
-    title: "White Stone Apartments",
-    type: "Apartment",
-    condition: "Good",
-    location: "Nairobi, Kenya",
-    units: "6 units (2 sold, 4 vacant)",
-    image: imageOne,
-  },
-  {
-    title: "Maple Heights Apartments",
-    type: "Apartment",
-    condition: "Good",
-    location: "Nairobi, Kenya",
-    units: "6 units (2 sold, 4 vacant)",
-    image: imagetwo,
-  },
-  {
-    title: "Fairview Estate",
-    type: "House",
-    condition: "Good",
-    location: "Nairobi, Kenya",
-    units: "6 units (2 sold, 4 vacant)",
-    image: "https://via.placeholder.com/150",
-  },
-];
+interface IProperty {
+  id: number;
+  name: string;
+  property_type: { name: string };
+  conditions: { name: string | null };
+  location: string;
+  total_units: number;
+  vacant_units: number;
+  sold_units: number;
+  images: string[];
+}
 
-const Properties: React.FC<IProps> = () => {
+const Properties = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 2;
+  const {data} = useCustomQuery({
+    queryKey: ["properties"],
+    url: "/owners/properties",
+  });
 
   // Calculate displayed properties
   const offset = currentPage * itemsPerPage;
-  const currentProperties = properties.slice(offset, offset + itemsPerPage);
+  const currentProperties = data?.data?.slice(offset, offset + itemsPerPage);
 
   // Handle page change
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -52,8 +40,17 @@ const Properties: React.FC<IProps> = () => {
       <PropertiesHeader />
       <PropertiesFilter />
       <div className="p-4 space-y-4">
-        {currentProperties.map((property, index) => (
-          <PropertyCard key={index} {...property} />
+        {data?.data.map((property:IProperty) => (
+            <PropertyCard
+            key={property.id}
+            id={property.id}
+            title={property.name}
+            type={property.property_type.name}
+            condition={property.conditions.name || "N/A"}
+            location={property.location}
+            units={`${property.total_units} units (${property.sold_units} sold, ${property.vacant_units} vacant)`}
+            image={property.images[0] || imageOne}
+          />
         ))}
       </div>
       <hr />
@@ -86,14 +83,14 @@ const Properties: React.FC<IProps> = () => {
       <ReactPaginate
         previousLabel={
           <span className="flex items-center space-x-1">
-            <FaArrowLeftLong className="mr-1"/>
+            <FaArrowLeftLong className="mr-1" />
             <span className="text-gray-600">Previous</span>
           </span>
         }
         nextLabel={
           <span className="flex items-center space-x-1">
             <span className="text-gray-600">Next</span>
-            <FaArrowRight className="ml-1"/>
+            <FaArrowRight className="ml-1" />
           </span>
         }
         breakLabel={"..."}

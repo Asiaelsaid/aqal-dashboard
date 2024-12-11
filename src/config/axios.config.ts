@@ -1,18 +1,18 @@
-import axios from 'axios';
-const axiosInstance=  axios.create({
-       baseURL:'http://13.50.122.77/api'})
+import axios from "axios";
 
-   axiosInstance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('authToken');
+const axiosInstance = axios.create({
+  baseURL: "http://13.50.122.77/api",
+});
 
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
-  );
-export default axiosInstance
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export default axiosInstance;

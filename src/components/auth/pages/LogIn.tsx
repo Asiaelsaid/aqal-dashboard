@@ -47,7 +47,7 @@ const LogInComponent = () => {
           })
         );
         // dispatch(logout());
-        localStorage.setItem("authToken", JSON.stringify(token));
+        localStorage.setItem("authToken", token);
         toast.success("Login successful!", {
           duration: 1000,
           position: "top-center",
@@ -56,6 +56,8 @@ const LogInComponent = () => {
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorrEsponse>;
+      console.log(errorObj);
+      
       toast.error(`${errorObj.response?.data?.message}`, {
         duration: 3000,
         position: "top-center",

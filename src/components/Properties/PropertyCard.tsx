@@ -1,7 +1,9 @@
 import React from "react";
 import { CiHome, CiLocationOn } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 interface PropertyCardProps {
+  id:number
   title: string;
   type: string;
   condition: string;
@@ -10,7 +12,7 @@ interface PropertyCardProps {
   image: string;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({
+const PropertyCard: React.FC<PropertyCardProps> = ({id,
   title,
   type,
   condition,
@@ -18,6 +20,11 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   units,
   image,
 }) => {
+  const navigate = useNavigate();
+
+  const handleViewProperty = () => {
+    navigate(`/property/${id}`);
+  };
   return (
     <div className="flex items-center bg-white rounded-lg shadow p-4 min-h-[12rem]">
       <img src={image} alt={title} className="w-48 h-32 rounded-lg" />
@@ -37,7 +44,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           </p>
         </div>
       </div>
-      <button className="ml-auto text-yellow-600 self-end">View property</button>
+      <button className="ml-auto text-yellow-600 self-end" onClick={handleViewProperty}>View property</button>
     </div>
   );
 };
