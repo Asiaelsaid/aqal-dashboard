@@ -3,7 +3,7 @@ import { FiSearch } from "react-icons/fi";
 
 const PropertiesHeader: React.FC = () => {
   return (
-    <div className="px-6 py-4 space-y-6">
+    <div className=" py-4 space-y-6">
       {/* First Row: Title and Search */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         {/* Title  */}

@@ -5,20 +5,27 @@ import Logo from "../assets/images/Logo.png";
 import { BiSolidSelectMultiple } from "react-icons/bi";
 import { BsClipboard2Data, BsDatabaseCheck } from "react-icons/bs";
 import { CgSupport } from "react-icons/cg";
-export default function Sidebar() {
+
+interface ISidebarProps {
+  onSidebarToggle: (isOpen: boolean) => void;
+}
+
+export default function Sidebar({ onSidebarToggle }:ISidebarProps) {
   const [activeItem, setActiveItem] = useState("Dashboard");
   const [isOpen, setIsOpen] = useState(true);
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+    onSidebarToggle(!isOpen); // Pass the new state to the parent
+  };
   return (
     <div
       className={`flex px-6 py-8 bg-mainColor text-textColor ${
         isOpen ? "w-64" : "w-20"
-      } transition-width duration-500 h-screen ease-in-out flex flex-col`}
+      } transition-width duration-500 h-screen fixed ease-in-out flex flex-col`}
     >
       <div
         className="flex items-center justify-center text-l font-bold cursor-pointer "
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
+        onClick={handleToggle}
       >
         <img src={Logo} alt="header logo" className="mr-2" />
         <span className={` ${isOpen ? "" : "hidden"}`}>Aqal Management</span>
@@ -35,7 +42,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <div className="mt-6 space-y-4 flex-grow">
+      <div className="mt-6 space-y-2 flex-grow">
         {[
           { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
           { label: "Properties", icon: <FiLayers />, path: "properties" },
@@ -68,7 +75,7 @@ export default function Sidebar() {
           </Link>
         ))}
       </div>
-      <div className="mt-auto space-y-4">
+      <div className=" space-y-4">
         {[
           { label: "Support", icon: <CgSupport />, path: "support" },
           { label: "Settings", icon: <FiSettings />, path: "settings" },
