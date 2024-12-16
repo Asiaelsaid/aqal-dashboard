@@ -56,7 +56,7 @@ const PropertyTypeSelect: React.FC<PropertyTypeProps> = ({
                 >
                   {({ selected, disabled }) => (
                     <li
-                      className={`cursor-pointer select-none p-2 list-none transition-colors ${
+                      className={`cursor-pointer select-none p-2 list-none transition-colors  hover:bg-purple-400 hover:text-white ${
                         selected ? "bg-purple-500 text-white" : "text-gray-700"
                       } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
