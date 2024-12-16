@@ -1,18 +1,12 @@
-export interface ILoginInput {
-  placeholder: string;
-  type: "email" | "password";
-  name: "email" | "password";
-  validation: {
-    required: boolean;
-    pattern?: RegExp;
-    minLength?: number;
-  };
+export interface PropertyData {
+  propertyName: string;
+  propertyType: string;
+  propertyDescription: string;
+  condition: string;
+  location: string;
+  totalUnits: number;
+  vacantUnits: number;
+  soldUnits: number;
+  unitType: string;
+  propertyManager: string;
 }
-export interface IErrorrEsponse {
-  error :{
-    data:{
-      details?:[string]
-    },
-  },
-  message?: string
-} 

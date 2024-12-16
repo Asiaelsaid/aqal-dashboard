@@ -8,7 +8,7 @@ interface IProps {
     name: string;
     description: string;
     location: string;
-    images: string[];
+    images: { image: string }[];
     property_manager: { first_name: string; last_name: string };
     property_type: { name: string };
     property_level: string;
@@ -32,7 +32,7 @@ interface IIconText {
 }
 const PropertyDetails: React.FC<IProps> = ({ property }) => {
   return (
-    <div className="grid lg:grid-cols-10 gap-4 bg-white mt-6 p-4 rounded-lg border">
+    <div className="grid lg:grid-cols-10 gap-4 bg-white mt-8 p-6 rounded-lg border">
       <ImagePreview images={property?.images} name={property?.name} />
 
       <div className="lg:col-span-7">

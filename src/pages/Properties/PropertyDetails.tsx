@@ -5,6 +5,7 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import PropertyDetails from "@components/Properties/PropertyDetails/PropertyDetails";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import OwnerDetails from "@components/Properties/PropertyDetails/OwnerDetails";
+import UnitsDetails from "@components/Properties/PropertyDetails/UnitsDetails";
 
 const Loading = () => <p>Loading...</p>;
 const Error = () => <p>Something went wrong. Please try again.</p>;
@@ -19,7 +20,7 @@ const PropertyDetailsPage = () => {
   const tabs = [
     { label: "Property details", content:<PropertyDetails property={property}/> },
     { label: "Owner details", content: <OwnerDetails userData={property?.user}/> },
-    { label: "Units", content: "This is the Pricing content." },
+    { label: "Units", content:<UnitsDetails/>  },
   ];
   const goBack = () => {
     navigate(-1);
@@ -41,7 +42,7 @@ const PropertyDetailsPage = () => {
             <Tab
               key={index}
               className={({ selected }) =>
-                `flex-1 py-1 text-center font-semibold focus:outline-none ${
+                ` p-4 text-center font-semibold focus:outline-none ${
                   selected
                     ? "  text-mainColor border-b-2 border-mainColor"
                     : "text-gray-500 hover:text-mainColor hover:border-b-2 border-mainColor"
