@@ -33,7 +33,7 @@ interface IIconText {
 const PropertyDetails: React.FC<IProps> = ({ property }) => {
   return (
     <div className="grid lg:grid-cols-10 gap-4 bg-white mt-8 p-6 rounded-lg border">
-      <ImagePreview images={property?.images} name={property?.name} />
+      <ImagePreview images={property?.images} name={property?.name} propertyId={property?.id} />
 
       <div className="lg:col-span-7">
         <h1 className="text-xl font-bold text-gray-800 mb-4">

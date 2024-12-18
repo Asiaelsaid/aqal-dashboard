@@ -5,6 +5,7 @@ import ConditionSelect from "./ConditionSelect";
 import { PropertyData } from "@interfaces";
 import useCustomQuery from "@hooks/useCustomQuery";
 import axiosInstance from "@config/axios.config";
+import toast from "react-hot-toast";
 
 interface IProps {
   isOpen: boolean;
@@ -80,8 +81,28 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         "/owners/property/create/",
         formData
       );
+      if (data.satus===200) {
+        toast.success("Property added successfully!");
+        setFormData({
+          name: "",
+          property_type: Number(""),
+          description: "",
+          conditions: [],
+          location: "Nairobi, Kenya",
+          total_units: "",
+          vacant_units: "",
+          sold_units: "",
+          unit_types: "",
+          property_level: "",
+          property_manager: "",
+          amenities: [],
+          common_areas: [],
+        });
+        setIsOpen(false);
+      }
       console.log("Property Added Successfully:", data);
     } catch (error) {
+      toast.error("Failed to add property. Please try again.");
       console.log(error);
     }
   };
@@ -313,7 +334,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                   </div>
                   <hr />
                   <div className="flex items-center justify-between gap-2">
-                    <button className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition">
+                    <button className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition" onClick={()=>setIsOpen(false)}>
                       cancel
                     </button>
                     <button
