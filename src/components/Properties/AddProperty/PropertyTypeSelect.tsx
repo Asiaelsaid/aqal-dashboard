@@ -11,14 +11,20 @@ import { HiChevronDown } from "react-icons/hi";
 interface PropertyTypeProps {
   formData: PropertyData;
   setFormData: React.Dispatch<React.SetStateAction<PropertyData>>;
+  propertyTypes: {
+    id: number;
+    name: string;
+  }[];
 }
 
 const PropertyTypeSelect: React.FC<PropertyTypeProps> = ({
   formData,
   setFormData,
+  propertyTypes,
 }) => {
-  const propertyTypes = ["Apartment", "House"];
-
+  const selectedPropertyType = propertyTypes.find(
+    (type) => type.id === Number(formData.property_type)
+  );
   return (
     <div>
       <label className="block text-gray-700 font-medium mb-1">
@@ -26,13 +32,19 @@ const PropertyTypeSelect: React.FC<PropertyTypeProps> = ({
       </label>
       <Listbox
         as="div"
-        value={formData.propertyType}
-        onChange={(value) => setFormData({ ...formData, propertyType: value })}
+        value={formData.property_type}
+        onChange={(value) =>
+          setFormData({ ...formData, property_type: Number(value) })
+        }
       >
         {({ open }) => (
           <div className="relative">
             <ListboxButton className="w-full border border-gray-300 rounded-lg p-2 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-purple-500">
-              <span>{formData.propertyType || "Select Property Type"}</span>
+              <span>
+                {selectedPropertyType
+                  ? selectedPropertyType.name
+                  : "Select Property Type"}
+              </span>
               <HiChevronDown
                 className={`h-5 w-5 text-gray-500 transform transition-transform duration-500 ${
                   open ? "rotate-180" : "rotate-0"
@@ -47,10 +59,10 @@ const PropertyTypeSelect: React.FC<PropertyTypeProps> = ({
                   : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
               } origin-top`}
             >
-              {propertyTypes.map((type, idx) => (
+              {propertyTypes?.map((type) => (
                 <ListboxOption
-                  key={idx}
-                  value={type}
+                  key={type?.id}
+                  value={type?.id}
                   as={Fragment}
                   disabled={false}
                 >
@@ -60,7 +72,7 @@ const PropertyTypeSelect: React.FC<PropertyTypeProps> = ({
                         selected ? "bg-purple-500 text-white" : "text-gray-700"
                       } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
-                      {type}
+                      {type?.name}
                     </li>
                   )}
                 </ListboxOption>

@@ -11,7 +11,7 @@ const PropertiesFilter: React.FC<IProps> = () => {
   const openModal = () => setIsOpen(true);
 
   return (
-    <div className="px-6 pb-4 space-y-6">
+    <div className="pb-4 space-y-6">
       <p className="text-base text-gray-500">
         Manage all your properties in one place
       </p>

@@ -1,12 +1,15 @@
 export interface PropertyData {
-  propertyName: string;
-  propertyType: string;
-  propertyDescription: string;
-  condition: string;
+  name: string;
+  property_type: number;
+  description: string;
+  conditions: number[];
   location: string;
-  totalUnits: number;
-  vacantUnits: number;
-  soldUnits: number;
-  unitType: string;
-  propertyManager: string;
+  total_units: string;
+  vacant_units: string;
+  sold_units: string;
+  unit_types: string;
+  property_level: string;
+  property_manager: string;
+  amenities:number[];
+  common_areas:number[]
 }

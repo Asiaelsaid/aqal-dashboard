@@ -3,38 +3,89 @@ import { useState } from "react";
 import PropertyTypeSelect from "./PropertyTypeSelect";
 import ConditionSelect from "./ConditionSelect";
 import { PropertyData } from "@interfaces";
+import useCustomQuery from "@hooks/useCustomQuery";
+import axiosInstance from "@config/axios.config";
 
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
-
 const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
+  const { data, isLoading, isError } = useCustomQuery({
+    queryKey: ["propertyFields"],
+    url: "/owners/property/fields/",
+  });
+  const fieldsData = data?.data;
   const [formData, setFormData] = useState<PropertyData>({
-    propertyName: "",
-    propertyType: "Apartment",
-    propertyDescription: "",
-    condition: "Good",
+    name: "",
+    property_type: Number(""),
+    description: "",
+    conditions: [],
     location: "Nairobi, Kenya",
-    totalUnits: 0,
-    vacantUnits: 0,
-    soldUnits: 0,
-    unitType: "",
-    propertyManager: "",
+    total_units: "",
+    vacant_units: "",
+    sold_units: "",
+    unit_types: "",
+    property_level: "",
+    property_manager: "",
+    amenities: [],
+    common_areas: [],
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  const handleCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: "amenities" | "common_areas"
   ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const value = parseInt(e.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      [key]: e.target.checked
+        ? [...prev[key], value]
+        : prev[key].filter((id) => id !== value),
+    }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Property Data Submitted:", formData);
-    alert("Property Added Successfully!");
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    if (name === "property_manager") {
+      const selectedManager = fieldsData?.property_managers.find(
+        (manager: { id: number }) => manager.id === Number(value)
+      );
+      setFormData({
+        ...formData,
+        property_manager: selectedManager.id || null,
+      });
+    } else if (
+      name === "total_units" ||
+      name === "property_level" ||
+      name === "sold_units" ||
+      name === "vacant_units"
+    ) {
+      setFormData({ ...formData, [name]: Number(value) });
+      console.log(formData);
+      
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
+  const handleSubmit = async (e: React.FormEvent) => {
+    
+    try {
+      e.preventDefault();
+      const { data } = await axiosInstance.post(
+        "/owners/property/create/",
+        formData
+      );
+      console.log("Property Added Successfully:", data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Dialog
       open={isOpen}
@@ -59,41 +110,47 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                     </label>
                     <input
                       type="text"
-                      name="propertyName"
-                      value={formData.propertyName}
+                      name="name"
+                      value={formData.name}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
                       placeholder="White stone apartments"
                     />
                   </div>
-
                   <div>
-                    <PropertyTypeSelect
-                      formData={formData}
-                      setFormData={setFormData}
-                    />
+                    {fieldsData?.property_types?.length > 0 ? (
+                      <PropertyTypeSelect
+                        formData={formData}
+                        setFormData={setFormData}
+                        propertyTypes={fieldsData?.property_types}
+                      />
+                    ) : (
+                      <p>Loading property types...</p>
+                    )}
                   </div>
-
                   <div>
                     <label className="block text-gray-700 font-medium">
                       Property Description
                     </label>
                     <textarea
-                      name="propertyDescription"
-                      value={formData.propertyDescription}
-                      // onChange={handleChange}
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
                       placeholder="Describe the property"
                     />
                   </div>
-
                   <div>
-                    <ConditionSelect
-                      formData={formData}
-                      setFormData={setFormData}
-                    />
+                    {fieldsData?.conditions ? (
+                      <ConditionSelect
+                        formData={formData}
+                        setFormData={setFormData}
+                        condition={fieldsData?.conditions}
+                      />
+                    ) : (
+                      <p>Loading conditions...</p>
+                    )}
                   </div>
-
                   <div>
                     <label className="block text-gray-700 font-medium">
                       Location
@@ -107,60 +164,154 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                       placeholder="Nairobi, Kenya"
                     />
                   </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-gray-700 font-medium">
-                        Total Units
-                      </label>
-                      <input
-                        type="number"
-                        name="totalUnits"
-                        value={formData.totalUnits}
-                        onChange={handleChange}
-                        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 font-medium">
-                        Vacant Units
-                      </label>
-                      <input
-                        type="number"
-                        name="vacantUnits"
-                        value={formData.vacantUnits}
-                        onChange={handleChange}
-                        className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
-                      />
-                    </div>
+                  <hr />
+                  <div>
+                    <label className="block text-gray-700 font-medium">
+                      Total Units
+                    </label>
+                    <input
+                      type="text"
+                      name="total_units"
+                      value={formData.total_units}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+                    />
                   </div>
-
+                  <div>
+                    <label className="block text-gray-700 font-medium">
+                      Vacant Units
+                    </label>
+                    <input
+                      type="text"
+                      name="vacant_units"
+                      value={formData.vacant_units}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+                    />
+                  </div>
                   <div>
                     <label className="block text-gray-700 font-medium">
                       Sold Units
                     </label>
                     <input
-                      type="number"
-                      name="soldUnits"
-                      value={formData.soldUnits}
+                      type="text"
+                      name="sold_units"
+                      value={formData.sold_units}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
                     />
                   </div>
-
+                  <div>
+                    <label className="block text-gray-700 font-medium">
+                      Types of units
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Types of units"
+                      name="unit_types"
+                      value={formData.unit_types}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 font-medium">
+                      Property Level
+                    </label>
+                    <input
+                      type="text"
+                      name="property_level"
+                      value={formData.property_level}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+                    />
+                  </div>
                   <div>
                     <label className="block text-gray-700 font-medium">
                       Property Manager
                     </label>
-                    <input
-                      type="text"
-                      name="propertyManager"
-                      value={formData.propertyManager}
+                    <select
+                      name="property_manager"
+                      value={formData.property_manager}
                       onChange={handleChange}
                       className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
-                      placeholder="John Doe"
-                    />
+                    >
+                      <option value="">Select a Manager</option>
+                      {fieldsData?.property_managers?.map(
+                        (manager: {
+                          id: number;
+                          first_name: string;
+                          last_name: string;
+                        }) => (
+                          <option
+                            key={manager.id}
+                            value={manager.id}
+                            // value={`${manager.first_name} ${manager.last_name}`}
+                          >
+                            {manager.first_name} {manager.last_name}
+                          </option>
+                        )
+                      )}
+                    </select>
                   </div>
+                  <hr />
+                  <div>
+                    <h3 className="font-semibold text-gray-700 mb-2">
+                      Property Amenities
+                    </h3>
+                    <p className="text-sm text-gray-500 mb-2">
+                      Check the amenities that this property offers
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {fieldsData?.amenities?.map(
+                        (amenity: { id: number; name: string }) => (
+                          <label key={amenity.id} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              name="amenities"
+                              value={amenity.id}
+                              checked={formData.amenities.includes(amenity.id)}
+                              onChange={(e) =>
+                                handleCheckboxChange(e, "amenities")
+                              }
+                              className="mr-2"
+                            />
+                            {amenity.name}
+                          </label>
+                        )
+                      )}
+                    </div>
+                  </div>
+                  <hr />
+                  {/* Common Areas */}
+                  <div>
+                    <h3 className="font-semibold text-gray-700 mb-2">
+                      Common Areas
+                    </h3>
+                    <p className="text-sm text-gray-500 mb-2">
+                      Check the property common areas that the property has
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {fieldsData?.common_areas?.map(
+                        (area: { id: number; name: string }) => (
+                          <label key={area.id} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              name="common_areas"
+                              value={area.id}
+                              checked={formData.common_areas.includes(area.id)}
+                              onChange={(e) =>
+                                handleCheckboxChange(e, "common_areas")
+                              }
+                              className="mr-2"
+                            />
+                            {area.name}
+                          </label>
+                        )
+                      )}
+                    </div>
+                  </div>
+                  <hr />
                   <div className="flex items-center justify-between gap-2">
                     <button className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition">
                       cancel
@@ -169,7 +320,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                       type="submit"
                       className="w-full bg-purple-600 text-white rounded-lg p-2 hover:bg-purple-700 transition"
                     >
-                   save
+                      save
                     </button>
                   </div>
                 </form>
