@@ -24,16 +24,17 @@ interface IProps {
       name: string;
     }[];
   };
+  onRefresh: () => void
 }
 
 interface IIconText {
   id: number;
   name: string;
 }
-const PropertyDetails: React.FC<IProps> = ({ property }) => {
+const PropertyDetails: React.FC<IProps> = ({ property ,onRefresh}) => {
   return (
     <div className="grid lg:grid-cols-10 gap-4 bg-white mt-8 p-6 rounded-lg border">
-      <ImagePreview images={property?.images} name={property?.name} propertyId={property?.id} />
+      <ImagePreview images={property?.images} name={property?.name} propertyId={property?.id}  onRefresh={onRefresh}/>
 
       <div className="lg:col-span-7">
         <h1 className="text-xl font-bold text-gray-800 mb-4">

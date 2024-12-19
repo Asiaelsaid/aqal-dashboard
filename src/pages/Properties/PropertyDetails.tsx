@@ -11,14 +11,14 @@ const Loading = () => <p>Loading...</p>;
 const Error = () => <p>Something went wrong. Please try again.</p>;
 const PropertyDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { data, isLoading, isError } = useCustomQuery({
+  const { data, isLoading, isError,refetch } = useCustomQuery({
     queryKey: ["propertyDetails"],
     url: `/owners/property/${id}`,
   });
   const property = data?.data;
   const navigate = useNavigate();
   const tabs = [
-    { label: "Property details", content:<PropertyDetails property={property}/> },
+    { label: "Property details", content:<PropertyDetails property={property} onRefresh={refetch}/> },
     { label: "Owner details", content: <OwnerDetails userData={property?.user}/> },
     { label: "Units", content:<UnitsDetails/>  },
   ];

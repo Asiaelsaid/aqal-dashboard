@@ -67,21 +67,18 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       name === "vacant_units"
     ) {
       setFormData({ ...formData, [name]: Number(value) });
-      console.log(formData);
-      
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
   const handleSubmit = async (e: React.FormEvent) => {
-    
     try {
       e.preventDefault();
       const { data } = await axiosInstance.post(
         "/owners/property/create/",
         formData
       );
-      if (data.satus===200) {
+      if (data.satus===201) {
         toast.success("Property added successfully!");
         setFormData({
           name: "",
@@ -100,10 +97,8 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         });
         setIsOpen(false);
       }
-      console.log("Property Added Successfully:", data);
     } catch (error) {
       toast.error("Failed to add property. Please try again.");
-      console.log(error);
     }
   };
 
@@ -116,7 +111,8 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       <div className="fixed inset-0 overflow-hidden backdrop-blur-sm">
         <div className="absolute inset-0 overflow-hidden">
           <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
-            <DialogPanel className="w-screen max-w-lg">
+            <DialogPanel transition className="w-screen max-w-lg duration-1000 ease-out">
+              
               <div className="flex h-full flex-col bg-white shadow-xl">
                 <DialogTitle className="text-lg font-medium text-gray-700 px-4 py-4 100 border-b border-gray-200 flex justify-between items-center">
                   Add New Property

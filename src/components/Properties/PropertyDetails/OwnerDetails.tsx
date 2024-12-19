@@ -16,7 +16,7 @@ interface IProps {
 const thStyle = "py-3 px-4 text-left text-gray-500 font-medium";
 
 const OwnerDetails: React.FC<IProps> = ({ userData }) => {
-  const { first_name, last_name, email, phone_number, role } = userData;
+  const { first_name, last_name, email, phone_number, emergency_number } = userData;
 
   return (
     <div className="mt-8 p-6 w-full rounded-lg border bg-white ">
@@ -38,8 +38,8 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
                 <th className={thStyle}>Name</th>
                 {/* <th className={thStyle}>Email</th> */}
                 <th className={thStyle}>Phone Number</th>
-                <th className={thStyle}>Role</th>
-                <th className={thStyle}>Actions</th>
+                <th className={thStyle}>Emergency Contact</th>
+                {/* <th className={thStyle}>Actions</th> */}
               </tr>
             </thead>
 
@@ -64,8 +64,8 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
                 </td>
                 {/* <td className="py-4 px-4 text-gray-700">{email}</td> */}
                 <td className="py-4 px-4 text-gray-700">{phone_number}</td>
-                <td className="py-4 px-4 text-gray-700">{role}</td>
-                <td className="py-4 px-4 flex items-center justify-center space-x-3">
+                <td className="py-4 px-4 text-gray-700">{emergency_number}</td>
+                {/* <td className="py-4 px-4 flex items-center justify-center space-x-3">
                   <button
                     className="text-gray-400 hover:text-gray-700"
                     aria-label="Delete"
@@ -78,7 +78,7 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
                   >
                     <FaPen />
                   </button>
-                </td>
+                </td> */}
               </tr>
             </tbody>
           </table>

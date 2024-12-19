@@ -20,7 +20,7 @@ interface IProperty {
   }[];
 }
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 20;
 
 const Properties = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -36,8 +36,8 @@ const Properties = () => {
   // Handle page change
   const handlePageChange = ({ selected }: { selected: number }) => setCurrentPage(selected);
 
-  // const totalPages = data?.data.length ? Math.ceil(data?.data.length / ITEMS_PER_PAGE) : 1;
-  const totalPages=15
+  const totalPages = data?.data.length ? Math.ceil(data?.data.length / ITEMS_PER_PAGE) : 1;
+  // const totalPages=15
 
   return (
     <div className="flex-1 p-5">
