@@ -5,6 +5,7 @@ import { useState, useMemo } from "react";
 import imageOne from "@assets/images/Image (1).png";
 import useCustomQuery from "@hooks/useCustomQuery";
 import Pagination from "@components/Properties/Pagination";
+import { FiSearch } from "react-icons/fi";
 
 interface IProperty {
   id: number;
@@ -24,24 +25,56 @@ const ITEMS_PER_PAGE = 20;
 
 const Properties = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const { data } = useCustomQuery({
     queryKey: ["properties"],
     url: "/owners/properties",
   });
+const propertiesData=data?.data
+  const filteredProperties = useMemo(() => {
+    if (!searchQuery) {
+      return propertiesData || []; 
+    }
+    return propertiesData.filter((property: IProperty) => {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      return (
+        property?.name.toLowerCase().includes(lowerCaseQuery) || 
+        property?.location.toLowerCase().includes(lowerCaseQuery) ||
+        property?.property_type.name.toLowerCase().includes(lowerCaseQuery) ||
+        String(property.total_units).includes(lowerCaseQuery) || 
+        String(property.vacant_units).includes(lowerCaseQuery) || 
+        String(property.sold_units).includes(lowerCaseQuery)
+      );
+    }) || [];
+  }, [data, searchQuery]);
 
-  // Calculate displayed properties dynamically based on the current page and items per page
   const offset = currentPage * ITEMS_PER_PAGE;
-  const currentProperties = useMemo(() => data?.data.slice(offset, offset + ITEMS_PER_PAGE), [data, currentPage]);
+
+  const currentProperties = useMemo(() => filteredProperties.slice(offset, offset + ITEMS_PER_PAGE), [filteredProperties, currentPage]);
 
   // Handle page change
   const handlePageChange = ({ selected }: { selected: number }) => setCurrentPage(selected);
 
-  const totalPages = data?.data.length ? Math.ceil(data?.data.length / ITEMS_PER_PAGE) : 1;
-  // const totalPages=15
+  // Calculate total pages based on filtered properties
+  const totalPages = filteredProperties.length ? Math.ceil(filteredProperties.length / ITEMS_PER_PAGE) : 1;
+
+  // Search input component
+  const searchInput = (
+    <div className="flex items-center w-full max-w-md px-4 py-2 text-gray-500 bg-white border rounded-lg shadow-sm space-x-2 lg:w-1/4">
+      <FiSearch className="text-gray-400" />
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full text-sm bg-transparent outline-none placeholder-gray-400"
+      />
+    </div>
+  );
 
   return (
     <div className="flex-1 p-5">
-      <PropertiesHeader />
+      <PropertiesHeader child={searchInput} />
       <PropertiesFilter />
 
       {/* Property Cards */}
@@ -68,6 +101,5 @@ const Properties = () => {
     </div>
   );
 };
-
 
 export default Properties;

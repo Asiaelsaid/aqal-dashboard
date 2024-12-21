@@ -26,6 +26,7 @@ const PropertiesFilter: React.FC<IProps> = () => {
   };
   const openModal = () => setIsOpen(true);
 
+  
   return (
     <div className="pb-4 space-y-6">
       <p className="text-base text-gray-500">
@@ -45,7 +46,7 @@ const PropertiesFilter: React.FC<IProps> = () => {
         <div className="lg:w-1/4 flex justify-end">
           <button
             onClick={openModal}
-            className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="px-6 py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             + Add new property
           </button>
