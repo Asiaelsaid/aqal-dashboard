@@ -1,13 +1,29 @@
 import { useState } from "react";
 import AddPropertyModal from "./AddProperty/AddPropertyModal";
+import SelectCountry from "./Filters/SelectCountry";
+import DateRangePicker from "./Filters/DateRangePicker";
+import PriceRangeSelector from "./Filters/PriceRangeSelector";
 
 interface IProps {}
 
 const PropertiesFilter: React.FC<IProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  // Function to toggle modal
-  // const closePanel = () => setIsOpen(false);
+  const [selectedCountry, setSelectedCountry] = useState({
+    name: "",
+    imgURL: "",
+  });
+  const [selectedPriceRange, setSelectedPriceRange] = useState(null);
+  //handler
+  const onCountryChange = (category: { name: string; imgURL: string }) => {
+    setSelectedCountry(category);
+  };
+  const onPriceRangeChange = (priceRange: {
+    id: number;
+    label: string;
+    value: [number, number];
+  }) => {
+    setSelectedPriceRange(priceRange);
+  };
   const openModal = () => setIsOpen(true);
 
   return (
@@ -20,20 +36,9 @@ const PropertiesFilter: React.FC<IProps> = () => {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         {/* Dropdowns */}
         <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 lg:w-1/2">
-          <select className="w-full px-4 py-2 text-sm text-gray-500 bg-white border rounded-lg shadow-sm focus:ring-indigo-500 focus:outline-none">
-            <option value="">Location</option>
-            <option value="Nairobi">Nairobi</option>
-            <option value="Mombasa">Mombasa</option>
-          </select>
-          <select className="w-full px-4 py-2 text-sm text-gray-500 bg-white border rounded-lg shadow-sm focus:ring-indigo-500 focus:outline-none">
-            <option value="">Date Range</option>
-            <option value="Jan 6-13">Jan 6 - Jan 13</option>
-            <option value="Jan 13-20">Jan 13 - Jan 20</option>
-          </select>
-          <select className="w-full px-4 py-2 text-sm text-gray-500 bg-white border rounded-lg shadow-sm focus:ring-indigo-500 focus:outline-none">
-            <option value="">Price Range</option>
-            <option value="$0-$100">$0 - $100</option>
-          </select>
+          <SelectCountry onCountryChange={onCountryChange} />
+          <DateRangePicker />
+          <PriceRangeSelector onPriceRangeChange={onPriceRangeChange} />
         </div>
 
         {/* Button */}
