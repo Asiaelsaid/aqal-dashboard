@@ -3,6 +3,7 @@ import AddPropertyModal from "./AddProperty/AddPropertyModal";
 import SelectCountry from "./Filters/SelectCountry";
 import DateRangePicker from "./Filters/DateRangePicker";
 import PriceRangeSelector from "./Filters/PriceRangeSelector";
+import SubHeading from "@components/UI/SubHeading";
 
 interface IProps {}
 
@@ -28,11 +29,8 @@ const PropertiesFilter: React.FC<IProps> = () => {
   const openModal = () => setIsOpen(true);
 
   return (
-    <div className="pb-4 space-y-6">
-      <p className="text-base text-gray-500">
-        Manage all your properties in one place
-      </p>
-      <hr />
+    <div className=" p-4  space-y-6">
+      <SubHeading subHeading="Manage all your properties in one place"/>
       {/* Filters */}
       <div className="flex flex-col sm:flex-row sm:space-x-4 sm:space-y-0 space-y-4 sm:justify-between lg:flex-row lg:items-center lg:space-x-8">
         {/* Dropdowns */}

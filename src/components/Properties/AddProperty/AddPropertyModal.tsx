@@ -1,5 +1,5 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useState } from "react";
+import {  useState } from "react";
 import PropertyTypeSelect from "./PropertyTypeSelect";
 import ConditionSelect from "./ConditionSelect";
 import { PropertyData } from "@interfaces";
@@ -12,7 +12,7 @@ interface IProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
-  const { data, isLoading, isError } = useCustomQuery({
+  const { data, isError } = useCustomQuery({
     queryKey: ["propertyFields"],
     url: "/owners/property/fields/",
   });
@@ -97,11 +97,16 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         });
         setIsOpen(false);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Failed to add property. Please try again.");
     }
   };
-
+  
+    if (isError) {
+      toast.error("Failed to load property fields. Please refresh the page.");
+    }
+ 
   return (
     <Dialog
       open={isOpen}

@@ -47,9 +47,8 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
               <tr className="border-b hover:bg-gray-50">
                 {/* Checkbox */}
                 <td className="py-4 px-4">
-                  <input type="checkbox" className="w-4 h-4 text-blue-500" />
+                  <input type="checkbox" className="w-4 h-4 text-purple-500" />
                 </td>
-
                 {/* Name and Avatar */}
                 <td className="py-4 px-4 flex items-center space-x-4 ">
                   <img

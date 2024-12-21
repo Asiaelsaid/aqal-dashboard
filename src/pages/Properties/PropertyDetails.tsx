@@ -1,4 +1,4 @@
-import PropertiesHeader from "@components/Properties/PropertiesHeader";
+
 import useCustomQuery from "@hooks/useCustomQuery";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -6,9 +6,13 @@ import PropertyDetails from "@components/Properties/PropertyDetails/PropertyDeta
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import OwnerDetails from "@components/Properties/PropertyDetails/OwnerDetails";
 import UnitsDetails from "@components/Properties/PropertyDetails/UnitsDetails";
+import { FiSearch } from "react-icons/fi";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
+import PagesHeading from "@components/UI/PagesHeading";
 
-const Loading = () => <p>Loading...</p>;
-const Error = () => <p>Something went wrong. Please try again.</p>;
+// const Loading = () => toast.loading("Fetching property fields...");
+// const Error = () =>  toast.error("Failed to load property fields. Please refresh the page.");
 const PropertyDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, isError,refetch } = useCustomQuery({
@@ -25,12 +29,36 @@ const PropertyDetailsPage = () => {
   const goBack = () => {
     navigate(-1);
   };
-  if (isLoading) return <Loading />;
-  if (isError) return <Error />;
+   // Search input component
+    const searchInput = (
+      <div className="flex items-center w-full max-w-md px-4 py-2 text-gray-500 bg-white border rounded-lg shadow-sm space-x-2 lg:w-1/4">
+        <FiSearch className="text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search"
+       
+          className="w-full text-sm bg-transparent outline-none placeholder-gray-400"
+        />
+      </div>
+    );
+    useEffect(() => {
+      if (isLoading) {
+        toast.loading("Fetching property details...");
+      } else {
+        toast.dismiss(); // Dismiss loading toast
+      }
+  
+      if (isError) {
+        toast.error("Failed to load property details. Please try again.");
+      }
+    }, [isLoading, isError]);
+  
+  if (isLoading) return null ;
+  if (isError) return null;
 
   return (
-    <div className="flex flex-col p-6 min-h-screen bg-gray-50">
-      <PropertiesHeader />
+    <div className="flex flex-col p-5 min-h-screen bg-gray-50">
+      <PagesHeading  heading="Properties" child={searchInput}/>
       <button onClick={goBack} className="flex items-center self-start my-8 text-gray-500 font-semibold">
         <FaArrowLeftLong className="mr-3" />
         Back

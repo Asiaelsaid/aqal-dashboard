@@ -1,11 +1,11 @@
 import PropertiesFilter from "@components/Properties/PropertiesFilter";
-import PropertiesHeader from "@components/Properties/PropertiesHeader";
 import PropertyCard from "@components/Properties/PropertyCard";
 import { useState, useMemo } from "react";
 import imageOne from "@assets/images/Image (1).png";
 import useCustomQuery from "@hooks/useCustomQuery";
 import Pagination from "@components/Properties/Pagination";
 import { FiSearch } from "react-icons/fi";
+import PagesHeading from "@components/UI/PagesHeading";
 
 interface IProperty {
   id: number;
@@ -73,8 +73,8 @@ const propertiesData=data?.data
   );
 
   return (
-    <div className="flex-1 p-5">
-      <PropertiesHeader child={searchInput} />
+    <div className="flex-1 p-5 bg-gray-50">
+      <PagesHeading heading="Properties" child={searchInput} />
       <PropertiesFilter />
 
       {/* Property Cards */}
