@@ -12,8 +12,8 @@ const RootLayout = () => {
       <Sidebar onSidebarToggle={handleSidebarToggle} />
       <div
         className={`flex-grow transition-all duration-300 ${
-          isSidebarOpen ? "pl-64" : "pl-20"
-        }`}
+          isSidebarOpen ? "pl-64 sm:pl-64" : "pl-2 md:pl-20 "
+        } `}
       >
         <Outlet />
       </div>

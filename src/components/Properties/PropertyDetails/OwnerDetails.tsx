@@ -1,5 +1,4 @@
 import React from "react";
-import { FaTrash, FaPen } from "react-icons/fa";
 
 interface IUser {
   id: number;
@@ -7,7 +6,7 @@ interface IUser {
   last_name: string;
   email: string;
   phone_number: string;
-  role: string;
+  emergency_number: string;
 }
 
 interface IProps {
@@ -19,6 +18,7 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
   const { first_name, last_name, email, phone_number, emergency_number } = userData;
 
   return (
+    <div className="overflow-x-auto">
     <div className="mt-8 p-6 w-full rounded-lg border bg-white ">
       {/* Card Container */}
       <div className="bg-white rounded-lg border w-full">
@@ -51,7 +51,7 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
                 </td>
 
                 {/* Name and Avatar */}
-                <td className="py-4 px-4 flex items-center space-x-4">
+                <td className="py-4 px-4 flex items-center space-x-4 ">
                   <img
                     src="https://via.placeholder.com/40"
                     alt="Avatar"
@@ -84,6 +84,7 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
           </table>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -32,8 +32,8 @@ const SelectCountry: React.FC<SelectProps> = ({ onCountryChange }) => {
 
   return (
     <Listbox value={selected} onChange={handleSelection}>
-      <div className="relative">
-        <ListboxButton className="relative min-w-48 max-w-64 cursor-default rounded-md bg-white py-3 pl-3 pr-10 text-left text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 sm:text-sm sm:leading-6">
+      <div className="relative  w-full sm:w-auto">
+        <ListboxButton className="relative min-w-48 max-w-full sm:max-w-64 cursor-default rounded-md bg-white py-3 pl-3 pr-10 text-left text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 sm:text-sm sm:leading-6">
           <span className="flex items-center">
             <img
               alt=""

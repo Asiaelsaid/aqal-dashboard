@@ -13,7 +13,8 @@ const PropertiesFilter: React.FC<IProps> = () => {
     imgURL: "",
   });
   const [selectedPriceRange, setSelectedPriceRange] = useState(null);
-  //handler
+
+  // Handlers
   const onCountryChange = (category: { name: string; imgURL: string }) => {
     setSelectedCountry(category);
   };
@@ -26,7 +27,6 @@ const PropertiesFilter: React.FC<IProps> = () => {
   };
   const openModal = () => setIsOpen(true);
 
-  
   return (
     <div className="pb-4 space-y-6">
       <p className="text-base text-gray-500">
@@ -34,16 +34,16 @@ const PropertiesFilter: React.FC<IProps> = () => {
       </p>
       <hr />
       {/* Filters */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+      <div className="flex flex-col sm:flex-row sm:space-x-4 sm:space-y-0 space-y-4 sm:justify-between lg:flex-row lg:items-center lg:space-x-8">
         {/* Dropdowns */}
-        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 lg:w-1/2">
+        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full sm:w-auto lg:w-2/3">
           <SelectCountry onCountryChange={onCountryChange} />
           <DateRangePicker />
           <PriceRangeSelector onPriceRangeChange={onPriceRangeChange} />
         </div>
 
         {/* Button */}
-        <div className="lg:w-1/4 flex justify-end">
+        <div className="flex justify-center sm:justify-end w-full sm:w-auto">
           <button
             onClick={openModal}
             className="px-6 py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
