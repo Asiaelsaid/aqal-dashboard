@@ -2,9 +2,8 @@ import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
 import { FiSearch } from "react-icons/fi";
 
-interface IProps {}
 
-const Tenants: React.FC<IProps> = () => {
+const Tenants = () => {
     const searchInput = (
         <div className="flex items-center w-full max-w-md px-4 py-2 text-gray-500 bg-white border rounded-lg shadow-sm space-x-2 lg:w-1/4">
           <FiSearch className="text-gray-400" />

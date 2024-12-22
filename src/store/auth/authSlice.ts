@@ -4,11 +4,20 @@ interface AuthState {
   isAuthenticated: boolean;
   token: string | null;
 }
+const isTokenExpired = (token: string | null): boolean => {
+  if (!token) return true;
+  const payload = JSON.parse(atob(token.split(".")[1])); 
+  const exp = payload.exp * 1000; 
+  return Date.now() > exp; 
+};
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  token: localStorage.getItem("authToken") ? localStorage.getItem("authToken") : null,
+  isAuthenticated: !!localStorage.getItem("authToken") && !isTokenExpired(localStorage.getItem("authToken")),
+  token: localStorage.getItem("authToken") && !isTokenExpired(localStorage.getItem("authToken"))
+    ? localStorage.getItem("authToken")
+    : null,
 };
+
 
 const authSlice = createSlice({
   name: 'auth',

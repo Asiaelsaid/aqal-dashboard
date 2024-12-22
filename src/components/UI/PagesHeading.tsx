@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 
 interface IProps {
   heading: string;
-  child: ReactNode;
+  child?: ReactNode;
 }
 const PagesHeading: React.FC<IProps> = ({ heading, child }) => {
   return (

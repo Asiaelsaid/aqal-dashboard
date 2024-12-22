@@ -24,17 +24,22 @@ interface IProps {
       name: string;
     }[];
   };
-  onRefresh: () => void
+  onRefresh: () => void;
 }
 
 interface IIconText {
   id: number;
   name: string;
 }
-const PropertyDetails: React.FC<IProps> = ({ property ,onRefresh}) => {
-  return (
+const PropertyDetails: React.FC<IProps> = ({ property, onRefresh }) => {
+  return property ? (
     <div className="grid lg:grid-cols-10 gap-4 bg-white mt-8 p-6 rounded-lg border">
-      <ImagePreview images={property?.images} name={property?.name} propertyId={property?.id}  onRefresh={onRefresh}/>
+      <ImagePreview
+        images={property?.images}
+        name={property?.name}
+        propertyId={property?.id}
+        onRefresh={onRefresh}
+      />
 
       <div className="lg:col-span-7">
         <h1 className="text-xl font-bold text-gray-800 mb-4">
@@ -99,10 +104,9 @@ const PropertyDetails: React.FC<IProps> = ({ property ,onRefresh}) => {
                 <IconText
                   key={amenity.id}
                   text={amenity.name}
-                  // icon={
-                  //   (amenity.name === "Swimming Pool" && <FaSwimmingPool />) ||
-                  //   (amenity.name === "Garden" && <FaLeaf />)
-                  // }
+                  // icon={(
+                  //   amenity.name === "Swimming Pool" && <FaSwimmingPool />) ||
+                  //   (amenity.name === "Garden" && <FaLeaf />)}
                 />
               ))}
             </ul>
@@ -110,7 +114,7 @@ const PropertyDetails: React.FC<IProps> = ({ property ,onRefresh}) => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default PropertyDetails;
