@@ -13,8 +13,11 @@ interface IProps {
     property_type: { name: string };
     property_level: string;
     total_units: string;
+    total_units_count:string;
+    bought_units_count:string;
+    occupied_units_count:string;
     unit_types: string;
-    vacant_units: string;
+    vacant_units_count: string;
     common_areas: {
       id: number;
       name: string;
@@ -69,17 +72,19 @@ const PropertyDetails: React.FC<IProps> = ({ property, onRefresh }) => {
             label="Property Levels"
             value={property?.property_level}
           />
-          <PropertyDetailsCard label="Unit Count" value="6" />
+          <PropertyDetailsCard label="Unit Count" value={property?.total_units_count} />
+          <PropertyDetailsCard label="Units bought" value={property?.bought_units_count} />
+          <PropertyDetailsCard label="Units being rented" value={property?.occupied_units_count} />
           <PropertyDetailsCard
             label="Total Units"
             value={property?.total_units}
           />
           <PropertyDetailsCard
             label="Vacant Units"
-            value={property?.vacant_units}
+            value={property?.vacant_units_count}
           />
           <PropertyDetailsCard
-            label="Unit Types"
+            label="Types of units"
             value={property?.unit_types}
           />
         </div>

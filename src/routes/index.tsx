@@ -9,9 +9,9 @@ import Properties from "@pages/Properties/Properties";
 import PropertyDetails from "@pages/Properties/PropertyDetails";
 import Reporting from "@pages/Reporting";
 import Settings from "@pages/Settings";
-import Signup from "@pages/Signup";
 import Support from "@pages/Support";
-import Tenants from "@pages/Tenants";
+import TenantDetails from "@pages/Tenants/TenantDetails";
+import Tenants from "@pages/Tenants/Tenants";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -51,6 +51,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute>
               <Tenants />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="tenant-details/:id"
+          element={
+            <ProtectedRoute>
+              <TenantDetails />
             </ProtectedRoute>
           }
         />

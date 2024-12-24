@@ -1,11 +1,12 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import {  useState } from "react";
+import { useState } from "react";
 import PropertyTypeSelect from "./PropertyTypeSelect";
 import ConditionSelect from "./ConditionSelect";
 import { PropertyData } from "@interfaces";
 import useCustomQuery from "@hooks/useCustomQuery";
 import axiosInstance from "@config/axios.config";
 import toast from "react-hot-toast";
+import { FaTimes } from "react-icons/fa";
 
 interface IProps {
   isOpen: boolean;
@@ -78,7 +79,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         "/owners/property/create/",
         formData
       );
-      if (data.satus===201) {
+      if (data.satus === 201) {
         toast.success("Property added successfully!");
         setFormData({
           name: "",
@@ -97,16 +98,16 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         });
         setIsOpen(false);
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Failed to add property. Please try again.");
     }
   };
-  
-    if (isError) {
-      toast.error("Failed to load property fields. Please refresh the page.");
-    }
- 
+
+  if (isError) {
+    toast.error("Failed to load property fields. Please refresh the page.");
+  }
+
   return (
     <Dialog
       open={isOpen}
@@ -116,11 +117,21 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       <div className="fixed inset-0 overflow-hidden backdrop-blur-sm">
         <div className="absolute inset-0 overflow-hidden">
           <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
-            <DialogPanel transition className="w-screen max-w-lg duration-1000 ease-out">
-              
+            <DialogPanel
+              transition
+              className="w-screen max-w-lg duration-1000 ease-out"
+            >
               <div className="flex h-full flex-col bg-white shadow-xl">
                 <DialogTitle className="text-lg font-medium text-gray-700 px-4 py-4 100 border-b border-gray-200 flex justify-between items-center">
                   Add New Property
+                  <div className="flex justify-between items-center p-4 ">
+                    <button
+                      onClick={() => setIsOpen(false)}
+                      className="text-gray-600"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
                 </DialogTitle>
                 <form
                   onSubmit={handleSubmit}
@@ -335,7 +346,10 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                   </div>
                   <hr />
                   <div className="flex items-center justify-between gap-2">
-                    <button className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition" onClick={()=>setIsOpen(false)}>
+                    <button
+                      className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition"
+                      onClick={() => setIsOpen(false)}
+                    >
                       cancel
                     </button>
                     <button
