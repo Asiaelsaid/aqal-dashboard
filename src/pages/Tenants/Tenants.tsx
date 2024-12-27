@@ -3,6 +3,7 @@ import TenantsTable from "@components/Tenants/TenantsTable";
 import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
 import useCustomQuery from "@hooks/useCustomQuery";
+import { useMemo, useState } from "react";
 import { FiDownloadCloud, FiSearch } from "react-icons/fi";
 
 
@@ -16,6 +17,8 @@ interface IProperty {
   
 }
 const Tenants = () => {
+  
+    const [searchQuery, setSearchQuery] = useState("");
   const { data } = useCustomQuery({
     queryKey: ["properties"],
     url: "/owners/properties",
@@ -43,14 +46,31 @@ const handleDownload = () => {
 
   window.URL.revokeObjectURL(url);
 }
+ const filteredProperties = useMemo(() => {
+    if (!searchQuery) {
+      return propertiesData || []; 
+    }
+    return propertiesData.filter((property: IProperty) => {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      return (
+        property?.name.toLowerCase().includes(lowerCaseQuery) || 
+        property?.location.toLowerCase().includes(lowerCaseQuery) ||
+        String(property?.total_units_count).includes(lowerCaseQuery) || 
+        String(property?.occupied_units_count).includes(lowerCaseQuery) ||
+        String(property?.vacant_units_count).includes(lowerCaseQuery) 
+        
+        
+      );
+    }) || [];
+  }, [data, searchQuery]);
   const searchInput = (
     <div className="flex items-center w-full max-w-md px-4 py-2 text-gray-500 bg-white border rounded-lg shadow-sm space-x-2 lg:w-1/4">
       <FiSearch className="text-gray-400" />
       <input
         type="text"
         placeholder="Search"
-        // value={searchQuery}
-        // onChange={(e) => setSearchQuery(e.target.value)}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className="w-full text-sm bg-transparent outline-none placeholder-gray-400"
       />
     </div>
@@ -71,7 +91,7 @@ const handleDownload = () => {
           Download all
         </button>
       </div>
-      <TenantsTable data={propertiesData}/>
+      <TenantsTable data={filteredProperties?filteredProperties :propertiesData}/>
      
     </div>
   );
