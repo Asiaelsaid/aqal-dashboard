@@ -1,61 +1,171 @@
 import axiosInstance from "@config/axios.config";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { PropertyData } from "@interfaces";
+import { ITenantData } from "@interfaces";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
-
+import PropertySelect from "./PropertySelect";
+import { FiUploadCloud } from "react-icons/fi";
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
 const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
-  const [formData, setFormData] = useState<PropertyData>({
-    name: "",
-    property_type: Number(""),
-    description: "",
-    conditions: [],
-    location: "Nairobi, Kenya",
-    total_units: "",
-    vacant_units: "",
-    sold_units: "",
-    unit_types: "",
-    property_level: "",
-    property_manager: "",
-    amenities: [],
-    common_areas: [],
+  const [isDragging, setIsDragging] = useState(false);
+  const [formData, setFormData] = useState<ITenantData>({
+    tenant: "",
+    property: Number(""),
+    unit_number: "",
+    outstanding_payment: "",
+    tims_report: "",
+    lease_contract: "",
   });
+  // const handleFileChange = async (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   field: "tims_report" | "lease_contract"
+  // ) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       if (reader.result) {
+  //         setFormData((prevState) => ({
+  //           ...prevState,
+  //           [field]: reader.result as string,
+  //         }));
+  //         toast.success(
+  //           `${
+  //             field === "tims_report" ? "TIMS Report" : "Lease Contract"
+  //           } uploaded successfully!`
+  //         );
+  //       }
+  //     };
+  //     reader.onerror = () => {
+  //       toast.error(
+  //         `Failed to upload ${
+  //           field === "tims_report" ? "TIMS Report" : "Lease Contract"
+  //         }.`
+  //       );
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   try {
+  //     e.preventDefault();
+  //     const { data } = await axiosInstance.post(
+  //       "/managers/assign-tenant-to-unit/",
+  //       formData
+  //     );
+  //     if (data.satus === 201) {
+  //       toast.success("Tenant added successfully!");
+  //       setFormData({
+  //         tenant: "",
+  //         property: Number(""),
+  //         unit_number: "",
+  //         outstanding_payment: "",
+  //         tims_report: "",
+  //         lease_contract: "",
+  //       });
+  //       setIsOpen(false);
+  //     }
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   } catch (error) {
+  //     toast.error("Failed to add Tenant. Please try again.");
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     try {
-      e.preventDefault();
+      // Create a FormData object
+      const formDataToSend = new FormData();
+      formDataToSend.append("tenant", formData.tenant);
+      formDataToSend.append("property", formData.property.toString());
+      formDataToSend.append("unit_number", formData.unit_number);
+      formDataToSend.append(
+        "outstanding_payment",
+        formData.outstanding_payment
+      );
+      if (formData.tims_report) {
+        formDataToSend.append("tims_report", formData.tims_report);
+      }
+      if (formData.lease_contract) {
+        formDataToSend.append("lease_contract", formData.lease_contract);
+      }
+
+      // Send the FormData object to the backend
       const { data } = await axiosInstance.post(
         "/managers/assign-tenant-to-unit/",
-        formData
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      if (data.satus === 201) {
-        toast.success("Property added successfully!");
+
+      if (data.status === 201) {
+        toast.success("Tenant added successfully!");
         setFormData({
-          name: "",
-          property_type: Number(""),
-          description: "",
-          conditions: [],
-          location: "Nairobi, Kenya",
-          total_units: "",
-          vacant_units: "",
-          sold_units: "",
-          unit_types: "",
-          property_level: "",
-          property_manager: "",
-          amenities: [],
-          common_areas: [],
+          tenant: "",
+          property: Number(""),
+          unit_number: "",
+          outstanding_payment: "",
+          tims_report: "",
+          lease_contract: "",
         });
         setIsOpen(false);
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast.error("Failed to add property. Please try again.");
+      toast.error("Failed to add Tenant. Please try again.");
     }
+  };
+
+  const handleFileRead = (
+    file: File,
+    field: "tims_report" | "lease_contract"
+  ) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result) {
+        setFormData((prev) => ({
+          ...prev,
+          [field]: file,
+        }));
+        toast.success(
+          `${
+            field === "tims_report" ? "TIMS Report" : "Lease Contract"
+          } uploaded successfully!`
+        );
+      }
+    };
+    reader.onerror = () => {
+      toast.error(
+        `Failed to upload ${
+          field === "tims_report" ? "TIMS Report" : "Lease Contract"
+        }.`
+      );
+    };
+    reader.readAsDataURL(file);
+  };
+  const handleDrop = (
+    e: React.DragEvent<HTMLDivElement>,
+    field: "tims_report" | "lease_contract"
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileRead(e.dataTransfer.files[0], field);
+    }
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
   return (
     <Dialog
@@ -82,23 +192,15 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                     </button>
                   </div>
                 </DialogTitle>
-                <form className="p-6 flex flex-col" onSubmit={handleSubmit}>
-                  <div className=" space-y-6 flex-grow">
-                    <div>
-                      <label
-                        htmlFor="property"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Choose Property
-                      </label>
-                      <select
-                        id="property"
-                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
-                      >
-                        <option>Gera Apartment</option>
-                        <option>Other Property</option>
-                      </select>
-                    </div>
+                <form
+                  className=" flex flex-col space-y-4 p-4  flex-1 overflow-y-auto"
+                  onSubmit={handleSubmit}
+                >
+                  <div className=" space-y-6 flex-grow ">
+                    <PropertySelect
+                      formData={formData}
+                      setFormData={setFormData}
+                    />
                     <div>
                       <label
                         htmlFor="tenantName"
@@ -109,8 +211,10 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                       <input
                         type="text"
                         id="tenantName"
+                        name="tenant"
                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
                         placeholder="Tim Smith"
+                        onChange={handleChange}
                       />
                     </div>
                     <div>
@@ -125,9 +229,11 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                         id="unitNumber"
                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
                         placeholder="01"
+                        name="unit_number"
+                        onChange={handleChange}
                       />
                     </div>
-                    <div>
+                    {/* <div>
                       <label
                         htmlFor="documents"
                         className="block text-sm font-medium text-gray-700"
@@ -138,16 +244,183 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                         </span>
                       </label>
                       <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <label
-                          htmlFor="documents"
-                          className="cursor-pointer text-purple-500 hover:text-purple-700"
-                        >
-                          Click to upload or drag and drop
+                        <label htmlFor="documents" >
+                          <div className="border cursor-pointer text-gray-600 w-11  flex justify-center p-2 shadow rounded-md mx-auto my-2">
+                            <FiUploadCloud 
+                              className="text-lg " />
+                          </div>
+                          <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
+                            {" "}
+                            Click to upload{" "}
+                          </span>
+                          or drag and drop
                         </label>
                         <input type="file" id="documents" className="hidden" />
                         <p className="text-sm text-gray-500 mt-1">
                           SVG, PNG, JPG, or GIF (max. 800x400px)
                         </p>
+                      </div>
+                    </div> */}
+                    {/* <div>
+                      <label
+                        htmlFor="timsReport"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Upload TIMS Report
+                      </label>
+                      <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <label htmlFor="timsReport">
+                          <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
+                            <FiUploadCloud className="text-lg" />
+                          </div>
+                          <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800" >
+                            Click to upload 
+                          </span>
+                           or drag and drop
+                        </label>
+                        <input
+                          type="file"
+                          id="timsReport"
+                          className="hidden"
+                          onChange={(e) => handleFileChange(e, "tims_report")}
+                        />
+                      <p className="text-sm text-gray-500 mt-1">
+                        SVG, PNG, JPG, or GIF (max. 800x400px)
+                      </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="leaseContract"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Upload Lease Contract
+                      </label>
+                      <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <label htmlFor="leaseContract">
+                          <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
+                            <FiUploadCloud className="text-lg" />
+                          </div>
+                          <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
+                            Click to upload
+                          </span>
+                          or drag and drop
+                        </label>
+                        <input
+                          type="file"
+                          id="leaseContract"
+                          className="hidden"
+                          onChange={(e) =>
+                            handleFileChange(e, "lease_contract")
+                          }
+                        />
+                      <p className="text-sm text-gray-500 mt-1">
+                        SVG, PNG, JPG, or GIF (max. 800x400px)
+                      </p>
+                      </div>
+                    </div> */}
+                    <div className="space-y-6">
+                      <div>
+                        <label
+                          htmlFor="timsReport"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Upload TIMS Report
+                        </label>
+                        <div
+                          className={`mt-2 border border-dashed rounded-lg p-4 text-center ${
+                            isDragging
+                              ? "border-purple-500 bg-purple-50"
+                              : "border-gray-300"
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setIsDragging(true);
+                          }}
+                          onDragLeave={(e) => {
+                            e.preventDefault();
+                            setIsDragging(false);
+                          }}
+                          onDrop={(e) => handleDrop(e, "tims_report")}
+                        >
+                          <label htmlFor="timsReport">
+                            <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
+                              <FiUploadCloud className="text-lg" />
+                            </div>
+                            <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
+                          </label>
+                          <input
+                            type="file"
+                            id="timsReport"
+                            className="hidden"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files[0]) {
+                                handleFileRead(
+                                  e.target.files[0],
+                                  "tims_report"
+                                );
+                              }
+                            }}
+                          />
+                          <p className="text-sm text-gray-500 mt-1">
+                            SVG, PNG, JPG, or GIF (max. 800x400px)
+                          </p>
+                        </div>
+                      </div>
+                      {/* Lease Contract Upload */}
+                      <div>
+                        <label
+                          htmlFor="leaseContract"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Upload Lease Contract
+                        </label>
+                        <div
+                          className={`mt-2 border border-dashed rounded-lg p-4 text-center ${
+                            isDragging
+                              ? "border-purple-500 bg-purple-50"
+                              : "border-gray-300"
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setIsDragging(true);
+                          }}
+                          onDragLeave={(e) => {
+                            e.preventDefault();
+                            setIsDragging(false);
+                          }}
+                          onDrop={(e) => handleDrop(e, "lease_contract")}
+                        >
+                          <label htmlFor="leaseContract">
+                            <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
+                              <FiUploadCloud className="text-lg" />
+                            </div>
+                            <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
+                          </label>
+                          <input
+                            type="file"
+                            id="leaseContract"
+                            className="hidden"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files[0]) {
+                                handleFileRead(
+                                  e.target.files[0],
+                                  "lease_contract"
+                                );
+                              }
+                            }}
+                          />
+                          <p className="text-sm text-gray-500 mt-1">
+                            SVG, PNG, JPG, or GIF (max. 800x400px)
+                          </p>
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -158,10 +431,12 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                         Outstanding payment
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="outstandingPayment"
+                        name="outstanding_payment"
                         className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
                         placeholder="e.g. 200.00"
+                        onChange={handleChange}
                       />
                     </div>
                   </div>

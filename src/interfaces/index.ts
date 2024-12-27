@@ -10,6 +10,24 @@ export interface PropertyData {
   unit_types: string;
   property_level: string;
   property_manager: string;
-  amenities:number[];
-  common_areas:number[]
+  amenities: number[];
+  common_areas: number[];
+}
+export interface ITenantData {
+  tenant: string;
+  property: number;
+  unit_number: string;
+  outstanding_payment: string;
+  tims_report: string;
+  lease_contract: string;
+}
+export interface ILoginInput {
+  placeholder: string;
+  type: string;
+  name: string;
+  validation: {
+    required: boolean;
+    minLength?: number;
+    pattern: RegExp;
+  };
 }
