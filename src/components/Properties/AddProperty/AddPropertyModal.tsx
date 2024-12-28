@@ -116,7 +116,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       transition
       className="fixed  top-0 right-0 flex w-screen h-screen items-center justify-center bg-black/30  transition duration-500 ease-out data-[closed]:opacity-0 backdrop-blur-sm"
     >
-      <DialogPanel className=" top-0 right-0 w-full h-full max-w-lg  space-y-4 bg-white shadow-xl  transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto ">
+      <DialogPanel className="w-full sm:w-3/4 lg:top-0 lg:right-0 lg:max-w-lg h-full max-h-screen bg-white shadow-xl transform lg:translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
         <DialogTitle className="text-lg font-medium text-gray-700 p-4 border-b border-gray-200 flex justify-between items-center">
           Add New Property
           <div className="flex justify-between items-center p-4 ">
@@ -314,6 +314,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
             <button
               className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition"
               onClick={() => setIsOpen(false)}
+              type="button"
             >
               cancel
             </button>

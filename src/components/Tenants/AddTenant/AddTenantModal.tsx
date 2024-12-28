@@ -180,206 +180,184 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       transition
       className="fixed  top-0 right-0 flex w-screen h-screen items-center justify-center bg-black/30  transition duration-500 ease-out data-[closed]:opacity-0 backdrop-blur-sm"
     >
-      <div className="fixed inset-0 overflow-hidden ">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
-            <DialogPanel
-              transition
-              className="w-screen max-w-lg duration-1000 ease-out"
-            >
-              <div className="flex h-full flex-col bg-white shadow-xl">
-                <DialogTitle className="text-lg font-medium text-gray-700 px-4 py-4 100 border-b border-gray-200 flex justify-between items-center">
-                  Add new tenant
-                  <div className="flex justify-between items-center p-4 ">
-                    <button
-                      onClick={() => setIsOpen(false)}
-                      className="text-gray-600"
-                    >
-                      <FaTimes />
-                    </button>
-                  </div>
-                </DialogTitle>
-                <form
-                  className=" flex flex-col space-y-4 p-4  flex-1 overflow-y-auto"
-                  onSubmit={handleSubmit}
-                >
-                  <div className=" space-y-6 flex-grow ">
-                    <PropertySelect
-                      formData={formData}
-                      setFormData={setFormData}
-                    />
-                    <div>
-                      <label
-                        htmlFor="tenantName"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Tenant name
-                      </label>
-                      <input
-                        type="text"
-                        id="tenantName"
-                        name="tenant"
-                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:shadow-md focus:border-purple-500 text-gray-700 focus:outline-none"
-                        placeholder="Tim Smith"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="unitNumber"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Unit number
-                      </label>
-                      <input
-                        type="text"
-                        id="unitNumber"
-                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:shadow-md text-gray-700"
-                        placeholder="01"
-                        name="unit_number"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="space-y-6">
-                      <div>
-                        <label
-                          htmlFor="timsReport"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Upload TIMS Report
-                        </label>
-                        <div
-                          className={`mt-2 border border-dashed rounded-lg p-4 text-center ${
-                            isDragging
-                              ? "border-purple-500 bg-purple-50"
-                              : "border-gray-300"
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setIsDragging(true);
-                          }}
-                          onDragLeave={(e) => {
-                            e.preventDefault();
-                            setIsDragging(false);
-                          }}
-                          onDrop={(e) => handleDrop(e, "tims_report")}
-                        >
-                          <label htmlFor="timsReport">
-                            <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
-                              <FiUploadCloud className="text-lg" />
-                            </div>
-                            <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
-                              Click to upload
-                            </span>{" "}
-                            or drag and drop
-                          </label>
-                          <input
-                            type="file"
-                            id="timsReport"
-                            className="hidden"
-                            onChange={(e) => {
-                              if (e.target.files && e.target.files[0]) {
-                                handleFileRead(
-                                  e.target.files[0],
-                                  "tims_report"
-                                );
-                              }
-                            }}
-                          />
-                          <p className="text-sm text-gray-500 mt-1">
-                            SVG, PNG, JPG, or GIF (max. 800x400px)
-                          </p>
-                        </div>
-                      </div>
-                      {/* Lease Contract Upload */}
-                      <div>
-                        <label
-                          htmlFor="leaseContract"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Upload Lease Contract
-                        </label>
-                        <div
-                          className={`mt-2 border border-dashed rounded-lg p-4 text-center ${
-                            isDragging
-                              ? "border-purple-500 bg-purple-50"
-                              : "border-gray-300"
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setIsDragging(true);
-                          }}
-                          onDragLeave={(e) => {
-                            e.preventDefault();
-                            setIsDragging(false);
-                          }}
-                          onDrop={(e) => handleDrop(e, "lease_contract")}
-                        >
-                          <label htmlFor="leaseContract">
-                            <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
-                              <FiUploadCloud className="text-lg" />
-                            </div>
-                            <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
-                              Click to upload
-                            </span>{" "}
-                            or drag and drop
-                          </label>
-                          <input
-                            type="file"
-                            id="leaseContract"
-                            className="hidden"
-                            onChange={(e) => {
-                              if (e.target.files && e.target.files[0]) {
-                                handleFileRead(
-                                  e.target.files[0],
-                                  "lease_contract"
-                                );
-                              }
-                            }}
-                          />
-                          <p className="text-sm text-gray-500 mt-1">
-                            SVG, PNG, JPG, or GIF (max. 800x400px)
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="outstandingPayment"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Outstanding payment
-                      </label>
-                      <input
-                        type="text"
-                        id="outstandingPayment"
-                        name="outstanding_payment"
-                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:shadow-md  text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        placeholder="e.g. 200.00"
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center  justify-between gap-2 mt-8">
-                    <button
-                      className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="w-full bg-purple-600 text-white rounded-lg p-2 hover:bg-purple-700 transition"
-                    >
-                      save
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </DialogPanel>
+      <DialogPanel className="w-full sm:w-3/4 lg:top-0 lg:right-0 lg:max-w-lg h-full max-h-screen bg-white shadow-xl transform lg:translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+        <DialogTitle className="text-lg font-medium text-gray-700 px-4 py-4 100 border-b border-gray-200 flex justify-between items-center">
+          Add new tenant
+          <div className="flex justify-between items-center p-4 ">
+            <button onClick={() => setIsOpen(false)} className="text-gray-600">
+              <FaTimes />
+            </button>
           </div>
-        </div>
-      </div>
+        </DialogTitle>
+        <form
+          className=" flex flex-col space-y-4 p-4  flex-1 overflow-y-auto"
+          onSubmit={handleSubmit}
+        >
+          <div className=" space-y-6 flex-grow ">
+            <PropertySelect formData={formData} setFormData={setFormData} />
+            <div>
+              <label
+                htmlFor="tenantName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Tenant name
+              </label>
+              <input
+                type="text"
+                id="tenantName"
+                name="tenant"
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:shadow-md focus:border-purple-500 text-gray-700 focus:outline-none"
+                placeholder="Tim Smith"
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="unitNumber"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Unit number
+              </label>
+              <input
+                type="text"
+                id="unitNumber"
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:shadow-md text-gray-700"
+                placeholder="01"
+                name="unit_number"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="space-y-6">
+              <div>
+                <label
+                  htmlFor="timsReport"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Upload TIMS Report
+                </label>
+                <div
+                  className={`mt-2 border border-dashed rounded-lg p-4 text-center ${
+                    isDragging
+                      ? "border-purple-500 bg-purple-50"
+                      : "border-gray-300"
+                  }`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragging(true);
+                  }}
+                  onDragLeave={(e) => {
+                    e.preventDefault();
+                    setIsDragging(false);
+                  }}
+                  onDrop={(e) => handleDrop(e, "tims_report")}
+                >
+                  <label htmlFor="timsReport">
+                    <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
+                      <FiUploadCloud className="text-lg" />
+                    </div>
+                    <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
+                      Click to upload
+                    </span>{" "}
+                    or drag and drop
+                  </label>
+                  <input
+                    type="file"
+                    id="timsReport"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleFileRead(e.target.files[0], "tims_report");
+                      }
+                    }}
+                  />
+                  <p className="text-sm text-gray-500 mt-1">
+                    SVG, PNG, JPG, or GIF (max. 800x400px)
+                  </p>
+                </div>
+              </div>
+              {/* Lease Contract Upload */}
+              <div>
+                <label
+                  htmlFor="leaseContract"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Upload Lease Contract
+                </label>
+                <div
+                  className={`mt-2 border border-dashed rounded-lg p-4 text-center ${
+                    isDragging
+                      ? "border-purple-500 bg-purple-50"
+                      : "border-gray-300"
+                  }`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragging(true);
+                  }}
+                  onDragLeave={(e) => {
+                    e.preventDefault();
+                    setIsDragging(false);
+                  }}
+                  onDrop={(e) => handleDrop(e, "lease_contract")}
+                >
+                  <label htmlFor="leaseContract">
+                    <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
+                      <FiUploadCloud className="text-lg" />
+                    </div>
+                    <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
+                      Click to upload
+                    </span>{" "}
+                    or drag and drop
+                  </label>
+                  <input
+                    type="file"
+                    id="leaseContract"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        handleFileRead(e.target.files[0], "lease_contract");
+                      }
+                    }}
+                  />
+                  <p className="text-sm text-gray-500 mt-1">
+                    SVG, PNG, JPG, or GIF (max. 800x400px)
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="outstandingPayment"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Outstanding payment
+              </label>
+              <input
+                type="text"
+                id="outstandingPayment"
+                name="outstanding_payment"
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:shadow-md  text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="e.g. 200.00"
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center  justify-between gap-2 mt-8">
+            <button
+              className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition"
+              onClick={() => setIsOpen(false)}
+              type="button"
+            >
+              cancel
+            </button>
+            <button
+              type="submit"
+              className="w-full bg-purple-600 text-white rounded-lg p-2 hover:bg-purple-700 transition"
+            >
+              save
+            </button>
+          </div>
+        </form>
+      </DialogPanel>
     </Dialog>
   );
 };
