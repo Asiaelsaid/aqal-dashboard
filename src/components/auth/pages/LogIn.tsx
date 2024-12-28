@@ -1,7 +1,7 @@
 import Logo from "@assets/images/Logo.png";
 import Input from "@components/UI/Input";
 import InputErrorMessage from "@components/UI/InputErrorMessage";
-import axiosInstance from "@config/axios.config";
+import useAxios from "@config/axios.config";
 import { LoginFormData } from "@data";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IErrorrEsponse } from "@interfaces";
@@ -20,6 +20,7 @@ interface IFormInput {
   password: string;
 }
 const LogInComponent = () => {
+  const axiosInstance = useAxios();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -43,14 +44,14 @@ const LogInComponent = () => {
         password: data.password,
       });
       if (response.data.status === 200) {
-        const token = response.data.data.access;
+        const accessToken = response.data.data.access;
+        const refreshToken = response.data.data.refresh;
         dispatch(
-          login({
-            token,
-          })
+          login({ accessToken, refreshToken })
         );
         // dispatch(logout());
-        localStorage.setItem("authToken", token);
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
         toast.success("Login successful!", {
           duration: 1000,
           position: "top-center",

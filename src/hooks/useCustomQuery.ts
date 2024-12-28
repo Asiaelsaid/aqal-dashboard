@@ -1,4 +1,4 @@
-import axiosInstance from "@config/axios.config";
+import useAxios from "@config/axios.config";
 import { useQuery } from "@tanstack/react-query";
 
 interface ICustomQuery {
@@ -7,6 +7,7 @@ interface ICustomQuery {
   }
   
   const useCustomQuery = ({ queryKey, url }: ICustomQuery) => {
+    const axiosInstance = useAxios();
     return useQuery({
       queryKey,
       queryFn: async () => {

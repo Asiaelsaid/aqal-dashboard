@@ -3,5 +3,5 @@ import { RootState } from '@store/index';
 
 export const useAuth = () => {
 
-  return useSelector((state: RootState) => state.auth.token);
+  return useSelector((state: RootState) => state.auth.accessToken);
 };

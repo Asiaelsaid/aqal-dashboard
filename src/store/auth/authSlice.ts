@@ -2,20 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   isAuthenticated: boolean;
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
-const isTokenExpired = (token: string | null): boolean => {
-  if (!token) return true;
-  const payload = JSON.parse(atob(token.split(".")[1])); 
-  const exp = payload.exp * 1000; 
-  return Date.now() > exp; 
-};
+
 
 const initialState: AuthState = {
-  isAuthenticated: !!localStorage.getItem("authToken") && !isTokenExpired(localStorage.getItem("authToken")),
-  token: localStorage.getItem("authToken") && !isTokenExpired(localStorage.getItem("authToken"))
-    ? localStorage.getItem("authToken")
-    : null,
+  isAuthenticated: !!localStorage.getItem("accessToken"),
+  accessToken: localStorage.getItem("accessToken"),
+  refreshToken: localStorage.getItem("refreshToken"),
 };
 
 
@@ -23,18 +18,27 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login(state, action: PayloadAction<{ token: string }>) {
+    login(state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) {
       state.isAuthenticated = true;
-      state.token = action.payload.token;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      localStorage.setItem("accessToken", action.payload.accessToken);
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
     },
     logout(state) {
       state.isAuthenticated = false;
-      state.token = null;
-      localStorage.removeItem("authToken");
+      state.accessToken=null;
+      state.refreshToken = null;
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    },
+    updateToken(state, action: PayloadAction<{ accessToken: string }>) {
+      state.accessToken = action.payload.accessToken;
+      localStorage.setItem("accessToken", action.payload.accessToken);
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout ,updateToken} = authSlice.actions;
 
 export default authSlice.reducer;

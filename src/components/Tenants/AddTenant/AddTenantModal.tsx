@@ -1,4 +1,4 @@
-import axiosInstance from "@config/axios.config";
+
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { ITenantData } from "@interfaces";
 import { useState } from "react";
@@ -6,12 +6,14 @@ import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 import PropertySelect from "./PropertySelect";
 import { FiUploadCloud } from "react-icons/fi";
+import useAxios from "@config/axios.config";
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
 const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
+  const axiosInstance = useAxios();
   const [isDragging, setIsDragging] = useState(false);
   const [formData, setFormData] = useState<ITenantData>({
     tenant: "",

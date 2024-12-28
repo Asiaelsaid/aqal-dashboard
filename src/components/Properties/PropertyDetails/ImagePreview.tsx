@@ -1,9 +1,9 @@
 import image from "@assets/images/Image.png";
-import axiosInstance from "@config/axios.config";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiUploadCloud } from "react-icons/fi";
 import Lightbox from "./Lightbox";
+import useAxios from "@config/axios.config";
 interface IProps {
   images: { image: string }[];
   name: string;
@@ -17,6 +17,7 @@ const ImagePreview: React.FC<IProps> = ({
   propertyId,
   onRefresh,
 }) => {
+  const axiosInstance = useAxios();
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);

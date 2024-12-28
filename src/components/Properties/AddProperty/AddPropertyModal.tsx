@@ -4,15 +4,16 @@ import PropertyTypeSelect from "./PropertyTypeSelect";
 import ConditionSelect from "./ConditionSelect";
 import { PropertyData } from "@interfaces";
 import useCustomQuery from "@hooks/useCustomQuery";
-import axiosInstance from "@config/axios.config";
 import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
+import useAxios from "@config/axios.config";
 
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
+  const axiosInstance = useAxios();
   const { data, isError } = useCustomQuery({
     queryKey: ["propertyFields"],
     url: "/owners/property/fields/",
