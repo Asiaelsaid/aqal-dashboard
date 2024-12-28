@@ -24,10 +24,15 @@ export interface ITenantData {
 export interface ILoginInput {
   placeholder: string;
   type: string;
-  name: string;
+  name: "email" | "password";
   validation: {
     required: boolean;
     minLength?: number;
     pattern: RegExp;
   };
+}
+export interface IErrorrEsponse {
+  status: number; 
+  message: string;
+  errors?: Record<string, string[]>; 
 }

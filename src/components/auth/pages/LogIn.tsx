@@ -1,18 +1,17 @@
 import Logo from "@assets/images/Logo.png";
-import googleIcon from "@assets/images/googleIcon.png";
 import Input from "@components/UI/Input";
 import InputErrorMessage from "@components/UI/InputErrorMessage";
 import axiosInstance from "@config/axios.config";
 import { LoginFormData } from "@data";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IErrorrEsponse } from "@interfaces";
-import { useGoogleLogin } from "@react-oauth/google";
 import { login } from "@store/auth/authSlice";
 import { loginSchema } from "@validation";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +29,11 @@ const LogInComponent = () => {
     formState: { errors },
     reset,
   } = useForm<IFormInput>({ resolver: yupResolver(loginSchema) });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
   //handlers
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setIsLoading(true);
@@ -57,7 +60,7 @@ const LogInComponent = () => {
     } catch (error) {
       const errorObj = error as AxiosError<IErrorrEsponse>;
       console.log(errorObj);
-      
+
       toast.error(`${errorObj.response?.data?.message}`, {
         duration: 3000,
         position: "top-center",
@@ -67,53 +70,35 @@ const LogInComponent = () => {
       setIsLoading(false);
     }
   };
-  // Google Login Handler
-  const handleGoogleLoginSuccess = async (tokenResponse: any) => {
-    try {
-      const { access_token } = tokenResponse;
-       await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
-      dispatch(login({ token: access_token }));
-      localStorage.setItem("authToken", access_token);
-      toast.success("Google login successful!", {
-        duration: 1000,
-        position: "top-center",
-      });
-      navigate("/", { replace: true });
-    } catch (e) {
-      toast.error("Failed to fetch user data. Please try again.", {
-        duration: 3000,
-        position: "top-center",
-      });
-    } 
-  };
 
-const googleLogin = useGoogleLogin({
-  onSuccess: handleGoogleLoginSuccess,
-  onError: () =>
-    toast.error("Google login failed. Please try again.", {
-      duration: 3000,
-      position: "top-center",
-    }),
-});
   //reders
   const renderLoginForm = LoginFormData.map(
     ({ name, placeholder, type, validation }, idx) => {
       return (
         <div key={idx} className="mb-4 ">
           <label className="block text-sm font-medium mb-2">{name}*</label>
-          <Input
-            type={type}
-            placeholder={placeholder}
-            {...register(name, validation)}
-          />
+          <div className="relative">
+            <Input
+             type={name === "password" && isPasswordVisible ? "text" : type}
+        
+              placeholder={placeholder}
+              {...register(name, validation)}
+            />
+            {name === "password" && (
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                onClick={togglePasswordVisibility}
+              >
+                {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            )}
+          </div>
           {errors[name] && <InputErrorMessage msg={errors[name]?.message} />}
         </div>
       );
     }
   );
-    
 
   return (
     <div className="lg:w-1/2 w-full bg-white flex flex-col justify-center px-8 sm:px-12 py-10">
@@ -161,26 +146,9 @@ const googleLogin = useGoogleLogin({
             "Login"
           )}
         </button>
-        <div className="text-center mt-4">
-          <button
-            type="button"
-            onClick={() => googleLogin()}
-            className="w-full py-3 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-50 transition focus:ring focus:ring-gray-200 focus:outline-none"
-          >
-            <img src={googleIcon} alt="Google" className="h-5 w-5 mr-2" />
-            Continue with Google
-          </button>
-        </div>
-        {/* <p className="text-sm text-gray-600 mt-4 text-center">
-          Don’t have an account?{" "}
-          <NavLink to="/sign-up" className="text-purple-600 hover:underline">
-            Sign up
-          </NavLink>
-        </p> */}
       </form>
     </div>
   );
 };
 
 export default LogInComponent;
-
