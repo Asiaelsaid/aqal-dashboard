@@ -14,7 +14,7 @@ export interface PropertyData {
   common_areas: number[];
 }
 export interface ITenantData {
-  tenant: string;
+  tenant: number;
   property: number;
   unit_number: string;
   outstanding_payment: string;

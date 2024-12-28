@@ -7,6 +7,7 @@ import PropertySelect from "./PropertySelect";
 import { FiUploadCloud } from "react-icons/fi";
 import useAxios from "@config/axios.config";
 import { AxiosError } from "axios";
+import TenantSelect from "./TenantSelect";
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -16,7 +17,7 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
   const axiosInstance = useAxios();
   const [isDragging, setIsDragging] = useState(false);
   const [formData, setFormData] = useState<ITenantData>({
-    tenant: "",
+    tenant: Number(""),
     property: Number(""),
     unit_number: "",
     outstanding_payment: "",
@@ -84,7 +85,7 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
     try {
       // Create a FormData object
       const formDataToSend = new FormData();
-      formDataToSend.append("tenant", formData.tenant);
+      formDataToSend.append("tenant", formData.tenant.toString());
       formDataToSend.append("property", formData.property.toString());
       formDataToSend.append("unit_number", formData.unit_number);
       formDataToSend.append(
@@ -112,7 +113,7 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       if (data.status === 201) {
         toast.success("Tenant added successfully!");
         setFormData({
-          tenant: "",
+          tenant: Number(""),
           property: Number(""),
           unit_number: "",
           outstanding_payment: "",
@@ -195,22 +196,7 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         >
           <div className=" space-y-6 flex-grow ">
             <PropertySelect formData={formData} setFormData={setFormData} />
-            <div>
-              <label
-                htmlFor="tenantName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Tenant name
-              </label>
-              <input
-                type="text"
-                id="tenantName"
-                name="tenant"
-                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:shadow-md focus:border-purple-500 text-gray-700 focus:outline-none"
-                placeholder="Tim Smith"
-                onChange={handleChange}
-              />
-            </div>
+            <TenantSelect formData={formData} setFormData={setFormData} />
             <div>
               <label
                 htmlFor="unitNumber"

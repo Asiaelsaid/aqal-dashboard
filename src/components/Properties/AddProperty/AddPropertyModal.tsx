@@ -254,7 +254,6 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               <PropertyManagerSelect
                 formData={formData}
                 setFormData={setFormData}
-                propertyManagers={fieldsData?.property_managers || []}
               />
             )}
           </div>

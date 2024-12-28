@@ -4,6 +4,7 @@ import {
     ListboxOption,
     ListboxOptions,
   } from "@headlessui/react";
+import useCustomQuery from "@hooks/useCustomQuery";
   import { PropertyData } from "@interfaces";
   import { Fragment } from "react";
   import { HiChevronDown } from "react-icons/hi";
@@ -11,18 +12,21 @@ import {
   interface PropertyManagerProps {
     formData: PropertyData;
     setFormData: React.Dispatch<React.SetStateAction<PropertyData>>;
-    propertyManagers: {
-      id: number;
-      first_name: string;
-      last_name: string;
-    }[];
+   
   }
-  
+  interface IpropertyManagers {
+    id: number;
+    first_name: string;
+    last_name: string;
+  }
   const PropertyManagerSelect: React.FC<PropertyManagerProps> = ({
     formData,
     setFormData,
-    propertyManagers,
+    
   }) => {
+    const {data}=useCustomQuery({  queryKey: ["propertyMangers"],
+      url: "/users/managers/",})
+      const propertyManagers :IpropertyManagers[] =data.data
     const selectedManager = propertyManagers.find(
       (manager) => manager.id === formData.property_manager
     );
