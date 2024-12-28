@@ -183,7 +183,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
               placeholder="Nairobi, Kenya"
             />
           </div>
@@ -197,7 +197,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               name="total_units"
               value={formData.total_units}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -209,7 +209,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               name="vacant_units"
               value={formData.vacant_units}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -221,7 +221,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               name="sold_units"
               value={formData.sold_units}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -234,7 +234,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               name="unit_types"
               value={formData.unit_types}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
@@ -246,36 +246,10 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               name="property_level"
               value={formData.property_level}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
           <div>
-            {/* <label className="block text-gray-700 font-medium">
-              Property Manager
-            </label>
-            <select
-              name="property_manager"
-              value={formData.property_manager}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none"
-            >
-              <option value="">Select a Manager</option>
-              {fieldsData?.property_managers?.map(
-                (manager: {
-                  id: number;
-                  first_name: string;
-                  last_name: string;
-                }) => (
-                  <option
-                    key={manager.id}
-                    value={manager.id}
-                    // value={`${manager.first_name} ${manager.last_name}`}
-                  >
-                    {manager.first_name} {manager.last_name}
-                  </option>
-                )
-              )}
-            </select> */}
             {fieldsData?.property_managers && (
               <PropertyManagerSelect
                 formData={formData}

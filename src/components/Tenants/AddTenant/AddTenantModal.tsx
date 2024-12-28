@@ -1,4 +1,3 @@
-
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { IErrorrEsponse, ITenantData } from "@interfaces";
 import { useState } from "react";
@@ -178,9 +177,10 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
     <Dialog
       open={isOpen}
       onClose={() => setIsOpen(false)}
-      className="relative z-50"
+      transition
+      className="fixed  top-0 right-0 flex w-screen h-screen items-center justify-center bg-black/30  transition duration-500 ease-out data-[closed]:opacity-0 backdrop-blur-sm"
     >
-      <div className="fixed inset-0 overflow-hidden backdrop-blur-sm">
+      <div className="fixed inset-0 overflow-hidden ">
         <div className="absolute inset-0 overflow-hidden">
           <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
             <DialogPanel
@@ -219,7 +219,7 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                         type="text"
                         id="tenantName"
                         name="tenant"
-                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
+                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:shadow-md focus:border-purple-500 text-gray-700 focus:outline-none"
                         placeholder="Tim Smith"
                         onChange={handleChange}
                       />
@@ -234,99 +234,12 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                       <input
                         type="text"
                         id="unitNumber"
-                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
+                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:shadow-md text-gray-700"
                         placeholder="01"
                         name="unit_number"
                         onChange={handleChange}
                       />
                     </div>
-                    {/* <div>
-                      <label
-                        htmlFor="documents"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Upload documents
-                        <span className="block text-sm text-gray-500">
-                          Upload both the TIMS report and the lease contract
-                        </span>
-                      </label>
-                      <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <label htmlFor="documents" >
-                          <div className="border cursor-pointer text-gray-600 w-11  flex justify-center p-2 shadow rounded-md mx-auto my-2">
-                            <FiUploadCloud 
-                              className="text-lg " />
-                          </div>
-                          <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
-                            {" "}
-                            Click to upload{" "}
-                          </span>
-                          or drag and drop
-                        </label>
-                        <input type="file" id="documents" className="hidden" />
-                        <p className="text-sm text-gray-500 mt-1">
-                          SVG, PNG, JPG, or GIF (max. 800x400px)
-                        </p>
-                      </div>
-                    </div> */}
-                    {/* <div>
-                      <label
-                        htmlFor="timsReport"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Upload TIMS Report
-                      </label>
-                      <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <label htmlFor="timsReport">
-                          <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
-                            <FiUploadCloud className="text-lg" />
-                          </div>
-                          <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800" >
-                            Click to upload 
-                          </span>
-                           or drag and drop
-                        </label>
-                        <input
-                          type="file"
-                          id="timsReport"
-                          className="hidden"
-                          onChange={(e) => handleFileChange(e, "tims_report")}
-                        />
-                      <p className="text-sm text-gray-500 mt-1">
-                        SVG, PNG, JPG, or GIF (max. 800x400px)
-                      </p>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="leaseContract"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Upload Lease Contract
-                      </label>
-                      <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 text-center">
-                        <label htmlFor="leaseContract">
-                          <div className="border cursor-pointer text-gray-600 w-11 flex justify-center p-2 shadow rounded-md mx-auto my-2">
-                            <FiUploadCloud className="text-lg" />
-                          </div>
-                          <span className="cursor-pointer font-medium text-purple-700 hover:text-purple-800">
-                            Click to upload
-                          </span>
-                          or drag and drop
-                        </label>
-                        <input
-                          type="file"
-                          id="leaseContract"
-                          className="hidden"
-                          onChange={(e) =>
-                            handleFileChange(e, "lease_contract")
-                          }
-                        />
-                      <p className="text-sm text-gray-500 mt-1">
-                        SVG, PNG, JPG, or GIF (max. 800x400px)
-                      </p>
-                      </div>
-                    </div> */}
                     <div className="space-y-6">
                       <div>
                         <label
@@ -441,7 +354,7 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                         type="text"
                         id="outstandingPayment"
                         name="outstanding_payment"
-                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:ring-purple-500 focus:border-purple-500 text-gray-700"
+                        className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:shadow-md  text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         placeholder="e.g. 200.00"
                         onChange={handleChange}
                       />
