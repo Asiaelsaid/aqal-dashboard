@@ -1,12 +1,13 @@
 
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { ITenantData } from "@interfaces";
+import { IErrorrEsponse, ITenantData } from "@interfaces";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaTimes } from "react-icons/fa";
 import PropertySelect from "./PropertySelect";
 import { FiUploadCloud } from "react-icons/fi";
 import useAxios from "@config/axios.config";
+import { AxiosError } from "axios";
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -122,7 +123,11 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         setIsOpen(false);
       }
     } catch (error) {
-      toast.error("Failed to add Tenant. Please try again.");
+      const errorObj = error as AxiosError<IErrorrEsponse>;
+      toast.error(`${errorObj.response?.data?.message}`, {
+        duration: 3000,
+        position: "top-center",
+      });
     }
   };
 

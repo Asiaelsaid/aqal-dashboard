@@ -46,9 +46,7 @@ const LogInComponent = () => {
       if (response.data.status === 200) {
         const accessToken = response.data.data.access;
         const refreshToken = response.data.data.refresh;
-        dispatch(
-          login({ accessToken, refreshToken })
-        );
+        dispatch(login({ accessToken, refreshToken }));
         // dispatch(logout());
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
@@ -60,8 +58,6 @@ const LogInComponent = () => {
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorrEsponse>;
-      console.log(errorObj);
-
       toast.error(`${errorObj.response?.data?.message}`, {
         duration: 3000,
         position: "top-center",
@@ -80,8 +76,7 @@ const LogInComponent = () => {
           <label className="block text-sm font-medium mb-2">{name}*</label>
           <div className="relative">
             <Input
-             type={name === "password" && isPasswordVisible ? "text" : type}
-        
+              type={name === "password" && isPasswordVisible ? "text" : type}
               placeholder={placeholder}
               {...register(name, validation)}
             />

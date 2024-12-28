@@ -1,4 +1,9 @@
-import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 import { PropertyData } from "@interfaces";
 import { Fragment } from "react";
 import { HiChevronDown } from "react-icons/hi";
@@ -15,24 +20,17 @@ interface ConditionSelectProps {
 const ConditionSelect: React.FC<ConditionSelectProps> = ({
   formData,
   setFormData,
-  condition
+  condition,
 }) => {
-  const selectedConditions = condition.filter(condition =>
-    formData?.conditions?.includes(condition.id)
+  const selectedCondition = condition.find(
+    (cond) => cond.id === formData?.conditions
   );
 
   const toggleCondition = (id: number) => {
-    if (formData.conditions?.includes(id)) {
-      setFormData({
-        ...formData,
-        conditions: formData.conditions?.filter((conditionId) => conditionId !== id),
-      });
-    } else {
-      setFormData({
-        ...formData,
-        conditions: [...formData.conditions, id],
-      });
-    }
+    setFormData({
+      ...formData,
+      conditions: formData.conditions === id ? Number("") : id,
+    });
   };
 
   return (
@@ -43,8 +41,8 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({
           <div className="relative">
             <ListboxButton className="w-full border border-gray-300 rounded-lg p-2 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-purple-500">
               <span>
-                {selectedConditions.length
-                  ? selectedConditions.map((condition) => condition.name).join(", ")
+                {selectedCondition
+                  ? selectedCondition.name
                   : "Select Property Condition"}
               </span>
               <HiChevronDown
@@ -54,6 +52,7 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({
               />
             </ListboxButton>
             <ListboxOptions
+              static
               className={`absolute z-10 mt-1 w-full bg-white shadow-lg rounded-lg max-h-60 overflow-auto transform transition-all duration-500 ${
                 open
                   ? "opacity-100 scale-y-100 translate-y-0"
@@ -61,7 +60,11 @@ const ConditionSelect: React.FC<ConditionSelectProps> = ({
               } origin-top`}
             >
               {condition?.map((condition) => (
-                <ListboxOption key={condition.id} value={condition.id} as={Fragment}>
+                <ListboxOption
+                  key={condition.id}
+                  value={condition.id}
+                  as={Fragment}
+                >
                   {({ selected, active }) => (
                     <li
                       onClick={() => toggleCondition(condition.id)}

@@ -30,33 +30,41 @@ const Properties = () => {
     queryKey: ["properties"],
     url: "/owners/properties",
   });
-const propertiesData=data?.data
+  const propertiesData = data?.data;
   const filteredProperties = useMemo(() => {
     if (!searchQuery) {
-      return propertiesData || []; 
+      return propertiesData || [];
     }
-    return propertiesData.filter((property: IProperty) => {
-      const lowerCaseQuery = searchQuery.toLowerCase();
-      return (
-        property?.name.toLowerCase().includes(lowerCaseQuery) || 
-        property?.location.toLowerCase().includes(lowerCaseQuery) ||
-        property?.property_type.name.toLowerCase().includes(lowerCaseQuery) ||
-        String(property.total_units).includes(lowerCaseQuery) || 
-        String(property.vacant_units).includes(lowerCaseQuery) || 
-        String(property.sold_units).includes(lowerCaseQuery)
-      );
-    }) || [];
+    return (
+      propertiesData.filter((property: IProperty) => {
+        const lowerCaseQuery = searchQuery.toLowerCase();
+        return (
+          property?.name.toLowerCase().includes(lowerCaseQuery) ||
+          property?.location.toLowerCase().includes(lowerCaseQuery) ||
+          property?.property_type.name.toLowerCase().includes(lowerCaseQuery) ||
+          String(property.total_units).includes(lowerCaseQuery) ||
+          String(property.vacant_units).includes(lowerCaseQuery) ||
+          String(property.sold_units).includes(lowerCaseQuery)
+        );
+      }) || []
+    );
   }, [data, searchQuery]);
 
   const offset = currentPage * ITEMS_PER_PAGE;
 
-  const currentProperties = useMemo(() => filteredProperties.slice(offset, offset + ITEMS_PER_PAGE), [filteredProperties, currentPage]);
+  const currentProperties = useMemo(
+    () => filteredProperties.slice(offset, offset + ITEMS_PER_PAGE),
+    [filteredProperties, currentPage]
+  );
 
   // Handle page change
-  const handlePageChange = ({ selected }: { selected: number }) => setCurrentPage(selected);
+  const handlePageChange = ({ selected }: { selected: number }) =>
+    setCurrentPage(selected);
 
   // Calculate total pages based on filtered properties
-  const totalPages = filteredProperties.length ? Math.ceil(filteredProperties.length / ITEMS_PER_PAGE) : 1;
+  const totalPages = filteredProperties.length
+    ? Math.ceil(filteredProperties.length / ITEMS_PER_PAGE)
+    : 1;
 
   // Search input component
   const searchInput = (
@@ -76,7 +84,6 @@ const propertiesData=data?.data
     <div className="flex-1 p-5 bg-gray-50">
       <PagesHeading heading="Properties" child={searchInput} />
       <PropertiesFilter />
-
       {/* Property Cards */}
       <div className="p-4 space-y-4">
         {currentProperties?.map((property: IProperty) => (
@@ -94,10 +101,7 @@ const propertiesData=data?.data
       </div>
       <hr />
       {/* Pagination */}
-      <Pagination
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      <Pagination totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
   );
 };
