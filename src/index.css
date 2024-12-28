@@ -4,3 +4,31 @@
 body {
     @apply font-inter;
   }
+
+.page-enter {
+  opacity: 0;
+  visibility: hidden; 
+}
+.page-enter-active {
+  opacity: 1;
+  visibility: visible; 
+  transition: opacity 500ms ease-in-out;
+}
+.page-exit {
+  opacity: 1;
+}
+.page-exit-active {
+  opacity: 0;
+  visibility: hidden; 
+  transition: opacity 500ms ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
