@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface PropertyData {
   name: string;
   property_type: number;
@@ -35,4 +37,11 @@ export interface IErrorrEsponse {
   status: number; 
   message: string;
   errors?: Record<string, string[]>; 
+}
+export interface IContactCardProps {
+  icon: ReactNode;
+  title: string;
+  description: string;
+  linkText: string;
+  linkHref?: string;
 }

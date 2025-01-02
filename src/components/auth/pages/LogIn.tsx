@@ -2,7 +2,7 @@ import Logo from "@assets/images/Logo.png";
 import Input from "@components/UI/Input";
 import InputErrorMessage from "@components/UI/InputErrorMessage";
 import useAxios from "@config/axios.config";
-import { LoginFormData } from "@data";
+import { LoginFormData } from "@data/index";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IErrorrEsponse } from "@interfaces";
 import { login } from "@store/auth/authSlice";
