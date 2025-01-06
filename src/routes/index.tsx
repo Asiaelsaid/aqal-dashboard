@@ -8,6 +8,7 @@ import PasswordResetPage from "@pages/PasswordReset";
 import Properties from "@pages/Properties/Properties";
 import PropertyDetails from "@pages/Properties/PropertyDetails";
 import Reporting from "@pages/Reporting";
+import Requests from "@pages/Requests";
 import Settings from "@pages/Settings";
 import Support from "@pages/Support";
 import TenantDetails from "@pages/Tenants/TenantDetails";
@@ -54,7 +55,7 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="tenant-details/:id"
           element={
             <ProtectedRoute>
@@ -75,6 +76,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute>
               <Reporting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="requests"
+          element={
+            <ProtectedRoute>
+              <Requests />
             </ProtectedRoute>
           }
         />

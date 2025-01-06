@@ -4,6 +4,7 @@ import { BsClipboard2Data, BsDatabaseCheck } from "react-icons/bs";
 import { BiSolidSelectMultiple } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { CgSupport } from "react-icons/cg";
+import { BsArrowUpRightSquare } from "react-icons/bs";
 
 interface IProps {
     isOpen: boolean;
@@ -52,6 +53,7 @@ const DesktopSidebar: React.FC<IProps> = ({isOpen,handleToggle ,activeItem,setAc
           path: "financials",
         },
         { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
+        { label: "Requests", icon: <BsArrowUpRightSquare  />, path: "requests" },
       ].map((item) => (
         <Link
           to={item.path}

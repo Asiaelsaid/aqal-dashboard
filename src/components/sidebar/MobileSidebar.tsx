@@ -1,6 +1,10 @@
 import { FiLayers, FiPieChart, FiSettings } from "react-icons/fi";
 import Logo from "@assets/images/Logo.png";
-import { BsClipboard2Data, BsDatabaseCheck } from "react-icons/bs";
+import {
+  BsArrowUpRightSquare,
+  BsClipboard2Data,
+  BsDatabaseCheck,
+} from "react-icons/bs";
 import { BiSolidSelectMultiple } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { CgSupport } from "react-icons/cg";
@@ -24,9 +28,13 @@ const MobileSidebar: React.FC<IProps> = ({
         isOpen ? "bg-mainColor w-64" : "bg-transparent w-20"
       } transition-all duration-300 ease-in-out z-50 flex flex-col`}
     >
-
       <div className="flex justify-between items-center p-4">
-        <button className= {`${isOpen ?"text-white text-2xl" :"text-purple-500 text-2xl" }`} onClick={handleToggle}>
+        <button
+          className={`${
+            isOpen ? "text-white text-2xl" : "text-purple-500 text-2xl"
+          }`}
+          onClick={handleToggle}
+        >
           ☰
         </button>
       </div>
@@ -40,7 +48,8 @@ const MobileSidebar: React.FC<IProps> = ({
 
           {/* Main Navigation Links */}
           <div className="flex flex-col space-y-4 mt-6">
-            {[{ label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+            {[
+              { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
               { label: "Properties", icon: <FiLayers />, path: "properties" },
               {
                 label: "Tenants",
@@ -53,11 +62,17 @@ const MobileSidebar: React.FC<IProps> = ({
                 path: "financials",
               },
               { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
+              {
+                label: "Requests",
+                icon: <BsArrowUpRightSquare />,
+                path: "requests",
+              },
             ].map((item) => (
               <Link
                 to={item.path}
                 key={item.label}
-                onClick={() => {setActiveItem(item.label)
+                onClick={() => {
+                  setActiveItem(item.label);
                   handleToggle();
                 }}
                 className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-hoverColor ${
@@ -72,7 +87,8 @@ const MobileSidebar: React.FC<IProps> = ({
 
           {/* Additional Links (Support, Settings) */}
           <div className="flex flex-col space-y-4 mt-auto">
-            {[{ label: "Support", icon: <CgSupport />, path: "support" },
+            {[
+              { label: "Support", icon: <CgSupport />, path: "support" },
               { label: "Settings", icon: <FiSettings />, path: "settings" },
             ].map((item) => (
               <Link
