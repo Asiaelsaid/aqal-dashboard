@@ -26,8 +26,8 @@ import useCustomQuery from "@hooks/useCustomQuery";
   }) => {
     const {data}=useCustomQuery({  queryKey: ["propertyMangers"],
       url: "/users/managers/",})
-      const propertyManagers :IpropertyManagers[] =data.data
-    const selectedManager = propertyManagers.find(
+      const propertyManagers :IpropertyManagers[] =data?.data
+    const selectedManager = propertyManagers?.find(
       (manager) => manager.id === formData.property_manager
     );
   

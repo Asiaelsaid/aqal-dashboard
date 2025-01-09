@@ -31,7 +31,7 @@ const UnitAccordion = ({ unit }: { unit: Unit }) => {
   return (
     <div className="mb-4">
       <div
-        className="p-5 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-lg shadow-md transition-colors"
+        className="p-5 bg-purple-300 hover:bg-purple-400 cursor-pointer rounded-lg shadow-md transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex justify-between items-center">
