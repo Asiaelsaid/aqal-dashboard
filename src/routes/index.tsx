@@ -82,7 +82,7 @@ const router = createBrowserRouter(
         <Route
           path="requests"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRole="managers">
               <Requests />
             </ProtectedRoute>
           }

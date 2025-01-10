@@ -5,6 +5,7 @@ import { BsDot } from "react-icons/bs";
 import { FaArrowDown, FaEllipsisVertical } from "react-icons/fa6";
 
 interface Request {
+  id: number;
   req_code: string;
   category: string;
   description: string;
@@ -18,6 +19,7 @@ interface RequestsTableProps {
 const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
   const axiosInstance = useAxios();
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+  const [propertyRequests, setPropertyRequests] = useState<Request[]>(requests);
 
   const statusOptions = [
     { value: "pending", label: "Pending" },
@@ -27,32 +29,44 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
   ];
   const getStatusStyles = (status: string): string => {
     switch (status) {
-      case "Solved":
+      case "completed":
         return "bg-green-100 text-green-700";
-      case "In progress":
+      case "in_progress":
         return "bg-orange-100 text-orange-700";
-      case "Received":
+      case "pending":
         return "bg-gray-100 text-gray-700";
       case "cancelled":
         return "bg-red-100 text-red-700";
       default:
-        return "bg-gray-100 text-gray-500"; // Default case
+        return "bg-gray-100 text-gray-500";
     }
   };
   const capitalizeFirstLetter = (text: string): string => {
-    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    return text
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
   };
-  const updateRequestStatus = async (status: string) => {
+  const refechRequst = async () => {
     try {
-      const { data } = await axiosInstance.post(
-        `/tenants/requests/1/update-status/`,
+      const { data } = await axiosInstance.get("/managers/properties-requests/");
+      setPropertyRequests(data);
+    } catch (error) {
+      toast.error("Failed to fetch requests.");
+      console.error("Error fetching requests:", error);
+    }
+  };
+  const updateRequestStatus = async (status: string, id: number) => {
+    try {
+      const { data } = await axiosInstance.patch(
+        `/tenants/requests/${id}/update-status/`,
         {
           status,
         }
       );
       if (data.status === 200) {
         toast.success("Request status updated successfully!");
-        console.log("Status updated successfully:");
+        await refechRequst();
       }
     } catch (error) {
       toast.error("Failed to update request status.");
@@ -77,7 +91,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
             </tr>
           </thead>
           <tbody>
-            {requests.map((request) => (
+            {propertyRequests.map((request) => (
               <tr key={request.req_code}>
                 <td className="px-6 py-4 border-b whitespace-nowrap text-left">
                   {request.preferred_service_date}
@@ -121,9 +135,10 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
                       {statusOptions.map(({ value, label }) => (
                         <button
                           key={value}
-                          onClick={() =>
-                            updateRequestStatus( value)
-                          }
+                          onClick={() => {
+                            updateRequestStatus(value, request.id);
+                            setDropdownOpen(null);
+                          }}
                           className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
                         >
                           {label}

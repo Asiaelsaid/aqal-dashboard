@@ -46,10 +46,12 @@ const LogInComponent = () => {
       if (response.data.status === 200) {
         const accessToken = response.data.data.access;
         const refreshToken = response.data.data.refresh;
+        const role = response.data.data.role;
         dispatch(login({ accessToken, refreshToken }));
         // dispatch(logout());
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("role", role);
         toast.success("Login successful!", {
           duration: 1000,
           position: "top-center",

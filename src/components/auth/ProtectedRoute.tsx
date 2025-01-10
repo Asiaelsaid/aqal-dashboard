@@ -3,17 +3,19 @@ import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
 interface IProps {
-    children: ReactNode;
+  children: ReactNode;
+  allowedRole?: string;
 }
 
-const ProtectedRoute: React.FC<IProps> = ({children}) => {
-    const isAuthenticated = useAuth();
+const ProtectedRoute: React.FC<IProps> = ({ children, allowedRole }) => {
+  const isAuthenticated = useAuth();
+  const role = localStorage.getItem("role");
 
-    if (!isAuthenticated) {
-      return <Navigate to="/login" replace />;
-    }
-  
-    return <>{children}</>;
+  if (!isAuthenticated || (allowedRole && role !== allowedRole)) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

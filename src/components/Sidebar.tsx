@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DesktopSidebar from "./sidebar/DesktopSidebar";
 import MobileSidebar from "./sidebar/MobileSidebar";
 
@@ -13,6 +13,11 @@ export default function Sidebar({ onSidebarToggle }: ISidebarProps) {
     setIsOpen(!isOpen);
     onSidebarToggle(!isOpen);
   };
+  const [role, setRole] = useState<string>("");
+  useEffect(() => {
+    const storedRole:string = localStorage.getItem("role") as string
+    setRole(storedRole);
+  }, []);
   return (
     <>
       <DesktopSidebar
@@ -20,12 +25,14 @@ export default function Sidebar({ onSidebarToggle }: ISidebarProps) {
         handleToggle={handleToggle}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
+        role={role}
       />
       <MobileSidebar
         isOpen={isOpen}
         handleToggle={handleToggle}
         activeItem={activeItem}
         setActiveItem={setActiveItem}
+        role={role}
       />
     </>
   );

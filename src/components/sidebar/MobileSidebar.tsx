@@ -14,6 +14,7 @@ interface IProps {
   handleToggle: () => void;
   activeItem: string;
   setActiveItem: (item: string) => void;
+  role: string;
 }
 
 const MobileSidebar: React.FC<IProps> = ({
@@ -21,7 +22,23 @@ const MobileSidebar: React.FC<IProps> = ({
   handleToggle,
   activeItem,
   setActiveItem,
+  role,
 }) => {
+  const sidebarItems = [
+    { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+    { label: "Properties", icon: <FiLayers />, path: "properties" },
+    { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
+    { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
+    { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
+  ];
+
+  if (role === "managers") {
+    sidebarItems.push({
+      label: "Requests",
+      icon: <BsArrowUpRightSquare />,
+      path: "requests",
+    });
+  }
   return (
     <div
       className={`lg:hidden fixed top-0 left-0 h-full text-textColor ${
@@ -48,26 +65,7 @@ const MobileSidebar: React.FC<IProps> = ({
 
           {/* Main Navigation Links */}
           <div className="flex flex-col space-y-4 mt-6">
-            {[
-              { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
-              { label: "Properties", icon: <FiLayers />, path: "properties" },
-              {
-                label: "Tenants",
-                icon: <BiSolidSelectMultiple />,
-                path: "tenants",
-              },
-              {
-                label: "Financials",
-                icon: <BsDatabaseCheck />,
-                path: "financials",
-              },
-              { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
-              {
-                label: "Requests",
-                icon: <BsArrowUpRightSquare />,
-                path: "requests",
-              },
-            ].map((item) => (
+            {sidebarItems.map((item) => (
               <Link
                 to={item.path}
                 key={item.label}
