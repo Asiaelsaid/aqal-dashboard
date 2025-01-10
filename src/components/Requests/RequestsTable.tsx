@@ -14,9 +14,10 @@ interface Request {
   preferred_service_date: string;
 }
 interface RequestsTableProps {
+  unitId: number;
   requests: Request[];
 }
-const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
+const RequestsTable: React.FC<RequestsTableProps> = ({ requests, unitId }) => {
   const axiosInstance = useAxios();
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [propertyRequests, setPropertyRequests] = useState<Request[]>(requests);
@@ -34,7 +35,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
       case "in_progress":
         return "bg-orange-100 text-orange-700";
       case "pending":
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-200 text-gray-700";
       case "cancelled":
         return "bg-red-100 text-red-700";
       default:
@@ -49,8 +50,10 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
   };
   const refechRequst = async () => {
     try {
-      const { data } = await axiosInstance.get("/managers/properties-requests/");
-      setPropertyRequests(data);
+      const { data } = await axiosInstance.get(
+        `managers/units/${unitId}/requests/`
+      );
+      setPropertyRequests(data?.data);
     } catch (error) {
       toast.error("Failed to fetch requests.");
       console.error("Error fetching requests:", error);
@@ -91,64 +94,65 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests }) => {
             </tr>
           </thead>
           <tbody>
-            {propertyRequests.map((request) => (
-              <tr key={request.req_code}>
-                <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                  {request.preferred_service_date}
-                </td>
-                <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                  {request.req_code}
-                </td>
-                <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                  {request.category}
-                </td>
-                <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                  {request.description}
-                </td>
+            {propertyRequests.length > 0 &&
+              propertyRequests.map((request) => (
+                <tr key={request.req_code}>
+                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                    {request.preferred_service_date}
+                  </td>
+                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                    {request.req_code}
+                  </td>
+                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                    {request.category}
+                  </td>
+                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                    {request.description}
+                  </td>
 
-                <td className="px-6 py-4 border-b  text-left  ">
-                  <span
-                    className={`pr-3 py-1 w-fit rounded-full text-sm font-medium flex items-center ${getStatusStyles(
-                      request.status
-                    )}`}
-                  >
-                    <BsDot className="text-xl" />{" "}
-                    {capitalizeFirstLetter(request.status)}
-                  </span>
-                </td>
+                  <td className="px-6 py-4 border-b  text-left  ">
+                    <span
+                      className={`pr-3 py-1 w-fit rounded-full text-sm font-medium flex items-center ${getStatusStyles(
+                        request.status
+                      )}`}
+                    >
+                      <BsDot className="text-xl" />{" "}
+                      {capitalizeFirstLetter(request.status)}
+                    </span>
+                  </td>
 
-                <td className="px-6 py-4 border-b text-left relative">
-                  {/* Dropdown Button */}
-                  <button
-                    onClick={() =>
-                      setDropdownOpen((prev) =>
-                        prev === request.req_code ? null : request.req_code
-                      )
-                    }
-                    className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full focus:outline-none"
-                  >
-                    <FaEllipsisVertical className="text-gray-400 text-lg" />
-                  </button>
-                  {/* Dropdown Menu */}
-                  {dropdownOpen === request.req_code && (
-                    <div className="absolute right-0 z-10 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
-                      {statusOptions.map(({ value, label }) => (
-                        <button
-                          key={value}
-                          onClick={() => {
-                            updateRequestStatus(value, request.id);
-                            setDropdownOpen(null);
-                          }}
-                          className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                        >
-                          {label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
+                  <td className="px-6 py-4 border-b text-left relative">
+                    {/* Dropdown Button */}
+                    <button
+                      onClick={() =>
+                        setDropdownOpen((prev) =>
+                          prev === request.req_code ? null : request.req_code
+                        )
+                      }
+                      className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full focus:outline-none"
+                    >
+                      <FaEllipsisVertical className="text-gray-400 text-lg" />
+                    </button>
+                    {/* Dropdown Menu */}
+                    {dropdownOpen === request.req_code && (
+                      <div className="absolute right-0 z-10 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
+                        {statusOptions.map(({ value, label }) => (
+                          <button
+                            key={value}
+                            onClick={() => {
+                              updateRequestStatus(value, request.id);
+                              setDropdownOpen(null);
+                            }}
+                            className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

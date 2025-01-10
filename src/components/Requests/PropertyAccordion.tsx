@@ -9,6 +9,7 @@ interface Tenant {
 }
 
 interface Request {
+  id:number
   req_code: string;
   category: string;
   description: string;
@@ -18,6 +19,7 @@ interface Request {
 }
 
 interface Unit {
+  id: number;
   unit_number: string;
   unit_level: number;
   status: string;

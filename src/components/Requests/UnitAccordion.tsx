@@ -9,7 +9,7 @@ interface Tenant {
 }
 
 interface Request {
-  id:number;
+  id: number;
   req_code: string;
   category: string;
   description: string;
@@ -19,6 +19,7 @@ interface Request {
 }
 
 interface Unit {
+  id: number;
   unit_number: string;
   unit_level: number;
   status: string;
@@ -41,7 +42,9 @@ const UnitAccordion = ({ unit }: { unit: Unit }) => {
               Unit {unit.unit_number} - Level {unit.unit_level}
             </p>
             <p className="text-gray-600">Status: {unit.status}</p>
-            {unit.tenant && <p className="text-gray-600">Tenant: {unit.tenant.name}</p>}
+            {unit.tenant && (
+              <p className="text-gray-600">Tenant: {unit.tenant.name}</p>
+            )}
           </div>
           <button className="text-gray-600 transition-transform">
             {isOpen ? <FiChevronUp /> : <FiChevronDown />}
@@ -51,7 +54,7 @@ const UnitAccordion = ({ unit }: { unit: Unit }) => {
       {isOpen && (
         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
           {unit.requests.length > 0 ? (
-            <RequestsTable requests={unit.requests} />
+            <RequestsTable requests={unit.requests} unitId={unit.id} />
           ) : (
             <p className="text-gray-600">No requests for this unit</p>
           )}
