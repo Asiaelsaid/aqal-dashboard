@@ -34,6 +34,11 @@ const MobileSidebar: React.FC<IProps> = ({
 
   if (role === "managers") {
     sidebarItems.push({
+      label: "Financials",
+      icon: <BsDatabaseCheck />,
+      path: "financials-managers",
+    });
+    sidebarItems.push({
       label: "Requests",
       icon: <BsArrowUpRightSquare />,
       path: "requests",

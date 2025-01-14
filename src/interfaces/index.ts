@@ -45,3 +45,10 @@ export interface IContactCardProps {
   linkText: string;
   linkHref?: string;
 }
+export interface IExpenseData {
+  property: number;
+  date: string; 
+  expense_type: "maintenance" | "utilities" | "management_fees" | "other" |""; 
+  amount: number; 
+  description: string; 
+}

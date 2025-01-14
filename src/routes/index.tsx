@@ -2,6 +2,7 @@ import ProtectedRoute from "@components/auth/ProtectedRoute";
 import RootLayout from "@layouts/RootLayout";
 import Dashboard from "@pages";
 import Financials from "@pages/Financials";
+import FinancialsManagers from "@pages/FinancialsManagers";
 import Login from "@pages/Login";
 import PasswordRecoveryPage from "@pages/PasswordRecovery";
 import PasswordResetPage from "@pages/PasswordReset";
@@ -84,6 +85,14 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute allowedRole="managers">
               <Requests />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="financials-managers"
+          element={
+            <ProtectedRoute allowedRole="managers">
+              <FinancialsManagers />
             </ProtectedRoute>
           }
         />

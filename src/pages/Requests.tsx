@@ -1,5 +1,4 @@
 import DateRangePicker from "@components/Properties/Filters/DateRangePicker";
-import ButtonGroup from "@components/Requests/ButtonGroup";
 import PropertyAccordion from "@components/Requests/PropertyAccordion";
 import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
@@ -32,14 +31,13 @@ interface Property {
   units: Unit[];
 }
 
-
 const Requests = () => {
   const { data } = useCustomQuery({
     queryKey: ["requests"],
     url: "/managers/properties-requests",
   });
-  const propertyRequests =data?.data
-  
+  const propertyRequests = data?.data;
+
   const searchInput = (
     <div className="flex items-center w-full max-w-md px-4 py-2 text-gray-500 bg-white border rounded-lg shadow-sm space-x-2 lg:w-1/4">
       <FiSearch className="text-gray-400" />
@@ -70,13 +68,12 @@ const Requests = () => {
               See what requests you have made throughout
             </p>
           </div>
-       <ButtonGroup/>
         </div>
         <div className="mt-8">
-        {propertyRequests?.map((property:Property, index:number) => (
-          <PropertyAccordion key={index} property={property} />
-        ))}
-      </div>
+          {propertyRequests?.map((property: Property, index: number) => (
+            <PropertyAccordion key={index} property={property} />
+          ))}
+        </div>
       </div>
     </div>
   );
