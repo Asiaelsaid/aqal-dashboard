@@ -52,3 +52,11 @@ export interface IExpenseData {
   amount: number; 
   description: string; 
 }
+export interface IContactTableProps {
+  id: number,
+  name: string,
+  type: string,
+  email: string,
+  phone_number: string,
+  address: string
+}
