@@ -1,8 +1,8 @@
 import Logo from "../../assets/images/Logo.png";
 import ImageBackground from "../../assets/images/bgImage.svg";
-interface IProps {}
 
-const FixedSection: React.FC<IProps> = () => {
+
+const FixedSection = () => {
   return (
     <div
       className={`lg:w-1/2 w-full text-white flex flex-col justify-center px-8 py-10 lg:py-0`}

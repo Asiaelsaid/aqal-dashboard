@@ -1,10 +1,18 @@
-import { FiLayers, FiPieChart, FiSearch, FiSettings } from "react-icons/fi";
+import {
+  FiClipboard,
+  FiLayers,
+  FiPieChart,
+  FiSearch,
+  FiSettings,
+  FiUsers,
+} from "react-icons/fi";
 import Logo from "@assets/images/Logo.png";
 import { BsClipboard2Data, BsDatabaseCheck } from "react-icons/bs";
-import { BiSolidSelectMultiple } from "react-icons/bi";
+import { BiBuildings, BiSolidSelectMultiple } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { CgSupport } from "react-icons/cg";
 import { BsArrowUpRightSquare } from "react-icons/bs";
+import { HiOutlineHashtag } from "react-icons/hi";
 
 interface IProps {
   isOpen: boolean;
@@ -21,7 +29,7 @@ const DesktopSidebar: React.FC<IProps> = ({
   setActiveItem,
   role,
 }) => {
-  const sidebarItems = [
+  let sidebarItems = [
     { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
     { label: "Properties", icon: <FiLayers />, path: "properties" },
     { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
@@ -30,20 +38,52 @@ const DesktopSidebar: React.FC<IProps> = ({
   ];
 
   if (role === "managers") {
-    sidebarItems.push({
-      label: "Financials",
-      icon: <BsDatabaseCheck />,
-      path: "financials-managers",
-    });
-    sidebarItems.push({
-      label: "Requests",
-      icon: <BsArrowUpRightSquare />,
-      path: "requests",
-    });
+    sidebarItems = [
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      {
+        label: "Financials",
+        icon: <BsDatabaseCheck />,
+        path: "financials-managers",
+      },
+      { label: "Properties", icon: <FiLayers />, path: "properties" },
+      { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
+      { label: "Maintenance", icon: <CgSupport />, path: "maintenance" },
+      { label: "Requests", icon: <BsArrowUpRightSquare />, path: "requests" },
+    ];
+  } else if (role === "admin") {
+    sidebarItems = [
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Properties", icon: <BiBuildings />, path: "properties" },
+      { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
+      {
+        label: "User Management",
+        icon: <FiUsers />,
+        path: "user-management",
+      },
+      {
+        label: "Reports",
+        icon: <FiClipboard />,
+        path: "reports",
+      },
+      {
+        label: "Communication",
+        icon: <HiOutlineHashtag />,
+        path: "communication",
+      },
+    ];
+  } else if (role === "owners") {
+    sidebarItems = [
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Properties", icon: <FiLayers />, path: "properties" },
+      { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
+      { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
+      { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
+    ];
   }
+
   return (
     <div
-      className={` hidden lg:flex lg:flex-col fixed  px-6 py-8 bg-mainColor text-textColor ${
+      className={`hidden lg:flex lg:flex-col fixed px-6 py-8 bg-mainColor text-textColor ${
         isOpen ? "w-64" : "w-20"
       } transition-width duration-500 h-screen fixed ease-in-out flex flex-col`}
     >
@@ -52,11 +92,11 @@ const DesktopSidebar: React.FC<IProps> = ({
         onClick={handleToggle}
       >
         <img src={Logo} alt="header logo" className="mr-2" />
-        <span className={` ${isOpen ? "" : "hidden"}`}>Aqal Management</span>
+        <span className={`${isOpen ? "" : "hidden"}`}>Aqal Management</span>
       </div>
 
-      <div className={`mt-6  ${isOpen ? "" : "hidden"}`}>
-        <div className="flex items-center bg-hoverColor text-white text-opacity-70 rounded-lg px-4 py-2  shadow-md space-x-2 mt-3">
+      <div className={`mt-6 ${isOpen ? "" : "hidden"}`}>
+        <div className="flex items-center bg-hoverColor text-white text-opacity-70 rounded-lg px-4 py-2 shadow-md space-x-2 mt-3">
           <FiSearch className="text-white text-opacity-70 mr-2" />
           <input
             type="text"
@@ -85,27 +125,44 @@ const DesktopSidebar: React.FC<IProps> = ({
           </Link>
         ))}
       </div>
-      <div className=" space-y-4">
-        {[
-          { label: "Support", icon: <CgSupport />, path: "support" },
-          { label: "Settings", icon: <FiSettings />, path: "settings" },
-        ].map((item) => (
+
+      <div className="mt-auto space-y-1">
+        {[{ label: "Settings", icon: <FiSettings />, path: "settings" }].map(
+          (item) => (
+            <Link
+              to={item.path}
+              key={item.label}
+              onClick={() => setActiveItem(item.label)}
+              className={`flex items-center p-1 rounded-lg cursor-pointer hover:bg-hoverColor ${
+                activeItem === item.label ? "bg-hoverColor" : ""
+              }`}
+            >
+              <span className="text-xl mr-3">{item.icon}</span>
+              <span
+                className={`text-sm font-medium p-2 ${isOpen ? "" : "hidden"}`}
+              >
+                {item.label}
+              </span>
+            </Link>
+          )
+        )}
+
+        {role === "owners" && (
           <Link
-            to={item.path}
-            key={item.label}
-            onClick={() => setActiveItem(item.label)}
-            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-hoverColor ${
-              activeItem === item.label ? "bg-hoverColor" : ""
+            to="support"
+            onClick={() => setActiveItem("Support")}
+            className={`flex items-center p-1 rounded-lg cursor-pointer hover:bg-hoverColor ${
+              activeItem === "Support" ? "bg-hoverColor" : ""
             }`}
           >
-            <span className="text-xl mr-3">{item.icon}</span>
+            <span className="text-xl mr-3">{<CgSupport />}</span>
             <span
               className={`text-sm font-medium p-2 ${isOpen ? "" : "hidden"}`}
             >
-              {item.label}
+              Support
             </span>
           </Link>
-        ))}
+        )}
       </div>
     </div>
   );

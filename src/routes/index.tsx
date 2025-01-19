@@ -1,19 +1,23 @@
 import ProtectedRoute from "@components/auth/ProtectedRoute";
 import RootLayout from "@layouts/RootLayout";
 import Dashboard from "@pages";
+import Communication from "@pages/Communication";
 import Financials from "@pages/Financials";
 import FinancialsManagers from "@pages/FinancialsManagers";
 import Login from "@pages/Login";
+import Maintenance from "@pages/Maintenance";
 import PasswordRecoveryPage from "@pages/PasswordRecovery";
 import PasswordResetPage from "@pages/PasswordReset";
 import Properties from "@pages/Properties/Properties";
 import PropertyDetails from "@pages/Properties/PropertyDetails";
 import Reporting from "@pages/Reporting";
+import Reports from "@pages/Reports";
 import Requests from "@pages/Requests";
 import Settings from "@pages/Settings";
 import Support from "@pages/Support";
 import TenantDetails from "@pages/Tenants/TenantDetails";
 import Tenants from "@pages/Tenants/Tenants";
+import UserManagement from "@pages/UserManagement";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -51,7 +55,7 @@ const router = createBrowserRouter(
         <Route
           path="tenants"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["managers", "owners"]}>
               <Tenants />
             </ProtectedRoute>
           }
@@ -67,7 +71,7 @@ const router = createBrowserRouter(
         <Route
           path="financials"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["admin", "owners"]}>
               <Financials />
             </ProtectedRoute>
           }
@@ -75,7 +79,7 @@ const router = createBrowserRouter(
         <Route
           path="reporting"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["owners"]}>
               <Reporting />
             </ProtectedRoute>
           }
@@ -83,23 +87,55 @@ const router = createBrowserRouter(
         <Route
           path="requests"
           element={
-            <ProtectedRoute allowedRole="managers">
+            <ProtectedRoute allowedRoles={["managers"]}>
               <Requests />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="maintenance"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <Maintenance />
             </ProtectedRoute>
           }
         />
         <Route
           path="financials-managers"
           element={
-            <ProtectedRoute allowedRole="managers">
+            <ProtectedRoute allowedRoles={["managers"]}>
               <FinancialsManagers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="user-management"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <UserManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="communication"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <Communication />
             </ProtectedRoute>
           }
         />
         <Route
           path="support"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["owners"]}>
               <Support />
             </ProtectedRoute>
           }
