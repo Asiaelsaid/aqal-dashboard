@@ -48,7 +48,7 @@ const LogInComponent = () => {
         const refreshToken = response.data.data.refresh;
         const role = response.data.data.role;
         dispatch(login({ accessToken, refreshToken }));
-        // dispatch(logout());
+      
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("role", role);

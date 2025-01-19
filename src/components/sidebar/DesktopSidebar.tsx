@@ -1,6 +1,7 @@
 import {
   FiClipboard,
   FiLayers,
+  FiLogOut,
   FiPieChart,
   FiSearch,
   FiSettings,
@@ -13,6 +14,9 @@ import { Link } from "react-router-dom";
 import { CgSupport } from "react-icons/cg";
 import { BsArrowUpRightSquare } from "react-icons/bs";
 import { HiOutlineHashtag } from "react-icons/hi";
+import { useDispatch } from "react-redux";
+import { logout } from "@store/auth/authSlice";
+import useCustomQuery from "@hooks/useCustomQuery";
 
 interface IProps {
   isOpen: boolean;
@@ -29,6 +33,12 @@ const DesktopSidebar: React.FC<IProps> = ({
   setActiveItem,
   role,
 }) => {
+  const dispatch = useDispatch();
+  const { data } = useCustomQuery({
+    queryKey: ["user-details"],
+    url: "/users/details/",
+  });
+  const userDetails = data?.data;
   let sidebarItems = [
     { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
     { label: "Properties", icon: <FiLayers />, path: "properties" },
@@ -84,7 +94,7 @@ const DesktopSidebar: React.FC<IProps> = ({
   return (
     <div
       className={`hidden lg:flex lg:flex-col fixed px-6 py-8 bg-mainColor text-textColor ${
-        isOpen ? "w-64" : "w-20"
+        isOpen ? "w-64" : "w-24"
       } transition-width duration-500 h-screen fixed ease-in-out flex flex-col`}
     >
       <div
@@ -163,6 +173,27 @@ const DesktopSidebar: React.FC<IProps> = ({
             </span>
           </Link>
         )}
+        <div className={`flex items-center justify-between ${isOpen ? "p-2" : ""}  mt-4 `}>
+          <img
+            src={userDetails?.profile_photo || "https://via.placeholder.com/40"}
+            alt="User Avatar"
+            className="w-11 h-11 rounded-full object-cover mr-3"
+          />
+          <div className={`${isOpen ? "" : "hidden"} flex flex-col`}>
+            <span className="text-sm font-medium">
+              {userDetails?.first_name} {userDetails?.last_name}
+            </span>
+            <span className="text-xs text-opacity-60 text-gray-100">
+              {userDetails?.email}
+            </span>
+          </div>
+          <FiLogOut
+            className={`${
+              isOpen ? "" : "hidden"
+            } text-lg cursor-pointer text-white flex-shrink-0`}
+            onClick={() => dispatch(logout())}
+          />
+        </div>
       </div>
     </div>
   );

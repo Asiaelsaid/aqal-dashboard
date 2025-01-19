@@ -1,4 +1,4 @@
-import DocumentStatus from "@components/Settings/DocumentStatus";
+
 import FileUpload from "@components/Settings/FileUpload";
 import InputField from "@components/Settings/InputField";
 import MyDetailsButton from "@components/Settings/MyDetailsButton";
@@ -8,9 +8,10 @@ import Button from "@components/UI/Button";
 import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
 import useAxios from "@config/axios.config";
+import useCustomQuery from "@hooks/useCustomQuery";
 import { IErrorrEsponse } from "@interfaces";
 import { AxiosError } from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineMail } from "react-icons/hi";
 
@@ -20,11 +21,15 @@ const SettingsPage: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emergencyNumber, setEmergencyNumber] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+  const [profilePhoto, setProfilePhoto] = useState<File | null |string>(null);
   const [userDoc, setUserDoc] = useState<File | null>(null);
-
+  const { data,isSuccess  } = useCustomQuery({
+    queryKey: ["user-details"],
+    url: "/users/details/",
+  });
   const handlePasswordSubmit = async () => {
     const formData = new FormData();
     formData.append("first_name", firstName);
@@ -32,6 +37,7 @@ const SettingsPage: React.FC = () => {
     formData.append("email", email);
     formData.append("phone_number", phoneNumber);
     formData.append("emergency_number", emergencyNumber);
+    formData.append('address',address)
     if (profilePhoto) {
       formData.append("profile_photo", profilePhoto);
     }
@@ -58,7 +64,7 @@ const SettingsPage: React.FC = () => {
 
   const handleDelete = () => {
     console.log("Delete button clicked");
-    // Add logic for deleting the profile photo
+
   };
   const handleFileUpload = (file: File, type: string) => {
     if (type === "photo") {
@@ -67,7 +73,20 @@ const SettingsPage: React.FC = () => {
       setUserDoc(file);
     }
   };
-
+  useEffect(() => {
+    if (isSuccess && data?.data) {
+      const userDetails=data?.data
+      setFirstName(userDetails.first_name || "");
+      setLastName(userDetails.last_name || "");
+      setEmail(userDetails.email || "");
+      setPhoneNumber(userDetails.phone_number || "");
+      setEmergencyNumber(userDetails.emergency_number || "");
+      setProfilePhoto(userDetails.profile_photo || "");
+      setUserDoc(userDetails.user_doc || "");
+      setAddress(userDetails.address || "");
+     
+    }
+  }, [isSuccess, data]);
   return (
     <div className="flex flex-col p-5 min-h-screen bg-gray-50">
       <PagesHeading heading="Settings" />
@@ -109,6 +128,24 @@ const SettingsPage: React.FC = () => {
           </div>
         </div>
 
+        <div className="col-span-2"></div>
+      </div>
+      <hr className="mt-4 " />
+      <div className="grid grid-cols-5 mt-4 items-center gap-6">
+        <label className="text-sm text-gray-600 font-medium">
+        Address
+        </label>
+        <div className="col-span-2">
+          <div className="flex rounded-md shadow-sm">
+            <input
+              type="text"
+              value={address}
+              placeholder="Enter address"
+              onChange={(e) => setAddress(e.target.value)}
+              className="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:outline-none py-2 px-4 text-sm"
+            />
+          </div>
+        </div>
         <div className="col-span-2"></div>
       </div>
       <hr className="mt-4 " />
@@ -177,7 +214,7 @@ const SettingsPage: React.FC = () => {
         </div>
         <div className="col-span-2">
           <ProfilePhoto
-            src="https://via.placeholder.com/150"
+            src={profilePhoto as string}
             onUpdate={(file) => handleFileUpload(file, "photo")}
             onDelete={handleDelete}
           />
@@ -194,13 +231,13 @@ const SettingsPage: React.FC = () => {
           </p>
         </div>
         <div className="col-span-2">
-          <FileUpload onUpload={(file) => handleFileUpload(file, "doc")} />
-          {userDoc && (
+          <FileUpload onUpload={(file) => handleFileUpload(file as File, "doc")} />
+          {/* {userDoc && (
             <DocumentStatus
               fileName={userDoc.name}
               fileSize={`${userDoc.size / 1024} KB`}
             />
-          )}
+          )} */}
         </div>
       </div>
       <hr className="mt-4" />
