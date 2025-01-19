@@ -14,8 +14,8 @@ interface IProperty {
   conditions: { name: string | null };
   location: string;
   total_units: number;
-  vacant_units: number;
-  sold_units: number;
+  vacant_units_count: number;
+  occupied_units_count: number;
   images: {
     image: string;
   }[];
@@ -43,8 +43,8 @@ const Properties = () => {
           property?.location.toLowerCase().includes(lowerCaseQuery) ||
           property?.property_type.name.toLowerCase().includes(lowerCaseQuery) ||
           String(property.total_units).includes(lowerCaseQuery) ||
-          String(property.vacant_units).includes(lowerCaseQuery) ||
-          String(property.sold_units).includes(lowerCaseQuery)
+          String(property.vacant_units_count).includes(lowerCaseQuery) ||
+          String(property.occupied_units_count).includes(lowerCaseQuery)
         );
       }) || []
     );
@@ -94,7 +94,7 @@ const Properties = () => {
             type={property.property_type.name}
             condition={property.conditions.name || "N/A"}
             location={property.location}
-            units={`${property.total_units} units (${property.sold_units} sold, ${property.vacant_units} vacant)`}
+            units={`${property.total_units} units (${property.occupied_units_count} occupied, ${property.vacant_units_count} vacant)`}
             image={property.images[0]?.image || imageOne}
           />
         ))}
