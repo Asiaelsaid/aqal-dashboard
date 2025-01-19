@@ -1,4 +1,3 @@
-// import DocumentStatus from "@components/Settings/DocumentStatus";
 import DocumentStatus from "@components/Settings/DocumentStatus";
 import FileUpload from "@components/Settings/FileUpload";
 import InputField from "@components/Settings/InputField";
