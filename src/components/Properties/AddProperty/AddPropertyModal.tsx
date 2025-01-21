@@ -39,7 +39,9 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         "/owners/property/create/",
         formData
       );
-      if (data.satus === 201) {
+
+      if (data?.status === 201) {
+                setIsOpen(false);
         toast.success("Property added successfully!");
         setFormData({
           name: "",
@@ -56,7 +58,6 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
           amenities: [],
           common_areas: [],
         });
-        setIsOpen(false);
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorrEsponse>;
