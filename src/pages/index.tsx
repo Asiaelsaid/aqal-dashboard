@@ -1,8 +1,17 @@
-interface IProps {}
+import AdminDashboard from "@components/DashboardUsers/AdminDashboard/AdminDashboard";
+import ManagersDashboard from "@components/DashboardUsers/ManagersDashboard/ManagersDashboard";
+import OwnersDashboard from "@components/DashboardUsers/OwnersDashboard/OwnersDashboard";
 
-const Dashboard: React.FC<IProps> = () => {
-    return <div>DashboardPage</div>;
+const Dashboard = () => {
+  const role = localStorage.getItem("role");
+
+  return (
+    <>
+      {role === "admin" && <AdminDashboard />}
+      {role === "owners" && <OwnersDashboard />}
+      {role === "managers" && <ManagersDashboard />}
+    </>
+  );
 };
 
 export default Dashboard;
-;
