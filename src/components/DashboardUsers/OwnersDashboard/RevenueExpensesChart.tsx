@@ -56,7 +56,7 @@ const RevenueExpensesChart: React.FC<Props> = ({ revenueExpenses }) => {
   };
 
   const chartSeries =
-    revenueExpenses?.datasets.map((dataset) => ({
+    revenueExpenses?.datasets?.map((dataset) => ({
       name: dataset.label,
       data: dataset.data,
     })) || [];

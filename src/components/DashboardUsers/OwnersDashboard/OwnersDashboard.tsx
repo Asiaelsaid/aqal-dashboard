@@ -22,12 +22,12 @@ const OwnersDashboard = () => {
       <div className=" my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <OverviewCard
           title="Total properties"
-          value={dashboardData.total_properties}
+          value={dashboardData?.total_properties||0}
           change={10}
         />
         <OverviewCard
           title="Maintenance requests"
-          value={dashboardData.opened_maintenance_requests}
+          value={dashboardData?.opened_maintenance_requests||0}
           change={12}
         />
         <OverviewCard
@@ -40,7 +40,7 @@ const OwnersDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-7 gap-4 ">
         {/* Revenue vs Expenses */}
         <div className="col-span-1 sm:col-span-5">
-        <RevenueExpensesChart revenueExpenses={dashboardData.revenue_vs_expenses} />
+        <RevenueExpensesChart revenueExpenses={dashboardData?.revenue_vs_expenses||{}} />
         </div>
         {/* Rent Collection Progress */}
         <div className="col-span-1 sm:col-span-2">

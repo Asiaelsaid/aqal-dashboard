@@ -21,7 +21,7 @@ const PropertyDetailsPage = () => {
   const tabs = [
     { label: "Property details", content:<PropertyDetails property={property} onRefresh={refetch}/> },
     { label: "Owner details", content: <OwnerDetails userData={property?.user} properyName={property?.name}/> },
-    { label: "Units", content:<UnitsDetails propertyId={property?.id} properyName={property?.name}/>  },
+    { label: "Units", content:<UnitsDetails  properyName={property?.name}/>  },
   ];
   const goBack = () => {
     navigate(-1);

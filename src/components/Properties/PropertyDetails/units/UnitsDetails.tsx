@@ -3,14 +3,13 @@ import { useParams } from "react-router-dom";
 import UnitsTable from "./UnitsTable";
 
 interface IProps {
-  propertyId:number;
+ 
   properyName:string;
 }
 
-const UnitsDetails: React.FC<IProps> = ({propertyId,properyName}) => {
-  console.log(propertyId);
+const UnitsDetails: React.FC<IProps> = ({ properyName}) => {
   const { id } = useParams<{ id: string }>();
-  const { data } = useCustomQuery({
+  const { data ,refetch} = useCustomQuery({
     queryKey: ["propertyUnits"],
     url: `/owners/properties/${id}/units`,
   });
@@ -18,7 +17,7 @@ const UnitsDetails: React.FC<IProps> = ({propertyId,properyName}) => {
   
   return (
     <div className="mt-8 p-6 w-full rounded-lg border bg-white ">
-       <UnitsTable units={units} properyName={properyName}/>
+       <UnitsTable units={units} properyName={properyName} onRefetch={refetch}/>
     </div>
   );
 };
