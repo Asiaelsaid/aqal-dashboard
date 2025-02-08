@@ -1,15 +1,16 @@
-import AdminDashboard from "@components/DashboardUsers/AdminDashboard/AdminDashboard";
-import ManagersDashboard from "@components/DashboardUsers/ManagersDashboard/ManagersDashboard";
+// import AdminDashboard from "@components/DashboardUsers/AdminDashboard/AdminDashboard";
+// import ManagersDashboard from "@components/DashboardUsers/ManagersDashboard/ManagersDashboard";
 import OwnersDashboard from "@components/DashboardUsers/OwnersDashboard/OwnersDashboard";
 
 const Dashboard = () => {
-  const role = localStorage.getItem("role");
+  // const role = localStorage.getItem("role");
 
   return (
     <>
-      {role === "admin" && <AdminDashboard />}
+      {/* {role === "admin" && <AdminDashboard />}
       {role === "owners" && <OwnersDashboard />}
-      {role === "managers" && <ManagersDashboard />}
+      {role === "managers" && <ManagersDashboard />} */}
+      <OwnersDashboard />
     </>
   );
 };

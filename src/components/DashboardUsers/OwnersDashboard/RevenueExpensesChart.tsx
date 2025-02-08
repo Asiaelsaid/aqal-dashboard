@@ -3,7 +3,13 @@ import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import RevenueExpensesFilter from "./RevenueExpensesFilter";
 
-const RevenueExpensesChart: React.FC = () => {
+interface Props {
+  revenueExpenses?: {
+    labels: string[];
+    datasets: { label: string; data: number[]; borderColor: string }[];
+  };
+}
+const RevenueExpensesChart: React.FC<Props> = ({ revenueExpenses }) => {
   const chartOptions: ApexOptions = {
     chart: {
       type: "line",
@@ -15,20 +21,7 @@ const RevenueExpensesChart: React.FC = () => {
       width: 2,
     },
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: revenueExpenses?.labels || [],
       labels: {
         style: {
           colors: " #475467",
@@ -62,17 +55,11 @@ const RevenueExpensesChart: React.FC = () => {
     ],
   };
 
-  const chartSeries = [
-    {
-      name: "Revenue",
-      data: [200, 400, 600, 800, 1000, 600, 500, 400, 200, 400, 600, 800],
-    },
-    {
-      name: "Expenses",
-      data: [100, 300, 500, 600, 700, 500, 400, 300, 100, 300, 500, 700],
-    },
-  ];
-
+  const chartSeries =
+    revenueExpenses?.datasets.map((dataset) => ({
+      name: dataset.label,
+      data: dataset.data,
+    })) || [];
   return (
     <div className="p-6 border rounded-lg">
       <div className="flex justify-between mb-4">
