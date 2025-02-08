@@ -3,7 +3,7 @@ import { CiHome, CiLocationOn } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
 interface PropertyCardProps {
-  id:number
+  id: number;
   title: string;
   type: string;
   condition: string;
@@ -12,7 +12,8 @@ interface PropertyCardProps {
   image: string;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({id,
+const PropertyCard: React.FC<PropertyCardProps> = ({
+  id,
   title,
   type,
   condition,
@@ -26,13 +27,17 @@ const PropertyCard: React.FC<PropertyCardProps> = ({id,
     navigate(`/property/${id}`);
   };
   return (
-    <div className="flex flex-col sm:flex-row items-center bg-white rounded-lg shadow p-4 min-h-[12rem]">
+    <div className="flex flex-col sm:flex-row items-center bg-white rounded-lg shadow p-4 min-h-[12rem] ">
       <img
         src={image}
         alt={title}
-        className="w-full sm:w-48 sm:h-32 rounded-lg object-cover"
+        className="w-full sm:w-48 sm:h-32 rounded-lg object-cover cursor-pointer"
+        onClick={handleViewProperty}
       />
-      <div className="mt-4 sm:mt-0 sm:ml-4 flex-1">
+      <div
+        className="mt-4 sm:mt-0 sm:ml-4 flex-1 cursor-pointer"
+        onClick={handleViewProperty}
+      >
         <p className="text-ms font-semibold text-purple-600">{type}</p>
         <h3 className="font-bold text-lg">{title}</h3>
         <p>
