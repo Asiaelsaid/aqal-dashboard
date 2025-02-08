@@ -6,13 +6,14 @@ import {
 } from "@headlessui/react";
 import useCustomQuery from "@hooks/useCustomQuery";
 import { ITenantData } from "@interfaces";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 
 interface TenantData {
   id: number;
   first_name: string;
   last_name: string;
+  has_unit: boolean; // Add this property to the interface
 }
 
 interface TenantSelectProps {
@@ -29,6 +30,18 @@ const TenantSelect: React.FC<TenantSelectProps> = ({
     url: "/users/tenants/",
   });
   const tenants: TenantData[] = data?.data;
+
+  // Filter tenants where has_unit is false
+  const filteredTenants = tenants?.filter((tenant) => !tenant.has_unit);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Filter tenants based on the search query
+  const tenantsToDisplay = filteredTenants?.filter((tenant) =>
+    `${tenant.first_name} ${tenant.last_name}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
 
   const selectedTenant = tenants?.find(
     (tenant) => tenant.id === formData.tenant
@@ -60,6 +73,7 @@ const TenantSelect: React.FC<TenantSelectProps> = ({
                 }`}
               />
             </ListboxButton>
+
             <ListboxOptions
               static
               className={`absolute z-10 mt-1 w-full bg-white shadow-lg rounded-lg max-h-60 overflow-auto transform transition-all duration-500 ${
@@ -68,7 +82,19 @@ const TenantSelect: React.FC<TenantSelectProps> = ({
                   : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
               } origin-top`}
             >
-              {tenants?.map((tenant) => (
+              {/* Add Search Input */}
+              <div className="p-2">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search Tenant..."
+                  className="w-full border border-gray-300 rounded-lg p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+
+              {/* Render filtered tenants */}
+              {tenantsToDisplay?.map((tenant) => (
                 <ListboxOption key={tenant.id} value={tenant.id} as={Fragment}>
                   {({ selected, disabled }) => (
                     <li
