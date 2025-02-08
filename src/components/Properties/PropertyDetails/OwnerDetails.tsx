@@ -11,10 +11,11 @@ interface IUser {
 
 interface IProps {
   userData: IUser;
+  properyName: string;
 }
 const thStyle = "py-3 px-4 text-left text-gray-500 font-medium";
 
-const OwnerDetails: React.FC<IProps> = ({ userData }) => {
+const OwnerDetails: React.FC<IProps> = ({ userData ,properyName }) => {
   const { first_name, last_name, email, phone_number, emergency_number } = userData;
 
   return (
@@ -24,7 +25,7 @@ const OwnerDetails: React.FC<IProps> = ({ userData }) => {
       <div className="bg-white rounded-lg border w-full">
         {/* Header Section */}
         <div className="p-6 border-b">
-          <h2 className="text-xl font-semibold">White Stone Apartments</h2>
+          <h2 className="text-xl font-semibold">{properyName}</h2>
         </div>
 
         {/* Table Section */}

@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import UnitsTable from "./UnitsTable";
 
 interface IProps {
-  propertyId:number
+  propertyId:number;
+  properyName:string;
 }
 
-const UnitsDetails: React.FC<IProps> = ({propertyId}) => {
+const UnitsDetails: React.FC<IProps> = ({propertyId,properyName}) => {
   console.log(propertyId);
   const { id } = useParams<{ id: string }>();
   const { data } = useCustomQuery({
@@ -17,7 +18,7 @@ const UnitsDetails: React.FC<IProps> = ({propertyId}) => {
   
   return (
     <div className="mt-8 p-6 w-full rounded-lg border bg-white ">
-       <UnitsTable units={units} />
+       <UnitsTable units={units} properyName={properyName}/>
     </div>
   );
 };
