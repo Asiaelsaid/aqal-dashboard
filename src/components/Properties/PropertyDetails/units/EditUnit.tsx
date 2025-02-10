@@ -85,7 +85,7 @@ const EditUnit: React.FC<IProps> = ({ id, isOpen, setIsOpen, onRefetch }) => {
       transition
       className="fixed  top-0 right-0 flex w-screen h-screen items-center justify-center bg-black/30  transition duration-500 ease-out data-[closed]:opacity-0 backdrop-blur-sm"
     >
-      <DialogPanel className="w-full sm:w-3/4 lg:top-0 lg:right-0 lg:max-w-lg h-full max-h-screen bg-white shadow-xl transform lg:translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
+      <DialogPanel className="w-full sm:w-3/4 lg:top-0 lg:right-0 lg:max-w-xl h-full max-h-screen bg-white shadow-xl transform lg:translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
         <DialogTitle className="text-lg font-medium text-gray-700 p-4 border-b border-gray-200 flex justify-between items-center">
           Edit Unit
           <div className="flex justify-between items-center p-4 ">
@@ -128,17 +128,6 @@ const EditUnit: React.FC<IProps> = ({ id, isOpen, setIsOpen, onRefetch }) => {
             selectedTenant={formData.tenant}
             onSelectTenant={handleTenantChange}
           />
-          {/* Status */}
-          {/* <div>
-            <label className="block text-gray-700 font-medium">Status</label>
-            <input
-              type="text"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div> */}
 
           {/* Is Rented */}
           <div className="flex items-center gap-2">
@@ -157,20 +146,6 @@ const EditUnit: React.FC<IProps> = ({ id, isOpen, setIsOpen, onRefetch }) => {
               }
             />
           </div>
-
-          {/* Outstanding Payment */}
-          {/* <div>
-            <label className="block text-gray-700 font-medium">
-              Outstanding Payment
-            </label>
-            <input
-              type="text"
-              name="outstanding_payment"
-              value={formData.outstanding_payment || ""}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div> */}
 
           {/* Unit Property */}
           <div>
