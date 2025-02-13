@@ -13,7 +13,7 @@ interface TenantData {
   id: number;
   first_name: string;
   last_name: string;
-  has_unit: boolean; // Add this property to the interface
+  has_unit: boolean;
 }
 
 interface TenantSelectProps {
@@ -30,14 +30,9 @@ const TenantSelect: React.FC<TenantSelectProps> = ({
     url: "/users/tenants/",
   });
   const tenants: TenantData[] = data?.data;
-
-  // Filter tenants where has_unit is false
-  const filteredTenants = tenants?.filter((tenant) => !tenant.has_unit);
-
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Filter tenants based on the search query
-  const tenantsToDisplay = filteredTenants?.filter((tenant) =>
+  const tenantsToDisplay = tenants?.filter((tenant) =>
     `${tenant.first_name} ${tenant.last_name}`
       .toLowerCase()
       .includes(searchQuery.toLowerCase())
@@ -81,6 +76,7 @@ const TenantSelect: React.FC<TenantSelectProps> = ({
                   ? "opacity-100 scale-y-100 translate-y-0"
                   : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
               } origin-top`}
+              
             >
               {/* Add Search Input */}
               <div className="p-2">
@@ -95,7 +91,7 @@ const TenantSelect: React.FC<TenantSelectProps> = ({
 
               {/* Render filtered tenants */}
               {tenantsToDisplay?.map((tenant) => (
-                <ListboxOption key={tenant.id} value={tenant.id} as={Fragment}>
+                <ListboxOption key={tenant.id} value={tenant.id} as={Fragment} disabled={tenant.has_unit}>
                   {({ selected, disabled }) => (
                     <li
                       className={`cursor-pointer select-none p-2 list-none transition-colors hover:bg-purple-400 hover:text-white ${

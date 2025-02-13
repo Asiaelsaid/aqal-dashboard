@@ -87,7 +87,7 @@ const UnitsTable: React.FC<UnitsTableProps> = ({
                 <th scope="col" className="px-6 py-3 border-b">
                   TIMS Report
                 </th>
-                <th scope="col" className="px-6 py-3 border-b text-center"></th>
+                {role === "admin" &&<th scope="col" className="px-6 py-3 border-b text-center"></th>}
               </tr>
             </thead>
             <tbody>

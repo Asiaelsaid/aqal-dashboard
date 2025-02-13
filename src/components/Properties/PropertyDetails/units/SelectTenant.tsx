@@ -5,13 +5,14 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import useCustomQuery from "@hooks/useCustomQuery";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 
 interface Tenant {
   id: number;
   first_name: string;
   last_name: string;
+  has_unit: boolean;
 }
 
 interface IProps {
@@ -24,11 +25,18 @@ const SelectTenant: React.FC<IProps> = ({ selectedTenant, onSelectTenant }) => {
     queryKey: ["Tenants"],
     url: `/users/tenants/`,
   });
-  const tenants = data?.data as Tenant[];
-  const [selectedId, setSelectedId] = useState<number>(selectedTenant);
+  const tenants: Tenant[] = data?.data;
 
+  const [selectedId, setSelectedId] = useState<number>(selectedTenant);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const tenantsToDisplay = tenants?.filter((tenant) =>
+    `${tenant.first_name} ${tenant.last_name}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
   const selectedTenantData = tenants?.find(
-    (tenant) => tenant.id === selectedId
+    (tenant) => tenant.id === selectedTenant
   );
 
   const handleChange = (tenantId: number) => {
@@ -62,13 +70,27 @@ const SelectTenant: React.FC<IProps> = ({ selectedTenant, onSelectTenant }) => {
                   : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
               } origin-top`}
             >
-              {tenants?.map((tenant) => (
-                <ListboxOption key={tenant.id} value={tenant.id}>
-                  {({ selected, active }) => (
+              <div className="p-2">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search Tenant..."
+                  className="w-full border border-gray-300 rounded-lg p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
+              {tenantsToDisplay?.map((tenant) => (
+                <ListboxOption
+                  key={tenant.id}
+                  value={tenant.id}
+                  as={Fragment}
+                  disabled={tenant.has_unit}
+                >
+                  {({ selected, disabled }) => (
                     <li
                       className={`cursor-pointer select-none p-2 list-none transition-colors hover:bg-purple-400 hover:text-white ${
                         selected ? "bg-purple-500 text-white" : "text-gray-700"
-                      } ${active ? "bg-purple-100" : ""}`}
+                      } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {tenant.first_name} {tenant.last_name}
                     </li>
