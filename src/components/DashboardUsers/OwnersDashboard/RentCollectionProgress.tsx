@@ -2,11 +2,17 @@ import React from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-interface IProps {}
+interface IProps {
+  rentCollectedThisMonth: number;
+  rentGoal: number;
+}
 
-const RentCollectionProgress: React.FC<IProps> = () => {
-  const collected = 240;
-  const goal = 300;
+const RentCollectionProgress: React.FC<IProps> = ({
+  rentCollectedThisMonth,
+  rentGoal,
+}) => {
+  const collected = rentCollectedThisMonth;
+  const goal = rentGoal;
   const progress = (collected / goal) * 100;
 
   const chartOptions: ApexOptions = {
@@ -23,8 +29,8 @@ const RentCollectionProgress: React.FC<IProps> = () => {
           size: "50%",
         },
         track: {
-          background: "#E5E7EB", 
-          strokeWidth: "100%", 
+          background: "#E5E7EB",
+          strokeWidth: "100%",
         },
 
         dataLabels: {
@@ -36,8 +42,7 @@ const RentCollectionProgress: React.FC<IProps> = () => {
             fontWeight: 600,
             offsetY: 10,
             color: "#000",
-            // formatter: () => `${Math.round(progress)}%`,
-            formatter: () => "240$",
+            formatter: () => `${Math.round(progress)}%`,
           },
         },
       },
@@ -70,12 +75,9 @@ const RentCollectionProgress: React.FC<IProps> = () => {
           />
         </div>
         <p className=" text-md font-semibold">Your are almost there!</p>
-        {/* <p className="text-gray-500">
+        <p className="text-gray-500">
           You need to collect ${goal - collected} from your tenants to reach
           your goal
-        </p> */}
-        <p className="text-gray-500">
-        You need to collect to $300 from your tenants to reach your goal
         </p>
       </div>
     </div>

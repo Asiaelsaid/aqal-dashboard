@@ -4,7 +4,7 @@ import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
 import RentCollectionProgress from "./RentCollectionProgress";
 import ActivityTable from "./ActivityTable";
-import ButtonsFiter from "./ButtonsFiter";
+// import ButtonsFiter from "./ButtonsFiter";
 import useCustomQuery from "@hooks/useCustomQuery";
 
 const OwnersDashboard = () => {
@@ -17,23 +17,23 @@ const OwnersDashboard = () => {
     <div className="flex flex-col p-5 min-h-screen bg-gray-50">
       <PagesHeading heading="Welcome to Aqal, Olivia" />
       <SubHeading subHeading="Manage your properties, tenants, and finances all in one place." />
-      <ButtonsFiter />
+      {/* <ButtonsFiter /> */}
       {/* Overview Cards */}
       <div className=" my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <OverviewCard
           title="Total properties"
           value={dashboardData?.total_properties || 0}
-          change={10}
+          // change={10}
         />
         <OverviewCard
           title="Maintenance requests"
           value={dashboardData?.opened_maintenance_requests || 0}
-          change={12}
+          // change={12}
         />
         <OverviewCard
           title="Outstanding payments"
           value={`$${dashboardData?.total_outstanding_payment || 0}`}
-          change={-100}
+          // change={-100}
         />
       </div>
 
@@ -46,7 +46,10 @@ const OwnersDashboard = () => {
         </div>
         {/* Rent Collection Progress */}
         <div className="col-span-1 sm:col-span-2">
-          <RentCollectionProgress />
+          <RentCollectionProgress
+            rentCollectedThisMonth={dashboardData?.rent_collected_this_month}
+            rentGoal={dashboardData?.total_outstanding_payment}
+          />
         </div>
       </div>
       <ActivityTable />
