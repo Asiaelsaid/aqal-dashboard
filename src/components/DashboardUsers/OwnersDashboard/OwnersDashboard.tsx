@@ -82,8 +82,7 @@ const OwnersDashboard = () => {
           }
         />
       )}
-
-      <ActivityTable />
+      {role === "owners" && <ActivityTable />}
     </div>
   );
 };
