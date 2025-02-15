@@ -6,13 +6,26 @@ import RentCollectionProgress from "./RentCollectionProgress";
 import ActivityTable from "./ActivityTable";
 // import ButtonsFiter from "./ButtonsFiter";
 import useCustomQuery from "@hooks/useCustomQuery";
+import RentAmountChart from "../ManagersDashboard/RentAmountChart";
+import { useEffect, useState } from "react";
 
+interface UnitData {
+  unit_number: number;
+  rent_collected: Record<string, number>;
+  rent_due: Record<string, number>;
+}
 const OwnersDashboard = () => {
   const { data } = useCustomQuery({
     queryKey: ["dashboard"],
     url: "/owners/properties/dashboard/",
   });
   const dashboardData = data?.data;
+  const unitRentAnalysis = dashboardData?.unit_rent_analysis || {};
+  const [role, setRole] = useState<string>("");
+  useEffect(() => {
+    const storedRole: string = localStorage.getItem("role") as string;
+    setRole(storedRole);
+  }, []);
   return (
     <div className="flex flex-col p-5 min-h-screen bg-gray-50">
       <PagesHeading heading="Welcome to Aqal, Olivia" />
@@ -52,6 +65,24 @@ const OwnersDashboard = () => {
           />
         </div>
       </div>
+      {role === "managers" && (
+        <RentAmountChart
+          data={
+            unitRentAnalysis?.units?.map((unit: UnitData) => ({
+              name: `Unit ${unit.unit_number}`,
+              collected: Object.values(unit.rent_collected).reduce(
+                (acc, val) => acc + val,
+                0
+              ),
+              toBeCollected: Object.values(unit.rent_due).reduce(
+                (acc, val) => acc + val,
+                0
+              ),
+            })) || []
+          }
+        />
+      )}
+
       <ActivityTable />
     </div>
   );

@@ -11,8 +11,12 @@ body {
 }
 .page-enter-active {
   opacity: 1;
-  visibility: visible; 
+  visibility: visible;
   transition: opacity 500ms ease-in-out;
+  -webkit-transition: opacity 500ms ease-in-out;
+  -moz-transition: opacity 500ms ease-in-out;
+  -ms-transition: opacity 500ms ease-in-out;
+  -o-transition: opacity 500ms ease-in-out;
 }
 .page-exit {
   opacity: 1;
