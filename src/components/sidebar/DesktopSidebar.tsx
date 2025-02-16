@@ -86,8 +86,8 @@ const DesktopSidebar: React.FC<IProps> = ({
       { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
-      { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
-      { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
+      // { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
+      // { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
     ];
   }
 
