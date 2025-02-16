@@ -3,10 +3,10 @@ interface ButtonGroupProps {
   }
 const ButtonsGroup: React.FC<ButtonGroupProps> = ({onStatusChange}) => {
     const statusOptions = [
-        { value: "Rental income reports", label: "Rental income reports" },
+        // { value: "Rental income reports", label: "Rental income reports" },
         { value: "Expenses reports", label: "Expenses reports" },
-        { value: "Outstanding payments", label: "Outstanding payments" },
-        { value: "Bank reciepts", label: "Bank reciepts" },
+        // { value: "Outstanding payments", label: "Outstanding payments" },
+        // { value: "Bank reciepts", label: "Bank reciepts" },
       ];
     
       return (

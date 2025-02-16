@@ -3,7 +3,7 @@ import {
   FiLayers,
   FiLogOut,
   FiPieChart,
-  FiSearch,
+  // FiSearch,
   FiSettings,
   FiUsers,
 } from "react-icons/fi";
@@ -57,7 +57,7 @@ const DesktopSidebar: React.FC<IProps> = ({
       },
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
-      { label: "Maintenance", icon: <CgSupport />, path: "maintenance" },
+      // { label: "Maintenance", icon: <CgSupport />, path: "maintenance" },
       { label: "Requests", icon: <BsArrowUpRightSquare />, path: "requests" },
     ];
   } else if (role === "admin") {
@@ -105,7 +105,7 @@ const DesktopSidebar: React.FC<IProps> = ({
         <span className={`${isOpen ? "" : "hidden"}`}>Aqal Management</span>
       </div>
 
-      <div className={`mt-6 ${isOpen ? "" : "hidden"}`}>
+      {/* <div className={`mt-6 ${isOpen ? "" : "hidden"}`}>
         <div className="flex items-center bg-hoverColor text-white text-opacity-70 rounded-lg px-4 py-2 shadow-md space-x-2 mt-3">
           <FiSearch className="text-white text-opacity-70 mr-2" />
           <input
@@ -114,7 +114,7 @@ const DesktopSidebar: React.FC<IProps> = ({
             className="bg-transparent outline-none text-white text-opacity-70 placeholder-white placeholder-opacity-70 w-full"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="mt-6 space-y-2 flex-grow">
         {sidebarItems.map((item) => (

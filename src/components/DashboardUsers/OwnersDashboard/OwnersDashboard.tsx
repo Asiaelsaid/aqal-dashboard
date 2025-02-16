@@ -4,7 +4,6 @@ import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
 import RentCollectionProgress from "./RentCollectionProgress";
 import ActivityTable from "./ActivityTable";
-// import ButtonsFiter from "./ButtonsFiter";
 import useCustomQuery from "@hooks/useCustomQuery";
 import RentAmountChart from "../ManagersDashboard/RentAmountChart";
 import { useEffect, useState } from "react";
@@ -31,7 +30,6 @@ const OwnersDashboard = () => {
     <div className="flex flex-col p-5 min-h-screen bg-gray-50">
       <PagesHeading heading="Welcome to Aqal, Olivia" />
       <SubHeading subHeading="Manage your properties, tenants, and finances all in one place." />
-      {/* <ButtonsFiter /> */}
       {/* Overview Cards */}
       <div className=" my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <OverviewCard
