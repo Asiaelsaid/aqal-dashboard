@@ -1,11 +1,11 @@
 import {
-  FiClipboard,
+  // FiClipboard,
   FiLayers,
   FiLogOut,
   FiPieChart,
   // FiSearch,
   FiSettings,
-  FiUsers,
+  // FiUsers,
 } from "react-icons/fi";
 import Logo from "@assets/images/Logo.png";
 import { BsClipboard2Data, BsDatabaseCheck } from "react-icons/bs";
@@ -64,17 +64,17 @@ const DesktopSidebar: React.FC<IProps> = ({
     sidebarItems = [
       { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
       { label: "Properties", icon: <BiBuildings />, path: "properties" },
-      { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
-      {
-        label: "User Management",
-        icon: <FiUsers />,
-        path: "user-management",
-      },
-      {
-        label: "Reports",
-        icon: <FiClipboard />,
-        path: "reports",
-      },
+      // { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
+      // {
+      //   label: "User Management",
+      //   icon: <FiUsers />,
+      //   path: "user-management",
+      // },
+      // {
+      //   label: "Reports",
+      //   icon: <FiClipboard />,
+      //   path: "reports",
+      // },
       {
         label: "Communication",
         icon: <HiOutlineHashtag />,
@@ -173,7 +173,11 @@ const DesktopSidebar: React.FC<IProps> = ({
             </span>
           </Link>
         )}
-        <div className={`flex items-center justify-between ${isOpen ? "p-2" : ""}  mt-4 `}>
+        <div
+          className={`flex items-center justify-between ${
+            isOpen ? "p-2" : ""
+          }  mt-4 `}
+        >
           <img
             src={userDetails?.profile_photo || "https://via.placeholder.com/40"}
             alt="User Avatar"
