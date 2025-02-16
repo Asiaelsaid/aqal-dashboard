@@ -21,6 +21,7 @@ const OwnersDashboard = () => {
   });
   const dashboardData = data?.data;
   const unitRentAnalysis = dashboardData?.unit_rent_analysis || {};
+  const recentActivity = dashboardData?.recent_activity || [];
   const [role, setRole] = useState<string>("");
   useEffect(() => {
     const storedRole: string = localStorage.getItem("role") as string;
@@ -82,7 +83,9 @@ const OwnersDashboard = () => {
           }
         />
       )}
-      {role === "owners" && <ActivityTable />}
+      {(role === "owners" || role === "managers") && (
+        <ActivityTable recentActivity={recentActivity} />
+      )}
     </div>
   );
 };
