@@ -11,7 +11,7 @@ const useAxios = () => {
   );
 
   const axiosInstance = axios.create({
-    baseURL: "http://13.50.122.77/api",
+    baseURL: "https://aqalmanagementsolutions.com/api",
   });
 
   axiosInstance.interceptors.request.use(

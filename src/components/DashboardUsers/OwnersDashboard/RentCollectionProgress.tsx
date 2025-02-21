@@ -65,6 +65,9 @@ const RentCollectionProgress: React.FC<IProps> = ({
         <p className="text-gray-500 text-sm my-2">
           View how much you collected from clients
         </p>
+        <p className="text-lg font-bold text-gray-900">
+          Collected: ${collected.toLocaleString()}
+        </p>
         <div className="my-4">
           <Chart
             options={chartOptions}

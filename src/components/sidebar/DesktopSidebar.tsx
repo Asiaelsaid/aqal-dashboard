@@ -58,6 +58,11 @@ const DesktopSidebar: React.FC<IProps> = ({
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
       // { label: "Maintenance", icon: <CgSupport />, path: "maintenance" },
+      {
+        label: "Communication",
+        icon: <HiOutlineHashtag />,
+        path: "communication",
+      },
       { label: "Requests", icon: <BsArrowUpRightSquare />, path: "requests" },
     ];
   } else if (role === "admin") {
