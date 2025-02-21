@@ -23,7 +23,7 @@ interface TableProps {
 
 const TenantsTable: React.FC<TableProps> = ({ data }) => {
   const navigate = useNavigate();
-  const checkBox = <input type="checkbox" className="w-4 mr-1 h-4 rounded-md" />;
+  // const checkBox = <input type="checkbox" className="w-4 mr-1 h-4 rounded-md" />;
 
   const handleRowClick = (id: number) => {
     navigate(`/tenant-details/${id}`);
@@ -34,19 +34,19 @@ const TenantsTable: React.FC<TableProps> = ({ data }) => {
         <table className="w-full text-sm text-left text-gray-500 border border-gray-200 rounded-lg">
           <thead className="text-xs text-gray-500  bg-gray-100">
             <tr>
-              <th className="flex items-center px-6 py-3 border-b">{checkBox} Property Names <FaArrowDown className="ml-1"/></th>
+              <th className="flex items-center px-6 py-3 border-b"> Property Names <FaArrowDown className="ml-1"/></th>
               <th className="px-6 py-3 border-b">Location</th>
               <th className="px-6 py-3 border-b">Number of units</th>
               <th className="px-6 py-3 border-b">Occupied units</th>
               <th className="px-6 py-3 border-b">Vacant units</th>
-              <th className="px-6 py-3 border-b">Tenants</th>
+              {/* <th className="px-6 py-3 border-b">Tenants</th> */}
             </tr>
           </thead>
           <tbody>
             {data?.map((property) => (
               <tr key={property?.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => handleRowClick(property.id)}>
                 <td className="px-6 py-4 border-b  text-gray-500 whitespace-nowrap">
-                 {checkBox} {property.name}
+                {property.name}
                 </td>
                 <td className="px-6 py-4 border-b whitespace-nowrap">
                {property.location}

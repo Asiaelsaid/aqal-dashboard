@@ -127,7 +127,7 @@ const router = createBrowserRouter(
         <Route
           path="communication"
           element={
-            <ProtectedRoute allowedRoles={["admin"]}>
+            <ProtectedRoute allowedRoles={["admin", "managers"]}>
               <Communication />
             </ProtectedRoute>
           }

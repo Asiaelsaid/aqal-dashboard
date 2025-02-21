@@ -11,6 +11,7 @@ interface IProperty {
   tims_report: string;
   lease_contract: string;
   outstanding_payment: string;
+  property_name: string;
 }
 const TableTenantsDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,9 +19,9 @@ const TableTenantsDetails = () => {
     queryKey: ["tentantsDetails"],
     url: `/managers/tenants-with-units/${id}`,
   });
-  const checkBox = (
-    <input type="checkbox" className="w-4 mr-1 h-4 rounded-md" />
-  );
+  // const checkBox = (
+  //   <input type="checkbox" className="w-4 mr-1 h-4 rounded-md" />
+  // );
   const tentantsData = data?.data;
 
   const handleNavigation = (url: string, name: string) => {
@@ -37,8 +38,9 @@ const TableTenantsDetails = () => {
           <thead className="text-xs text-gray-600  bg-gray-100">
             <tr>
               <th className="flex items-center px-6 py-3 border-b">
-                {checkBox} Tenant name <FaArrowDown className="ml-1" />
+                Tenant name <FaArrowDown className="ml-1" />
               </th>
+              <th className="px-6 py-3 border-b">Property name</th>
               <th className="px-6 py-3 border-b">Unit number</th>
               <th className="px-6 py-3 border-b">TIMS Report</th>
               <th className="px-6 py-3 border-b">Contract</th>
@@ -50,8 +52,11 @@ const TableTenantsDetails = () => {
             {tentantsData?.map((property: IProperty) => (
               <tr key={property?.id} className="hover:bg-gray-50 ">
                 <td className="px-6 py-4 border-b   whitespace-nowrap">
-                  {checkBox} <span className="mr-1">{property.first_name}</span>
+                  <span className="mr-1">{property.first_name}</span>
                   {property.last_name}
+                </td>
+                <td className="px-6 py-4 border-b whitespace-nowrap">
+                  {property.property_name}
                 </td>
                 <td className="px-6 py-4 border-b whitespace-nowrap">
                   {property.unit_number}
