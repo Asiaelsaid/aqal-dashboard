@@ -1,4 +1,4 @@
-import DateRangePicker from "@components/Properties/Filters/DateRangePicker";
+// import DateRangePicker from "@components/Properties/Filters/DateRangePicker";
 import PropertyAccordion from "@components/Requests/PropertyAccordion";
 import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
@@ -30,7 +30,7 @@ const Requests = () => {
     <div className="flex flex-col p-5 min-h-screen bg-gray-50">
       <PagesHeading heading="Requests" child={searchInput} />
       <SubHeading subHeading="Track Maintenancetickets from tenants swith ease" />
-      <DateRangePicker />
+      {/* <DateRangePicker /> */}
       <div className="mt-8 border shadow rounded-lg p-6">
         <div className="flex justify-between items-center pb-4">
           <div>

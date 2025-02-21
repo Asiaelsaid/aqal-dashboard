@@ -5,6 +5,7 @@ import { BsDot } from "react-icons/bs";
 import { FaArrowDown, FaEllipsisVertical } from "react-icons/fa6";
 import ButtonGroup from "./ButtonGroup";
 import Pagination from "@components/Properties/Pagination";
+import DateRangePicker from "@components/Properties/Filters/DateRangePicker";
 
 interface Request {
   id: number;
@@ -24,6 +25,13 @@ interface RequestsTableProps {
 const RequestsTable: React.FC<RequestsTableProps> = ({ requests, unitId }) => {
   const axiosInstance = useAxios();
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<{
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startDate: null,
+    endDate: null,
+  });
   const [propertyRequests, setPropertyRequests] = useState<Request[]>(requests);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,18 +66,7 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests, unitId }) => {
       .join(" ");
   };
 
-  // Handle filter
-  const handleStatusFilterChange = (status: string) => {
-    setSelectedStatus(status);
-    setCurrentPage(1); // Reset to first page on filter change
-    if (status) {
-      const filteredRequests = requests.filter((req) => req.status === status);
-      setPropertyRequests(filteredRequests);
-    } else {
-      setPropertyRequests(requests);
-    }
-  };
-
+  // Fetch requests on initial render
   const refechRequst = async () => {
     try {
       const { data } = await axiosInstance.get(
@@ -118,6 +115,39 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests, unitId }) => {
   const handlePageChange = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
+  // Handle filter
+  const handleStatusFilterChange = (status: string) => {
+    setSelectedStatus(status);
+    setCurrentPage(1); // Reset to first page on filter change
+    if (status) {
+      const filteredRequests = requests.filter((req) => req.status === status);
+      setPropertyRequests(filteredRequests);
+    } else {
+      setPropertyRequests(requests);
+    }
+  };
+  // handle date range filter
+  const handleDateFilterChange = (
+    range: { startDate: Date | null; endDate: Date | null } | null
+  ) => {
+    setDateRange(range ?? { startDate: null, endDate: null });
+
+    if (range?.startDate && range?.endDate) {
+      const filteredRequests = requests.filter((req) => {
+        const requestDate = new Date(req.preferred_service_date);
+        return (
+          range.startDate &&
+          range.endDate &&
+          requestDate >= new Date(range.startDate) &&
+          requestDate <= new Date(range.endDate)
+        );
+      });
+
+      setPropertyRequests(filteredRequests);
+    } else {
+      setPropertyRequests(requests);
+    }
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -125,78 +155,83 @@ const RequestsTable: React.FC<RequestsTableProps> = ({ requests, unitId }) => {
         <h2 className="text-lg font-semibold">Requests Table</h2>
         <ButtonGroup onStatusChange={handleStatusFilterChange} />
       </div>
+      <DateRangePicker value={dateRange} onChange={handleDateFilterChange} />
       <div className="overflow-x-auto mt-4 shadow-md">
-        <table className="w-full text-sm text-left text-gray-500 border border-gray-200 rounded-lg">
-          <thead className="text-xs text-gray-500 bg-gray-100">
-            <tr>
-              <th className="px-6 py-3 border-b text-left flex items-center">
-                Date <FaArrowDown className="ml-1" />
-              </th>
-              <th className="px-6 py-3 border-b text-left">Request ID</th>
-              <th className="px-6 py-3 border-b text-left">Service type</th>
-              <th className="px-6 py-3 border-b text-left">Description</th>
-              <th className="px-6 py-3 border-b text-left">Status</th>
-              <th className="px-6 py-3 border-b text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentRequests.length > 0 &&
-              currentRequests.map((request) => (
-                <tr key={request.req_code}>
-                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                    {request.preferred_service_date}
-                  </td>
-                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                    {request.req_code}
-                  </td>
-                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                    {request.category}
-                  </td>
-                  <td className="px-6 py-4 border-b whitespace-nowrap text-left">
-                    {request.description}
-                  </td>
-                  <td className="px-6 py-4 border-b text-left">
-                    <span
-                      className={`pr-3 py-1 w-fit rounded-full text-sm font-medium flex items-center ${getStatusStyles(
-                        request.status
-                      )}`}
-                    >
-                      <BsDot className="text-xl" />
-                      {capitalizeFirstLetter(request.status)}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 border-b text-left relative">
-                    <button
-                      onClick={() =>
-                        setDropdownOpen((prev) =>
-                          prev === request.req_code ? null : request.req_code
-                        )
-                      }
-                      className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full focus:outline-none"
-                    >
-                      <FaEllipsisVertical className="text-gray-400 text-lg" />
-                    </button>
-                    {dropdownOpen === request.req_code && (
-                      <div className="absolute right-0 z-10 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
-                        {statusOptions.map(({ value, label }) => (
-                          <button
-                            key={value}
-                            onClick={() => {
-                              updateRequestStatus(value, request.id);
-                              setDropdownOpen(null);
-                            }}
-                            className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                          >
-                            {label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        {currentRequests.length > 0 ? (
+          <table className="w-full text-sm text-left text-gray-500 border border-gray-200 rounded-lg">
+            <thead className="text-xs text-gray-500 bg-gray-100">
+              <tr>
+                <th className="px-6 py-3 border-b text-left flex items-center">
+                  Date <FaArrowDown className="ml-1" />
+                </th>
+                <th className="px-6 py-3 border-b text-left">Request ID</th>
+                <th className="px-6 py-3 border-b text-left">Service type</th>
+                <th className="px-6 py-3 border-b text-left">Description</th>
+                <th className="px-6 py-3 border-b text-left">Status</th>
+                <th className="px-6 py-3 border-b text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentRequests.length > 0 &&
+                currentRequests.map((request) => (
+                  <tr key={request.req_code}>
+                    <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                      {request.preferred_service_date}
+                    </td>
+                    <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                      {request.req_code}
+                    </td>
+                    <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                      {request.category}
+                    </td>
+                    <td className="px-6 py-4 border-b whitespace-nowrap text-left">
+                      {request.description}
+                    </td>
+                    <td className="px-6 py-4 border-b text-left">
+                      <span
+                        className={`pr-3 py-1 w-fit rounded-full text-sm font-medium flex items-center ${getStatusStyles(
+                          request.status
+                        )}`}
+                      >
+                        <BsDot className="text-xl" />
+                        {capitalizeFirstLetter(request.status)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 border-b text-left relative">
+                      <button
+                        onClick={() =>
+                          setDropdownOpen((prev) =>
+                            prev === request.req_code ? null : request.req_code
+                          )
+                        }
+                        className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full focus:outline-none"
+                      >
+                        <FaEllipsisVertical className="text-gray-400 text-lg" />
+                      </button>
+                      {dropdownOpen === request.req_code && (
+                        <div className="absolute right-0 z-10 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
+                          {statusOptions.map(({ value, label }) => (
+                            <button
+                              key={value}
+                              onClick={() => {
+                                updateRequestStatus(value, request.id);
+                                setDropdownOpen(null);
+                              }}
+                              className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                            >
+                              {label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-center text-gray-500">No requests found.</p>
+        )}
       </div>
       <Pagination totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
