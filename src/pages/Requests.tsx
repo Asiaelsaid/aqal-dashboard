@@ -3,33 +3,9 @@ import PropertyAccordion from "@components/Requests/PropertyAccordion";
 import PagesHeading from "@components/UI/PagesHeading";
 import SubHeading from "@components/UI/SubHeading";
 import useCustomQuery from "@hooks/useCustomQuery";
+import { Property } from "@interfaces";
 import { FiSearch } from "react-icons/fi";
-interface Request {
-  req_code: string;
-  category: string;
-  description: string;
-  status: string;
-  urgency: string;
-  preferred_service_date: string;
-}
-interface Tenant {
-  id: number;
-  name: string;
-  email: string;
-}
-interface Unit {
-  unit_number: string;
-  unit_level: number;
-  status: string;
-  tenant: Tenant | null;
-  requests: Request[];
-}
-interface Property {
-  property_name: string;
-  location: string;
-  total_units: number;
-  units: Unit[];
-}
+
 
 const Requests = () => {
   const { data } = useCustomQuery({

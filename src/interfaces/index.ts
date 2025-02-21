@@ -60,3 +60,62 @@ export interface IContactTableProps {
   phone_number: string,
   address: string
 }
+// export interface Request {
+//   req_code: string;
+//   category: string;
+//   description: string;
+//   status: string;
+//   urgency: string;
+//   preferred_service_date: string;
+// }
+// export interface Tenant {
+//   id: number;
+//   name: string;
+//   email: string;
+// }
+// export interface Unit {
+//   id: number;
+//   unit_number: string;
+//   unit_level: number;
+//   status: string;
+//   tenant: Tenant | null;
+//   requests: Request[];
+// }
+
+// export interface Property {
+//   property_name: string;
+//   location: string;
+//   total_units: number;
+//   units: Unit[];
+// }
+export interface Tenant {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface Request {
+  id:number
+  req_code: string;
+  category: string;
+  description: string;
+  status: string;
+  urgency: string;
+  preferred_service_date: string;
+}
+
+export interface Unit {
+  id: number;
+  unit_number: string;
+  unit_level: number;
+  status: string;
+  tenant: Tenant | null;
+  requests: Request[];
+}
+
+export interface Property {
+  property_name: string;
+  location: string;
+  total_units: number;
+  units: Unit[];
+}

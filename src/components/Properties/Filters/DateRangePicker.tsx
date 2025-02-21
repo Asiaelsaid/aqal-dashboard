@@ -2,10 +2,14 @@ import { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 
 const DateRangePicker: React.FC = () => {
-  const [value, setValue] = useState({
-    startDate: null,
-    endDate: null,
-  });
+  // const [value, setValue] = useState({
+  //   startDate: null,
+  //   endDate: null,
+  // });
+  const [value, setValue] = useState<{
+    startDate: Date | null;
+    endDate: Date | null;
+  } | null>(null);
 
   return (
     <div className="relative max-w-56 mt-8">

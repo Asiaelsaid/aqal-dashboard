@@ -1,38 +1,9 @@
 import { useState } from "react";
 import UnitAccordion from "./UnitAccordion";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { Property } from "@interfaces";
 
-interface Tenant {
-  id: number;
-  name: string;
-  email: string;
-}
 
-interface Request {
-  id:number
-  req_code: string;
-  category: string;
-  description: string;
-  status: string;
-  urgency: string;
-  preferred_service_date: string;
-}
-
-interface Unit {
-  id: number;
-  unit_number: string;
-  unit_level: number;
-  status: string;
-  tenant: Tenant | null;
-  requests: Request[];
-}
-
-interface Property {
-  property_name: string;
-  location: string;
-  total_units: number;
-  units: Unit[];
-}
 
 const PropertyAccordion = ({ property }: { property: Property }) => {
   const [isOpen, setIsOpen] = useState(false);

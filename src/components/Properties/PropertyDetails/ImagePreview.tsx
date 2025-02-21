@@ -29,6 +29,8 @@ const ImagePreview: React.FC<IProps> = ({
     if (files) {
       const fileList = Array.from(files);
       setUploadedImages((prevImages) => [...prevImages, ...fileList]);
+      console.log(uploadedImages);
+
       const formData = new FormData();
       fileList.forEach((file) => {
         formData.append("images", file);
