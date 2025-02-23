@@ -1,6 +1,6 @@
 import PropertiesFilter from "@components/Properties/PropertiesFilter";
 import PropertyCard from "@components/Properties/PropertyCard";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import imageOne from "@assets/images/Image (1).png";
 import useCustomQuery from "@hooks/useCustomQuery";
 import Pagination from "@components/Properties/Pagination";
@@ -26,9 +26,11 @@ const ITEMS_PER_PAGE = 20;
 const Properties = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [locations, setLocations] = useState<string[]>([]);
   const { data } = useCustomQuery({
-    queryKey: ["properties"],
-    url: "/owners/properties",
+    queryKey: ["properties",selectedLocation  ],
+    url: `/owners/properties${selectedLocation ? `?location=${selectedLocation}` : ""}`,
   });
   const propertiesData = data?.data;
   const filteredProperties = useMemo(() => {
@@ -65,7 +67,12 @@ const Properties = () => {
   const totalPages = filteredProperties.length
     ? Math.ceil(filteredProperties.length / ITEMS_PER_PAGE)
     : 1;
+    // const locations= useMemo(() => {
+    //   return propertiesData ? [...new Set(propertiesData.map((property: IProperty) => property.location))] : [];
+    // }, [propertiesData]);
+    
 
+    
   // Search input component
   const searchInput = (
     <div className="flex items-center w-full max-w-md px-4 py-2 text-gray-500 bg-white border rounded-lg shadow-sm space-x-2 lg:w-1/4">
@@ -79,11 +86,21 @@ const Properties = () => {
       />
     </div>
   );
+  useEffect(() => {
+    if (propertiesData) {
+      const uniqueLocations: string[] = Array.from(
+        new Set(propertiesData.map((property: IProperty) => property.location))
+      );
+      console.log(uniqueLocations);
+      
+      setLocations(uniqueLocations);
+    }
+  }, []);
 
   return (
     <div className="flex-1 p-5 bg-gray-50">
       <PagesHeading heading="Properties" child={searchInput} />
-      <PropertiesFilter />
+      <PropertiesFilter locations={locations} onSelectLocation={setSelectedLocation}/>
       {/* Property Cards */}
       <div className="p-4 space-y-4">
         {currentProperties?.map((property: IProperty) => (

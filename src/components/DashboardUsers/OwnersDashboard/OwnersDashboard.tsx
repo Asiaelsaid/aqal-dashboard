@@ -6,6 +6,8 @@ import RentCollectionProgress from "./RentCollectionProgress";
 import ActivityTable from "./ActivityTable";
 import useCustomQuery from "@hooks/useCustomQuery";
 import RentAmountChart from "../ManagersDashboard/RentAmountChart";
+
+
 import { useEffect, useState } from "react";
 
 interface UnitData {

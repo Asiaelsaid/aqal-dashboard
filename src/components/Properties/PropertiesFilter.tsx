@@ -4,19 +4,17 @@ import SelectCountry from "./Filters/SelectCountry";
 import SubHeading from "@components/UI/SubHeading";
 import { FaPlus } from "react-icons/fa6";
 
-const PropertiesFilter = () => {
+interface IProps {
+  locations: string[];
+  onSelectLocation: (location: string) => void;
+}
+const PropertiesFilter : React.FC<IProps> = ({locations,onSelectLocation}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState({
-    name: "",
-    imgURL: "",
-  });
-  // const [selectedPriceRange, setSelectedPriceRange] = useState(null);
-  console.log(selectedCountry);
+  console.log("tesr",locations);
 
-  // Handlers
-  const onCountryChange = (category: { name: string; imgURL: string }) => {
-    setSelectedCountry(category);
-  };
+ 
+  // const [selectedPriceRange, setSelectedPriceRange] = useState(null);
+
   // const onPriceRangeChange = (priceRange: {
   //   id: number;
   //   label: string;
@@ -37,7 +35,7 @@ const PropertiesFilter = () => {
       <div className="flex flex-col sm:flex-row sm:space-x-4 sm:space-y-0 space-y-4 sm:justify-between lg:flex-row lg:items-center lg:space-x-8">
         {/* Dropdowns */}
         <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full sm:w-auto lg:w-2/3">
-          <SelectCountry onCountryChange={onCountryChange} />
+          <SelectCountry locations={locations} onCountryChange={onSelectLocation} />
           {/* <DateRangePicker /> */}
           {/* <PriceRangeSelector onPriceRangeChange={onPriceRangeChange} /> */}
         </div>

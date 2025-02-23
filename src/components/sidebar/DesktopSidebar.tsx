@@ -17,6 +17,8 @@ import { HiOutlineHashtag } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { logout } from "@store/auth/authSlice";
 import useCustomQuery from "@hooks/useCustomQuery";
+import userProfile from   "../../assets/images/profile.png"
+
 
 interface IProps {
   isOpen: boolean;
@@ -184,7 +186,7 @@ const DesktopSidebar: React.FC<IProps> = ({
           }  mt-4 `}
         >
           <img
-            src={userDetails?.profile_photo || "https://via.placeholder.com/40"}
+            src={userDetails?.profile_photo ? userDetails?.profile_photo :userProfile}
             alt="User Avatar"
             className="w-11 h-11 rounded-full object-cover mr-3"
           />

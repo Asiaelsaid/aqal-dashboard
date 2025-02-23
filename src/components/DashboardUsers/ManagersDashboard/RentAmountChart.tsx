@@ -1,12 +1,15 @@
 import React from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import ButtonsFiter from "../OwnersDashboard/ButtonsFiter";
 
 interface RentAmountChartProps {
   data: { name: string; collected: number; toBeCollected: number }[];
 }
 
 const RentAmountChart: React.FC<RentAmountChartProps> = ({ data }) => {
+  console.log(data);
+  
   const options: ApexOptions = {
     chart: { type: "bar", toolbar: { show: false } },
     plotOptions: {
@@ -20,10 +23,10 @@ const RentAmountChart: React.FC<RentAmountChartProps> = ({ data }) => {
   };
 
   const series = [
-    { name: "Rent collected", data: data.map((unit) => unit.collected) },
+    { name: "Rent collected", data: data?.map((unit) => unit.collected) },
     {
       name: "Rent to be collected",
-      data: data.map((unit) => unit.toBeCollected),
+      data: data?.map((unit) => unit.toBeCollected),
     },
   ];
 
@@ -32,7 +35,7 @@ const RentAmountChart: React.FC<RentAmountChartProps> = ({ data }) => {
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-lg font-semibold">Rent Amount</h2>
       </div>
-
+      <ButtonsFiter/>
       {/* Render Chart */}
       <Chart options={options} series={series} type="bar" height={300} />
     </div>
