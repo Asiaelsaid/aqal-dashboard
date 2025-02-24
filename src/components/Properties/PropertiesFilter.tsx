@@ -5,16 +5,11 @@ import SubHeading from "@components/UI/SubHeading";
 import { FaPlus } from "react-icons/fa6";
 
 interface IProps {
-  locations: string[];
   onSelectLocation: (location: string) => void;
 }
-const PropertiesFilter : React.FC<IProps> = ({locations,onSelectLocation}) => {
+const PropertiesFilter : React.FC<IProps> = ({onSelectLocation}) => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log("tesr",locations);
-
- 
   // const [selectedPriceRange, setSelectedPriceRange] = useState(null);
-
   // const onPriceRangeChange = (priceRange: {
   //   id: number;
   //   label: string;
@@ -35,7 +30,7 @@ const PropertiesFilter : React.FC<IProps> = ({locations,onSelectLocation}) => {
       <div className="flex flex-col sm:flex-row sm:space-x-4 sm:space-y-0 space-y-4 sm:justify-between lg:flex-row lg:items-center lg:space-x-8">
         {/* Dropdowns */}
         <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 w-full sm:w-auto lg:w-2/3">
-          <SelectCountry locations={locations} onCountryChange={onSelectLocation} />
+          <SelectCountry  onCountryChange={onSelectLocation} />
           {/* <DateRangePicker /> */}
           {/* <PriceRangeSelector onPriceRangeChange={onPriceRangeChange} /> */}
         </div>

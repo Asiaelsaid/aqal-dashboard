@@ -1,6 +1,6 @@
 import PropertiesFilter from "@components/Properties/PropertiesFilter";
 import PropertyCard from "@components/Properties/PropertyCard";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import imageOne from "@assets/images/Image (1).png";
 import useCustomQuery from "@hooks/useCustomQuery";
 import Pagination from "@components/Properties/Pagination";
@@ -27,7 +27,6 @@ const Properties = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [locations, setLocations] = useState<string[]>([]);
   const { data } = useCustomQuery({
     queryKey: ["properties",selectedLocation  ],
     url: `/owners/properties${selectedLocation ? `?location=${selectedLocation}` : ""}`,
@@ -86,21 +85,12 @@ const Properties = () => {
       />
     </div>
   );
-  useEffect(() => {
-    if (propertiesData) {
-      const uniqueLocations: string[] = Array.from(
-        new Set(propertiesData.map((property: IProperty) => property.location))
-      );
-      console.log(uniqueLocations);
-      
-      setLocations(uniqueLocations);
-    }
-  }, []);
+
 
   return (
     <div className="flex-1 p-5 bg-gray-50">
       <PagesHeading heading="Properties" child={searchInput} />
-      <PropertiesFilter locations={locations} onSelectLocation={setSelectedLocation}/>
+      <PropertiesFilter  onSelectLocation={setSelectedLocation}/>
       {/* Property Cards */}
       <div className="p-4 space-y-4">
         {currentProperties?.map((property: IProperty) => (
