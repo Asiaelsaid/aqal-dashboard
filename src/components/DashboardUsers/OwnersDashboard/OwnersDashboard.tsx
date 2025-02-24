@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import OverviewCard from "./OverviewCard";
 import RevenueExpensesChart from "./RevenueExpensesChart";
 import PagesHeading from "@components/UI/PagesHeading";
@@ -8,20 +9,40 @@ import useCustomQuery from "@hooks/useCustomQuery";
 import RentAmountChart from "../ManagersDashboard/RentAmountChart";
 
 
-import { useEffect, useState } from "react";
-
-interface UnitData {
-  unit_number: number;
-  rent_collected: Record<string, number>;
-  rent_due: Record<string, number>;
+interface SeriesData {
+  name: string;
+  data: number[];
 }
+
+interface Unit {
+  unit_id: number;
+  unit_number: string;
+  property_name: string;
+  series: SeriesData[];
+}
+interface UnitRentAnalysis {
+  labels: string[];
+  units: Unit[];
+}
+
 const OwnersDashboard = () => {
   const { data } = useCustomQuery({
     queryKey: ["dashboard"],
     url: "/owners/properties/dashboard/",
   });
   const dashboardData = data?.data;
-  const unitRentAnalysis = dashboardData?.unit_rent_analysis || {};
+  const unitRentAnalysis: UnitRentAnalysis = dashboardData?.unit_rent_analysis || { labels: [], units: [] };
+
+  // const unitData = unitRentAnalysis?.units.map(unit => {
+  //   const collectedSeries = unit.series.find(s => s.name === "Rent Collected");
+  //   const dueSeries = unit.series.find(s => s.name === "Rent Due");
+    
+  //   return {
+  //     name: `${unit.property_name}-Unit ${unit.unit_number}`,
+  //     collected: collectedSeries?.data.reduce((a, b) => a + b, 0) || 0,
+  //     toBeCollected: dueSeries?.data.reduce((a, b) => a + b, 0) || 0
+  //   };
+  // });
   const recentActivity = dashboardData?.recent_activity || [];
   const [role, setRole] = useState<string>("");
   useEffect(() => {
@@ -66,23 +87,12 @@ const OwnersDashboard = () => {
           />
         </div>
       </div>
-      {role === "managers" && (
+      {role === "managers" && unitRentAnalysis?.units && (
         <RentAmountChart
-          data={
-            unitRentAnalysis?.units?.map((unit: UnitData) => ({
-              name: `Unit ${unit.unit_number}`,
-              collected: Object.values(unit.rent_collected).reduce(
-                (acc, val) => acc + val,
-                0
-              ),
-              toBeCollected: Object.values(unit.rent_due).reduce(
-                (acc, val) => acc + val,
-                0
-              ),
-            })) || []
-          }
+          data={unitRentAnalysis}
         />
       )}
+
       {(role === "owners" || role === "managers") && (
         <ActivityTable recentActivity={recentActivity} />
       )}
