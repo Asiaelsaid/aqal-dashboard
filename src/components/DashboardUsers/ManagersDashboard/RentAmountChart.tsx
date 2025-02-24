@@ -142,17 +142,6 @@ const RentAmountChart: React.FC<RentAmountChartProps> = ({ data }) => {
     dataLabels: { enabled: false },
     xaxis: {
       categories: processedData.map((unit) => unit.name),
-      labels: {
-        rotate: -30,
-        rotateAlways: true,
-        style: {
-          fontSize: "12px",
-          fontFamily: "inherit",
-        },
-        offsetY: 5,
-      },
-      axisTicks: { show: false },
-      axisBorder: { show: false },
     },
     yaxis: {
       labels: {
@@ -170,7 +159,7 @@ const RentAmountChart: React.FC<RentAmountChartProps> = ({ data }) => {
         <div class="px-2 py-1 bg-white shadow rounded text-black">
           <span class="font-semibold">${processedData[dataPointIndex].fullName}</span>
         </div>
-      `, // Show property_name in tooltip
+      `, 
     },
   };
 
@@ -186,14 +175,14 @@ const RentAmountChart: React.FC<RentAmountChartProps> = ({ data }) => {
   ];
 
   return (
-    <div className="p-5 rounded-lg shadow mt-5 bg-white">
+    <div className="p-5 rounded-lg shadow mt-5 bg-gray-50">
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-lg font-semibold">Rent Amount</h2>
         <ButtonsFiter selectedTimeframe={timeframe} onSelect={setTimeframe} />
       </div>
       <div className="overflow-x-auto">
         <div className="min-w-[600px]">
-          <Chart options={options} series={series} type="bar" height={400} />
+          <Chart options={options} series={series} type="bar" height={300} />
         </div>
       </div>
     </div>
