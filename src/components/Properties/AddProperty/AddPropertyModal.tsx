@@ -9,6 +9,7 @@ import ConditionSelect from "./ConditionSelect";
 import { FaTimes } from "react-icons/fa";
 import { AxiosError } from "axios";
 import PropertyManagerSelect from "./PropertyManagerSelect";
+import PropertyOwnerSelect from "./PropertyOwnerSelect";
 
 interface IProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
     unit_types: "",
     property_level: "",
     property_manager: Number(""),
+    user: Number(""), // property owner
     amenities: [],
     common_areas: [],
   });
@@ -39,9 +41,9 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         "/owners/property/create/",
         formData
       );
-
+  
       if (data?.status === 201) {
-                setIsOpen(false);
+        setIsOpen(false);
         toast.success("Property added successfully!");
         setFormData({
           name: "",
@@ -55,18 +57,20 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
           unit_types: "",
           property_level: "",
           property_manager: Number(""),
+          user: Number(""),
           amenities: [],
           common_areas: [],
         });
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorrEsponse>;
-      toast.error(`${errorObj.response?.data?.message}`, {
+      toast.error(`${errorObj.response?.data?.message || "Validation failed"}`, {
         duration: 3000,
         position: "top-center",
       });
     }
   };
+  
   const { data } = useCustomQuery({
     queryKey: ["propertyFields"],
     url: "/owners/property/fields/",
@@ -91,13 +95,23 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
     >
   ) => {
     const { name, value } = e.target;
+  
     if (name === "property_manager") {
       const selectedManager = fieldsData?.property_managers.find(
         (manager: { id: number }) => manager.id === Number(value)
       );
       setFormData({
         ...formData,
-        property_manager: selectedManager.id || null,
+        property_manager: selectedManager?.id || null, // Ensure fallback to null if not found
+      });
+    } else if (name === "property_owners") {
+      // Handle property owner selection
+      const selectedOwner = fieldsData?.property_owners.find(
+        (owner: { id: number }) => owner.id === Number(value)
+      );
+      setFormData({
+        ...formData,
+        user: selectedOwner?.id || null, // Ensure fallback to null if not found
       });
     } else if (
       name === "total_units" ||
@@ -110,6 +124,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       setFormData({ ...formData, [name]: value });
     }
   };
+  
   return (
     <Dialog
       open={isOpen}
@@ -258,6 +273,16 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
               />
             )}
           </div>
+
+          <div>
+            {fieldsData?.property_owners && (
+              <PropertyOwnerSelect
+                formData={formData}
+                setFormData={setFormData}
+              />
+            )}
+          </div>
+          
           <hr />
           <div>
             <h3 className="font-semibold text-gray-700 mb-2">
