@@ -12,6 +12,7 @@ export interface PropertyData {
   unit_types: string;
   property_level: string;
   property_manager: number;
+  user: number; 
   amenities: number[];
   common_areas: number[];
 }
