@@ -14,9 +14,10 @@ import PropertyOwnerSelect from "./PropertyOwnerSelect";
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  refetch: () => void;
 }
 
-const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
+const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
   const axiosInstance = useAxios();
   const [formData, setFormData] = useState<PropertyData>({
     name: "",
@@ -46,6 +47,7 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       if (data?.status === 201) {
         setIsOpen(false);
         toast.success("Property added successfully!");
+        refetch();
         setFormData({
           name: "",
           property_type: Number(""),

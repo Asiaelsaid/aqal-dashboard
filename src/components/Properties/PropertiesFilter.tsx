@@ -6,8 +6,9 @@ import { FaPlus } from "react-icons/fa6";
 
 interface IProps {
   onSelectLocation: (location: string) => void;
+  refetch:()=>void;
 }
-const PropertiesFilter : React.FC<IProps> = ({onSelectLocation}) => {
+const PropertiesFilter : React.FC<IProps> = ({onSelectLocation,refetch}) => {
   const [isOpen, setIsOpen] = useState(false);
   // const [selectedPriceRange, setSelectedPriceRange] = useState(null);
   // const onPriceRangeChange = (priceRange: {
@@ -47,7 +48,7 @@ const PropertiesFilter : React.FC<IProps> = ({onSelectLocation}) => {
           </div>
         )}
       </div>
-      <AddPropertyModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <AddPropertyModal isOpen={isOpen} setIsOpen={setIsOpen} refetch={refetch} />
     </div>
   );
 };
