@@ -30,9 +30,16 @@ const OwnersDashboard = () => {
     queryKey: ["dashboard"],
     url: "/owners/properties/dashboard/",
   });
+
   const dashboardData = data?.data;
   const unitRentAnalysis: UnitRentAnalysis = dashboardData?.unit_rent_analysis || { labels: [], units: [] };
 
+  const { data: userResponse } = useCustomQuery({
+    queryKey: ["user-details"],
+    url: "/users/details/",
+  });
+
+  const userDetails = userResponse?.data;
   // const unitData = unitRentAnalysis?.units.map(unit => {
   //   const collectedSeries = unit.series.find(s => s.name === "Rent Collected");
   //   const dueSeries = unit.series.find(s => s.name === "Rent Due");
@@ -51,7 +58,7 @@ const OwnersDashboard = () => {
   }, []);
   return (
     <div className="flex flex-col p-5 min-h-screen bg-gray-50">
-      <PagesHeading heading="Welcome to Aqal, Olivia" />
+      <PagesHeading heading={`Welcome to Aqal, ${  userDetails?.first_name || ""} ${userDetails?.last_name ||""} `}/>
       <SubHeading subHeading="Manage your properties, tenants, and finances all in one place." />
       {/* Overview Cards */}
       <div className=" my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

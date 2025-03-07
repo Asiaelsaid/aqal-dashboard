@@ -17,8 +17,8 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
   const axiosInstance = useAxios();
   const [isDragging, setIsDragging] = useState(false);
   const [formData, setFormData] = useState<ITenantData>({
-    tenant: Number(""),
-    property: Number(""),
+    tenant: "",
+    property: "",
     unit_number: "",
     outstanding_payment: "",
     tims_report: "",
@@ -113,8 +113,8 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       if (data.status === 201) {
         toast.success("Tenant added successfully!");
         setFormData({
-          tenant: Number(""),
-          property: Number(""),
+          tenant: "",
+          property: "",
           unit_number: "",
           outstanding_payment: "",
           tims_report: "",

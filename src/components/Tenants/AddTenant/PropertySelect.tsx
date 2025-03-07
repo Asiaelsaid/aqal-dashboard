@@ -39,7 +39,7 @@ const PropertySelect: React.FC<IPropertySelectProps> = ({
         as="div"
         value={formData.property}
         onChange={(value) =>
-          setFormData({ ...formData, property: Number(value) })
+          setFormData({ ...formData, property: value })
         }
       >
         {({ open }) => (
