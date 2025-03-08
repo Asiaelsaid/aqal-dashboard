@@ -110,7 +110,7 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         }
       );
 
-      if (data.status === 201) {
+      if (data.status === 200) {
         toast.success("Tenant added successfully!");
         setFormData({
           tenant: "",
