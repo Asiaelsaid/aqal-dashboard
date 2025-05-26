@@ -1,4 +1,5 @@
 import ProtectedRoute from "@components/auth/ProtectedRoute";
+
 import RootLayout from "@layouts/RootLayout";
 import Dashboard from "@pages";
 import Communication from "@pages/Communication";
@@ -18,16 +19,21 @@ import Support from "@pages/Support";
 import TenantDetails from "@pages/Tenants/TenantDetails";
 import Tenants from "@pages/Tenants/Tenants";
 import UserManagement from "@pages/UserManagement";
+import Landing from "@pages/Landing";
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<RootLayout />}>
+      {/* 🔓 Public Landing Page at `/` */}
+      <Route path="/" element={<Landing />} />
+
+      {/* 🔐 Protected App starts from `/dashboard` */}
+      <Route path="/dashboard" element={<RootLayout />}>
         <Route
           index
           element={
@@ -149,12 +155,14 @@ const router = createBrowserRouter(
           }
         />
       </Route>
+
+      {/* 🔐 Auth Routes */}
       <Route path="/login" element={<Login />} />
-      {/* <Route path="/sign-up" element={<Signup />} /> */}
       <Route path="/password-recovery" element={<PasswordRecoveryPage />} />
       <Route path="/password-reset" element={<PasswordResetPage />} />
     </>
   )
 );
+
 
 export default router;

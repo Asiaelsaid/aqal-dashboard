@@ -42,7 +42,7 @@ const DesktopSidebar: React.FC<IProps> = ({
   });
   const userDetails = data?.data;
   let sidebarItems = [
-    { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+    { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
     { label: "Properties", icon: <FiLayers />, path: "properties" },
     { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
     { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
@@ -51,7 +51,7 @@ const DesktopSidebar: React.FC<IProps> = ({
 
   if (role === "managers") {
     sidebarItems = [
-      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       {
         label: "Financials",
         icon: <BsDatabaseCheck />,
@@ -69,7 +69,7 @@ const DesktopSidebar: React.FC<IProps> = ({
     ];
   } else if (role === "admin") {
     sidebarItems = [
-      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       { label: "Properties", icon: <BiBuildings />, path: "properties" },
       // { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
       // {
@@ -90,7 +90,7 @@ const DesktopSidebar: React.FC<IProps> = ({
     ];
   } else if (role === "owners") {
     sidebarItems = [
-      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
       // { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },

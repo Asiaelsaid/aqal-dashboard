@@ -7,23 +7,29 @@ import {
 import { HiChevronDown } from "react-icons/hi";
 import { Fragment } from "react";
 import { IExpenseData } from "@interfaces";
+import useCustomQuery from "@hooks/useCustomQuery";
 
 interface IExpenseSelectProps {
   formData: IExpenseData;
   setFormData: React.Dispatch<React.SetStateAction<IExpenseData>>;
 }
 
-const expenseTypes = [
-  { id: "maintenance", name: "Maintenance" },
-  { id: "utilities", name: "Utilities" },
-  { id: "management_fees", name: "Management Fees" },
-  { id: "other", name: "Other" },
-];
+interface IExpenseType {
+  id: number;
+  name: string;
+}
 
 const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
   formData,
   setFormData,
 }) => {
+  const { data, isLoading } = useCustomQuery({
+    queryKey: ["expenseTypes"],
+    url: "/managers/expenses_category/",
+  });
+
+  const expenseTypes: IExpenseType[] = data?.data || [];
+
   const selectedExpenseType = expenseTypes.find(
     (expense) => expense.id === formData.expense_type
   );
@@ -40,6 +46,7 @@ const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
         as="div"
         value={formData.expense_type}
         onChange={(value) => setFormData({ ...formData, expense_type: value })}
+        disabled={isLoading}
       >
         {({ open }) => (
           <div className="relative">
@@ -47,6 +54,8 @@ const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
               <span>
                 {selectedExpenseType
                   ? selectedExpenseType.name
+                  : isLoading
+                  ? "Loading..."
                   : "Select Expense Type"}
               </span>
               <HiChevronDown
@@ -65,11 +74,7 @@ const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
               } origin-top`}
             >
               {expenseTypes.map((expense) => (
-                <ListboxOption
-                  key={expense.id}
-                  value={expense.id}
-                  as={Fragment}
-                >
+                <ListboxOption key={expense.id} value={expense.id} as={Fragment}>
                   {({ selected, disabled }) => (
                     <li
                       className={`cursor-pointer select-none p-2 list-none transition-colors hover:bg-purple-400 hover:text-white ${

@@ -56,7 +56,7 @@ const LogInComponent = () => {
           duration: 1000,
           position: "top-center",
         });
-        navigate("/", { replace: true });
+        navigate("/dashboard", { replace: true });
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorrEsponse>;
