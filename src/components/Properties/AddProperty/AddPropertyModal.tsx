@@ -14,6 +14,8 @@ import PropertyOwnerSelect from "./PropertyOwnerSelect";
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  refetch: () => void; // 👈 Add this line
+
 }
 
 const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
