@@ -27,7 +27,7 @@ const Properties = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const { data } = useCustomQuery({
+  const { data ,refetch} = useCustomQuery({
     queryKey: ["properties",selectedLocation  ],
     url: `/owners/properties${selectedLocation ? `?location=${selectedLocation}` : ""}`,
   });
@@ -90,7 +90,7 @@ const Properties = () => {
   return (
     <div className="flex-1 p-5 bg-gray-50">
       <PagesHeading heading="Properties" child={searchInput} />
-      <PropertiesFilter  onSelectLocation={setSelectedLocation}/>
+      <PropertiesFilter  onSelectLocation={setSelectedLocation} refetch={refetch}/>
       {/* Property Cards */}
       <div className="p-4 space-y-4">
         {currentProperties?.map((property: IProperty) => (

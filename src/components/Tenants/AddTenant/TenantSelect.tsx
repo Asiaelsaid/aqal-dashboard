@@ -10,7 +10,7 @@ import { Fragment, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 
 interface TenantData {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
   has_unit: boolean;
@@ -51,7 +51,7 @@ const TenantSelect: React.FC<TenantSelectProps> = ({
         as="div"
         value={formData.tenant}
         onChange={(value) =>
-          setFormData({ ...formData, tenant: Number(value) })
+          setFormData({ ...formData, tenant: value })
         }
       >
         {({ open }) => (
