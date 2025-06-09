@@ -26,7 +26,7 @@ const TenantsTable: React.FC<TableProps> = ({ data }) => {
   // const checkBox = <input type="checkbox" className="w-4 mr-1 h-4 rounded-md" />;
 
   const handleRowClick = (id: number) => {
-    navigate(`/tenant-details/${id}`);
+    navigate(`tenant-details/${id}`);
   };
   return (
     <div className="overflow-x-auto rounded-lg shadow-md">

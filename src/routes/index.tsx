@@ -67,7 +67,7 @@ const router = createBrowserRouter(
           }
         />
         <Route
-          path="tenant-details/:id"
+          path="tenants/tenant-details/:id"
           element={
             <ProtectedRoute>
               <TenantDetails />
