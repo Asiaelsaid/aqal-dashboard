@@ -18,22 +18,25 @@ interface IProps {
 
 const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
   const axiosInstance = useAxios();
-  const [formData, setFormData] = useState<PropertyData>({
-    name: "",
-    property_type: Number(""),
-    description: "",
-    conditions: Number(""),
-    location: "Nairobi, Kenya",
-    total_units: "",
-    vacant_units: "",
-    sold_units: "",
-    unit_types: "",
-    property_level: "",
-    property_manager: Number(""),
-    user: Number(""), // property owner
-    amenities: [],
-    common_areas: [],
-  });
+const [formData, setFormData] = useState<PropertyData>({
+  name: "",
+  property_type: Number(""),
+  description: "",
+  conditions: Number(""),
+  location: "Nairobi, Kenya",
+  total_units: "",
+  vacant_units: "",
+  sold_units: "",
+  unit_types: "",
+  property_level: "",
+  property_manager: Number(""),
+  user: Number(""),
+  amenities: [],
+  common_areas: [],
+  consumer_key: "",   // 👈 new
+  secret_key: "",     // 👈 new
+  paybill: "",        // 👈 new
+});
   const handleSubmit = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
@@ -335,6 +338,43 @@ const AddPropertyModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
             </div>
           </div>
           <hr />
+
+<div>
+  <label className="block text-gray-700 font-medium">Consumer Key</label>
+  <input
+    type="text"
+    name="consumer_key"
+    value={formData.consumer_key}
+    onChange={handleChange}
+    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+    placeholder="Enter M-Pesa consumer key"
+  />
+</div>
+
+<div>
+  <label className="block text-gray-700 font-medium">Secret Key</label>
+  <input
+    type="text"
+    name="secret_key"
+    value={formData.secret_key}
+    onChange={handleChange}
+    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+    placeholder="Enter M-Pesa secret key"
+  />
+</div>
+
+<div>
+  <label className="block text-gray-700 font-medium">Paybill</label>
+  <input
+    type="text"
+    name="paybill"
+    value={formData.paybill}
+    onChange={handleChange}
+    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+    placeholder="Enter Paybill number"
+  />
+</div>
+          
           <div className="flex items-center justify-between gap-2">
             <button
               className="w-full  text-gray-700 border rounded-lg p-2 hover:bg-purple-600 hover:text-white transition"

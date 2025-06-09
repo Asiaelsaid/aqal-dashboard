@@ -1,12 +1,22 @@
 import { FaCheckCircle } from "react-icons/fa";
 import { Link, Element } from "react-scroll";
+import ImageBackground from "../assets/images/property_home.jpg";
+
+import ImageSide from "../assets/images/property_side.jpg";
+
+import Icon from "../assets/icons/property.png";
 
 const Landing = () => {
   return (
     <div className="text-gray-800">
       {/* Hero Section */}
       <Element name="home">
-        <div className="relative h-screen bg-cover bg-center" style={{ backgroundImage: "url('./src/assets/images/property_home.jpg')" }}>
+        <div className="relative h-screen bg-cover bg-center" style={{ 
+          backgroundImage: `url(${ImageBackground})`, }}
+          
+          >
+
+
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="text-center text-white">
               <h1 className="text-5xl font-bold mb-4">Find your perfect Home</h1>
@@ -58,7 +68,7 @@ const Landing = () => {
       <Element name="about">
         <div className="max-w-6xl mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-12 px-6">
           <img
-            src="./src/assets/images/property_side.jpg"
+            src={ImageSide}
             alt="modern house"
             className="w-full rounded-lg shadow-lg object-cover"
           />
@@ -79,17 +89,17 @@ const Landing = () => {
           <h2 className="text-3xl font-bold text-center mb-12">Everything you need to Simplify Your Property Management</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto text-center">
             <div>
-              <img src="./src/assets/icons/rent-collection.png" alt="Automated Rent Collection" className="mx-auto mb-4 h-12" />
+              <img src={Icon} alt="Automated Rent Collection" className="mx-auto mb-4 h-12" />
               <h3 className="text-xl font-semibold mb-2">Automated Rent Collection</h3>
               <p className="text-gray-600">Simplify payments with automated rent collection and reminders. Reduce late payments and manage finances effortlessly.</p>
             </div>
             <div>
-              <img src="./src/assets/icons/tenant-communication.png" alt="Tenant Communication" className="mx-auto mb-4 h-12" />
+              <img src={Icon} alt="Tenant Communication" className="mx-auto mb-4 h-12" />
               <h3 className="text-xl font-semibold mb-2">Tenant Communication</h3>
               <p className="text-gray-600">Stay connected with your tenants through integrated messaging. Easily handle inquiries, send reminders, and more.</p>
             </div>
             <div>
-              <img src="./src/assets/icons/maintenance-tracking.png" alt="Maintenance Tracking" className="mx-auto mb-4 h-12" />
+              <img src={Icon} alt="Maintenance Tracking" className="mx-auto mb-4 h-12" />
               <h3 className="text-xl font-semibold mb-2">Maintenance Tracking</h3>
               <p className="text-gray-600">Manage and track maintenance requests seamlessly. Keep your property in top condition with organized and timely repairs.</p>
             </div>
@@ -97,17 +107,17 @@ const Landing = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto text-center mt-12">
             <div>
-              <img src="./src/assets/icons/multi-property.png" alt="Multi-Property Management" className="mx-auto mb-4 h-12" />
+              <img src={Icon} alt="Multi-Property Management" className="mx-auto mb-4 h-12" />
               <h3 className="text-xl font-semibold mb-2">Multi-Property Management</h3>
               <p className="text-gray-600">Whether you own one property or many, manage them all from a single platform. Scale your operations without adding complexity.</p>
             </div>
             <div>
-              <img src="./src/assets/icons/reporting.png" alt="Detailed Reporting" className="mx-auto mb-4 h-12" />
+              <img src={Icon} alt="Detailed Reporting" className="mx-auto mb-4 h-12" />
               <h3 className="text-xl font-semibold mb-2">Detailed Reporting</h3>
               <p className="text-gray-600">Generate comprehensive reports on your properties’ performance. Make informed decisions with data-driven insights.</p>
             </div>
             <div>
-              <img src="./src/assets/icons/dashboard.png" alt="Centralized Dashboard" className="mx-auto mb-4 h-12" />
+              <img src={Icon} alt="Centralized Dashboard" className="mx-auto mb-4 h-12" />
               <h3 className="text-xl font-semibold mb-2">Centralized Dashboard</h3>
               <p className="text-gray-600">Get an overview of all your properties, tenants, and tasks in one place. Quickly access the tools you need to manage efficiently.</p>
             </div>

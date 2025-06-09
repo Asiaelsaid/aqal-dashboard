@@ -24,7 +24,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const navigate = useNavigate();
 
   const handleViewProperty = () => {
-    navigate(`/property/${id}`);
+    navigate(`/dashboard/property/${id}`);
   };
   return (
     <div className="flex flex-col sm:flex-row items-center bg-white rounded-lg shadow p-4 min-h-[12rem] ">

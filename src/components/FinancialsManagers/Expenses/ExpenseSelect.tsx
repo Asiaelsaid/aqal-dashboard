@@ -31,7 +31,7 @@ const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
   const expenseTypes: IExpenseType[] = data?.data || [];
 
   const selectedExpenseType = expenseTypes.find(
-    (expense) => expense.id === formData.expense_type
+    (expense) => expense.id === Number(formData.expense_type)
   );
 
   return (

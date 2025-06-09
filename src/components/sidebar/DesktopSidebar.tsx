@@ -5,10 +5,11 @@ import {
   FiPieChart,
   // FiSearch,
   FiSettings,
+  
   // FiUsers,
 } from "react-icons/fi";
 import Logo from "@assets/images/Logo.png";
-import { BsClipboard2Data, BsDatabaseCheck } from "react-icons/bs";
+import { BsClipboard2Data, BsDatabaseCheck , BsNewspaper} from "react-icons/bs";
 import { BiBuildings, BiSolidSelectMultiple } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { CgSupport } from "react-icons/cg";
@@ -66,6 +67,8 @@ const DesktopSidebar: React.FC<IProps> = ({
         path: "communication",
       },
       { label: "Requests", icon: <BsArrowUpRightSquare />, path: "requests" },
+
+      { label: "Reports", icon: <BsNewspaper />, path: "reports" },
     ];
   } else if (role === "admin") {
     sidebarItems = [

@@ -15,6 +15,9 @@ export interface PropertyData {
   user: number; // property owner
   amenities: number[];
   common_areas: number[];
+  consumer_key?: string;
+  secret_key?: string;
+  paybill?: string;
 }
 export interface ITenantData {
   tenant: number;

@@ -90,6 +90,17 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="Reports"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <Reports/>
+            </ProtectedRoute>
+          }
+        />
+
+
         <Route
           path="requests"
           element={

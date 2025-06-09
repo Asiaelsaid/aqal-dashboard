@@ -5,9 +5,13 @@ import SubHeading from "@components/UI/SubHeading";
 import useCustomQuery from "@hooks/useCustomQuery";
 import { Property } from "@interfaces";
 import { FiSearch } from "react-icons/fi";
-
+import CreateRequestModal from "@components/Requests/CreateRequestModal";
+import { useState } from "react";
 
 const Requests = () => {
+  const [openModal, setOpenModal] = useState(false);
+
+
   const { data } = useCustomQuery({
     queryKey: ["requests"],
     url: "/managers/properties-requests",
@@ -31,26 +35,36 @@ const Requests = () => {
       <PagesHeading heading="Requests" child={searchInput} />
       <SubHeading subHeading="Track Maintenancetickets from tenants swith ease" />
       {/* <DateRangePicker /> */}
-      <div className="mt-8 border shadow rounded-lg p-6">
-        <div className="flex justify-between items-center pb-4">
-          <div>
-            <p className="text-lg font-semibold flex items-center">
-              All requests{" "}
-              <span className="text-xs text-mainColor rounded-full bg-purple-100 w-8 h-5 flex items-center justify-center ml-2 border">
-                30
-              </span>
-            </p>
-            <p className="text-sm text-gray-500 mt-2">
-              See what requests you have made throughout
-            </p>
-          </div>
-        </div>
-        <div className="mt-8">
-          {propertyRequests?.map((property: Property, index: number) => (
-            <PropertyAccordion key={index} property={property} />
-          ))}
-        </div>
-      </div>
+<div className="mt-8 border shadow rounded-lg p-6">
+  <div className="flex justify-between items-center pb-4">
+    <div>
+      <p className="text-lg font-semibold flex items-center">
+        All requests{" "}
+        {/* <span className="text-xs text-mainColor rounded-full bg-purple-100 w-8 h-5 flex items-center justify-center ml-2 border">
+          30
+        </span> */}
+      </p>
+      <p className="text-sm text-gray-500 mt-2">
+        See what requests you have made throughout
+      </p>
+    </div>
+      <button
+        onClick={() => setOpenModal(true)}
+        className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none"
+      >
+        Create Request
+      </button>
+
+      <CreateRequestModal isOpen={openModal} onClose={() => setOpenModal(false)} />
+
+
+  </div>
+  <div className="mt-8">
+    {propertyRequests?.map((property: Property, index: number) => (
+      <PropertyAccordion key={index} property={property} />
+    ))}
+  </div>
+</div>
     </div>
   );
 };
