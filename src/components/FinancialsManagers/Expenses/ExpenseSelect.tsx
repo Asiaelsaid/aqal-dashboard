@@ -31,7 +31,7 @@ const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
   const expenseTypes: IExpenseType[] = data?.data || [];
 
   const selectedExpenseType = expenseTypes.find(
-    (expense) => expense.id === Number(formData.expense_type)
+    (expense) => expense.name === formData.expense_type
   );
 
   return (
@@ -45,7 +45,9 @@ const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
       <Listbox
         as="div"
         value={formData.expense_type}
-        onChange={(value) => setFormData({ ...formData, expense_type: value })}
+        onChange={(value: string) => {
+          setFormData({ ...formData, expense_type: value });
+        }}
         disabled={isLoading}
       >
         {({ open }) => (
@@ -74,7 +76,7 @@ const ExpenseSelect: React.FC<IExpenseSelectProps> = ({
               } origin-top`}
             >
               {expenseTypes.map((expense) => (
-                <ListboxOption key={expense.id} value={expense.id} as={Fragment}>
+                <ListboxOption key={expense.id} value={expense.name} as={Fragment}>
                   {({ selected, disabled }) => (
                     <li
                       className={`cursor-pointer select-none p-2 list-none transition-colors hover:bg-purple-400 hover:text-white ${

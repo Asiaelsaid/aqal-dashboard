@@ -52,7 +52,7 @@ export interface IContactCardProps {
 export interface IExpenseData {
   property: number;
   date: string; 
-  expense_type: "maintenance" | "utilities" | "management_fees" | "other" |""; 
+  expense_type: string; 
   amount: number; 
   description: string; 
 }

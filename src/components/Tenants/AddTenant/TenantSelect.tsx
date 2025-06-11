@@ -10,7 +10,7 @@ import { Fragment, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 
 interface TenantData {
-  id: string;
+  id: number;
   first_name: string;
   last_name: string;
   has_unit: boolean;
