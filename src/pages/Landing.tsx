@@ -168,9 +168,7 @@ const Landing = () => {
               <p className="text-gray-600 max-w-2xl mx-auto mb-6">
                 Have questions about our property management services? Our team is ready to assist you.
               </p>
-              <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold">
-                Contact Us
-              </button>
+   
             </div>
           </div>
         </div>
