@@ -20,6 +20,21 @@ import TenantDetails from "@pages/Tenants/TenantDetails";
 import Tenants from "@pages/Tenants/Tenants";
 import UserManagement from "@pages/UserManagement";
 import Landing from "@pages/Landing";
+import Receipts from "@pages/Receipts";
+import Invoices from "@pages/Invoices";
+import InvoiceCollections from "@pages/InvoiceCollections";
+// Property Owner specific imports
+import OwnerReceipts from "@pages/OwnerReceipts";
+import OwnerInvoices from "@pages/OwnerInvoices";
+import OwnerCollections from "@pages/OwnerCollections";
+import OwnerFinances from "@pages/OwnerFinances";
+import OwnerCCTV from "@pages/OwnerCCTV";
+import OwnerCommunication from "@pages/OwnerCommunication";
+import OwnerReports from "@pages/OwnerReports";
+import OwnerNotifications from "@pages/OwnerNotifications";
+import ManagerPayments from "@pages/ManagerPayments";
+import OwnerPayments from "@pages/OwnerPayments";
+import CCTV from "@pages/CCTV";
 
 import {
   createBrowserRouter,
@@ -95,7 +110,7 @@ const router = createBrowserRouter(
           path="Reports"
           element={
             <ProtectedRoute allowedRoles={["managers"]}>
-              <Reports/>
+              <Reports />
             </ProtectedRoute>
           }
         />
@@ -162,6 +177,122 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute>
               <Settings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="receipts"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <Receipts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="invoices"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <Invoices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="invoice-collections"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <InvoiceCollections />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Property Owner specific routes - also accessible by managers */}
+        <Route
+          path="owner-receipts"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerReceipts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-invoices"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerInvoices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-collections"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerCollections />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-finances"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerFinances />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-cctv"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerCCTV />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-communication"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerCommunication />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-reports"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerReports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-notifications"
+          element={
+            <ProtectedRoute allowedRoles={["owners", "managers"]}>
+              <OwnerNotifications />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Payment routes */}
+        <Route
+          path="manager-payments"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <ManagerPayments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="owner-payments"
+          element={
+            <ProtectedRoute allowedRoles={["owners"]}>
+              <OwnerPayments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="CCTV"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <CCTV />
             </ProtectedRoute>
           }
         />

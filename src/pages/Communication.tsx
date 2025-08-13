@@ -13,7 +13,7 @@ const Communication = () => {
   const contactPerPage = 10;
 
   // Fetch data
-  const { data } = useCustomQuery({
+  const { data, refetch } = useCustomQuery({
     queryKey: ["contacts"],
     url: "/users/contacts/",
   });
@@ -61,7 +61,7 @@ const Communication = () => {
       <PagesHeading heading="Communication" child={searchInput} />
       <SubHeading subHeading="Connect with tenants, service providers, and emergency contacts seamlessly." />
       <hr />
-      <ContactsTable ContactData={currentContacts} />
+      <ContactsTable ContactData={currentContacts} refetch={refetch} />
       <Pagination totalPages={totalPages} onPageChange={handlePageChange} />
     </div>
   );

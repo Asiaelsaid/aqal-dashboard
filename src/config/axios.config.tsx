@@ -2,6 +2,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@store/index";
 import { updateToken, logout } from "@store/auth/authSlice";
+import config from "./env.config";
 
 const useAxios = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const useAxios = () => {
   );
 
   const axiosInstance = axios.create({
-    baseURL: "https://aqalmanagementsolutions.com/api",
+    baseURL: config.API_BASE_URL,
   });
 
   axiosInstance.interceptors.request.use(
@@ -38,7 +39,7 @@ const useAxios = () => {
 
         try {
           const response = await axios.post(
-            "http://13.50.122.77/api/users/token/refresh/",
+            config.REFRESH_TOKEN_URL,
             {
               refreshToken,
             }

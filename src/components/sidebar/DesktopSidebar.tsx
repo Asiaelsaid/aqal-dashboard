@@ -5,7 +5,7 @@ import {
   FiPieChart,
   // FiSearch,
   FiSettings,
-  
+  FiPrinter,
   // FiUsers,
 } from "react-icons/fi";
 import Logo from "@assets/images/Logo.png";
@@ -61,6 +61,13 @@ const DesktopSidebar: React.FC<IProps> = ({
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
       // { label: "Maintenance", icon: <CgSupport />, path: "maintenance" },
+
+      { label: "Payments", icon: <BsDatabaseCheck />, path: "manager-payments" },
+      { label: "Invoices", icon: <FiPrinter />, path: "invoices" },
+      { label: "Collections", icon: <FiLayers />, path: "invoice-collections" },
+      { label: "CCTV", icon: <FiPrinter />, path: "CCTV" },
+      { label: "Receipts", icon: <FiPrinter />, path: "receipts" },
+
       {
         label: "Communication",
         icon: <HiOutlineHashtag />,
@@ -96,6 +103,17 @@ const DesktopSidebar: React.FC<IProps> = ({
       { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
+      // Financial related items (view only)
+      { label: "Payments", icon: <BsDatabaseCheck />, path: "owner-payments" },
+      { label: "Receipts", icon: <FiPrinter />, path: "owner-receipts" },
+      // { label: "Invoices", icon: <FiPrinter />, path: "owner-invoices" },
+      { label: "Collections", icon: <FiLayers />, path: "owner-collections" },
+      // Additional items (to be implemented later)
+      { label: "Finances", icon: <BsDatabaseCheck />, path: "owner-finances" },
+      { label: "CCTV", icon: <FiPrinter />, path: "owner-cctv" },
+      { label: "Communication", icon: <HiOutlineHashtag />, path: "owner-communication" },
+      { label: "Reports", icon: <BsNewspaper />, path: "owner-reports" },
+      { label: "Notifications", icon: <BsClipboard2Data />, path: "owner-notifications" },
       // { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
       // { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
     ];

@@ -8,15 +8,14 @@ interface ICustomQuery {
 
   }
   
-  const useCustomQuery = ({ queryKey, url }: ICustomQuery) => {
-    const axiosInstance = useAxios();
-    return useQuery({
-      queryKey,
-      queryFn: async () => {
-        const { data } = await axiosInstance.get(url)
-        return data;
-      },
-    });
-  };
-  
-  export default useCustomQuery;
+const useCustomQuery = ({ queryKey, url, enabled = true }: ICustomQuery) => {
+  const axiosInstance = useAxios();
+  return useQuery({
+    queryKey,
+    queryFn: async () => {
+      const { data } = await axiosInstance.get(url)
+      return data;
+    },
+    enabled, // Use the enabled parameter
+  });
+};  export default useCustomQuery;

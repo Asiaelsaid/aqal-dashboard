@@ -14,7 +14,7 @@ const ButtonGroup = () => {
       </div>
 
       <h2 className="text-lg font-medium mt-6">
-        Tenants list (White stone Apartments)
+        Tenants list 
       </h2>
     </div>
   );

@@ -2,16 +2,17 @@ import useAxios from "@config/axios.config";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { IErrorrEsponse } from "@interfaces";
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import { AxiosError } from "axios";
 
 interface IProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  refetch: () => void;
 }
 
-const AddContact: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
+const AddContact: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
   const axiosInstance = useAxios();
   const [contactData, setContactData] = useState({
     name: "",
@@ -27,7 +28,7 @@ const AddContact: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
         "/users/contacts/",
         contactData
       );
-      if (data.satus === 201) {
+      if (data.status === 201) {
         toast.success("Contact added successfully!");
         setContactData({
           name: "",
@@ -37,17 +38,15 @@ const AddContact: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
           address: "",
         });
         setIsOpen(false);
+        refetch(); // Refresh the contacts list
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorrEsponse>;
-      toast.error(`${errorObj.response?.data?.message}`, {
-        duration: 3000,
-        position: "top-center",
-      });
+      toast.error(errorObj.response?.data?.message || "Failed to add contact");
     }
   };
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setContactData((prevState) => ({
@@ -90,14 +89,20 @@ const AddContact: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
           </div>
           <div>
             <label className="block text-gray-700 font-medium">Type</label>
-            <input
-              type="text"
+            <select
               name="type"
               value={contactData.type}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Service provider"
-            />
+              required
+            >
+              <option value="">Select Type</option>
+              <option value="Emergency">Emergency</option>
+              <option value="Service Provider">Service Provider</option>
+              <option value="Vendor">Vendor</option>
+              <option value="Contractor">Contractor</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div>
             <label className="block text-gray-700 font-medium">Email</label>

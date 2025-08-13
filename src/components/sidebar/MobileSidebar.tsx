@@ -1,9 +1,14 @@
-import { FiClipboard, FiLayers, FiPieChart, FiSettings, FiUsers } from "react-icons/fi";
+import { FiLayers, FiPieChart, FiSettings, FiPrinter, FiLogOut } from "react-icons/fi";
+import userProfile from "../../assets/images/profile.png";
+import useCustomQuery from "@hooks/useCustomQuery";
+import { useDispatch } from "react-redux";
+import { logout } from "@store/auth/authSlice";
 import Logo from "@assets/images/Logo.png";
 import {
   BsArrowUpRightSquare,
   BsClipboard2Data,
   BsDatabaseCheck,
+  BsNewspaper,
 } from "react-icons/bs";
 import { BiBuildings, BiSolidSelectMultiple } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -25,8 +30,14 @@ const MobileSidebar: React.FC<IProps> = ({
   setActiveItem,
   role,
 }) => {
+  const dispatch = useDispatch();
+  const { data } = useCustomQuery({
+    queryKey: ["user-details"],
+    url: "/users/details/",
+  });
+  const userDetails = data?.data;
   let sidebarItems = [
-    { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+    { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
     { label: "Properties", icon: <FiLayers />, path: "properties" },
     { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
     { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
@@ -35,7 +46,7 @@ const MobileSidebar: React.FC<IProps> = ({
 
   if (role === "managers") {
     sidebarItems = [
-      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       {
         label: "Financials",
         icon: <BsDatabaseCheck />,
@@ -43,24 +54,23 @@ const MobileSidebar: React.FC<IProps> = ({
       },
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
-      { label: "Maintenance", icon: <CgSupport />, path: "maintenance" },
+      { label: "Payments", icon: <BsDatabaseCheck />, path: "manager-payments" },
+      { label: "Invoices", icon: <FiPrinter />, path: "invoices" },
+      { label: "Collections", icon: <FiLayers />, path: "invoice-collections" },
+      { label: "CCTV", icon: <FiPrinter />, path: "CCTV" },
+      { label: "Receipts", icon: <FiPrinter />, path: "receipts" },
+      {
+        label: "Communication",
+        icon: <HiOutlineHashtag />,
+        path: "communication",
+      },
       { label: "Requests", icon: <BsArrowUpRightSquare />, path: "requests" },
+      { label: "Reports", icon: <BsNewspaper />, path: "reports" },
     ];
   } else if (role === "admin") {
     sidebarItems = [
-      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       { label: "Properties", icon: <BiBuildings />, path: "properties" },
-      { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
-      {
-        label: "User Management",
-        icon: <FiUsers />,
-        path: "user-management",
-      },
-      {
-        label: "Reports",
-        icon: <FiClipboard />,
-        path: "reports",
-      },
       {
         label: "Communication",
         icon: <HiOutlineHashtag />,
@@ -69,11 +79,20 @@ const MobileSidebar: React.FC<IProps> = ({
     ];
   } else if (role === "owners") {
     sidebarItems = [
-      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/" },
+      { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
-      { label: "Financials", icon: <BsDatabaseCheck />, path: "financials" },
-      { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
+      // Financial related items (view only)
+      { label: "Payments", icon: <BsDatabaseCheck />, path: "owner-payments" },
+      { label: "Receipts", icon: <FiPrinter />, path: "owner-receipts" },
+      { label: "Invoices", icon: <FiPrinter />, path: "owner-invoices" },
+      { label: "Collections", icon: <FiLayers />, path: "owner-collections" },
+      // Additional items (to be implemented later)
+      { label: "Finances", icon: <BsDatabaseCheck />, path: "owner-finances" },
+      { label: "CCTV", icon: <FiPrinter />, path: "owner-cctv" },
+      { label: "Communication", icon: <HiOutlineHashtag />, path: "owner-communication" },
+      { label: "Reports", icon: <BsNewspaper />, path: "owner-reports" },
+      { label: "Notifications", icon: <BsClipboard2Data />, path: "owner-notifications" },
     ];
   }
   return (
@@ -122,27 +141,16 @@ const MobileSidebar: React.FC<IProps> = ({
 
           {/* Additional Links (Support, Settings) */}
           <div className="flex flex-col space-y-1 mt-auto">
-            {[
-              { label: "Settings", icon: <FiSettings />, path: "settings" },
-            ].map((item) => (
-              <Link
-                to={item.path}
-                key={item.label}
-                onClick={() => setActiveItem(item.label)}
-                className={`flex items-center p-1 rounded-lg cursor-pointer hover:bg-hoverColor ${
-                  activeItem === item.label ? "bg-hoverColor" : ""
-                }`}
-              >
-                <span className="text-xl mr-3">{item.icon}</span>
-                <span
-                  className={`text-sm font-medium p-2 ${
-                    isOpen ? "" : "hidden"
-                  }`}
-                >
-                  {item.label}
-                </span>
-              </Link>
-            ))}
+            <Link
+              to="settings"
+              onClick={() => setActiveItem("Settings")}
+              className={`flex items-center p-1 rounded-lg cursor-pointer hover:bg-hoverColor ${
+                activeItem === "Settings" ? "bg-hoverColor" : ""
+              }`}
+            >
+              <span className="text-xl mr-3"><FiSettings /></span>
+              <span className={`text-sm font-medium p-2 ${isOpen ? "" : "hidden"}`}>Settings</span>
+            </Link>
 
             {role === "owners" && (
               <Link
@@ -152,15 +160,32 @@ const MobileSidebar: React.FC<IProps> = ({
                   activeItem === "Support" ? "bg-hoverColor" : ""
                 }`}
               >
-                <span className="text-xl mr-3">{<CgSupport />}</span>
-                <span
-                  className={`text-sm font-medium p-2 ${
-                    isOpen ? "" : "hidden"
-                  }`}
-                >
-                  Support
-                </span>
+                <span className="text-xl mr-3"><CgSupport /></span>
+                <span className={`text-sm font-medium p-2 ${isOpen ? "" : "hidden"}`}>Support</span>
               </Link>
+            )}
+
+            {/* User Info & Logout (always visible at bottom when sidebar is open) */}
+            {isOpen && (
+              <div className="flex items-center justify-between p-2 mt-4 border-t border-gray-200">
+                <img
+                  src={userDetails?.profile_photo ? userDetails?.profile_photo : userProfile}
+                  alt="User Avatar"
+                  className="w-10 h-10 rounded-full object-cover mr-2"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">
+                    {userDetails?.first_name} {userDetails?.last_name}
+                  </span>
+                  <span className="text-xs text-opacity-60 text-gray-100">
+                    {userDetails?.email}
+                  </span>
+                </div>
+                <FiLogOut
+                  className="text-lg cursor-pointer text-white flex-shrink-0"
+                  onClick={() => dispatch(logout())}
+                />
+              </div>
             )}
           </div>
         </>
