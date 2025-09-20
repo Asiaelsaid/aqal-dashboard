@@ -1,16 +1,19 @@
-// import AdminDashboard from "@components/DashboardUsers/AdminDashboard/AdminDashboard";
-// import ManagersDashboard from "@components/DashboardUsers/ManagersDashboard/ManagersDashboard";
+import { useEffect, useState } from "react";
+import AdminDashboard from "@components/DashboardUsers/AdminDashboard/AdminDashboard";
 import OwnersDashboard from "@components/DashboardUsers/OwnersDashboard/OwnersDashboard";
 
 const Dashboard = () => {
-  // const role = localStorage.getItem("role");
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
+    const storedRole: string = localStorage.getItem("role") as string;
+    setRole(storedRole);
+  }, []);
 
   return (
     <>
-      {/* {role === "admin" && <AdminDashboard />}
-      {role === "owners" && <OwnersDashboard />}
-      {role === "managers" && <ManagersDashboard />} */}
-      <OwnersDashboard />
+      {role === "admin" && <AdminDashboard />}
+      {(role === "owners" || role === "managers") && <OwnersDashboard />}
     </>
   );
 };

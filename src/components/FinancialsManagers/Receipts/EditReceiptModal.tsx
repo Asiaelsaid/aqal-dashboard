@@ -317,7 +317,7 @@ const EditReceiptModal: React.FC<EditReceiptModalProps> = ({
       onClose={() => setIsOpen(false)} 
       title={`Edit Receipt ${receipt.receipt_number}`}
     >
-      <div className="space-y-4">
+      <div className="space-y-4 max-h-[80vh] overflow-auto pr-2">
         {/* Warning about payment updates */}
         <div className="bg-amber-50 border border-amber-200 rounded-md p-3">
           <p className="text-sm text-amber-800">

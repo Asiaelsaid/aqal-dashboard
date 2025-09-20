@@ -30,10 +30,24 @@ interface IUnit {
   property: number;
 }
 
+interface IPayment {
+  id: number;
+  month: string;
+  amount_due: number;
+  amount_paid: number;
+  remaining_amount: number;
+  status: string;
+  due_date: string;
+  payment_reference: string;
+  tenant_name: string;
+  display_name: string;
+}
+
 interface FormData {
   receipt_type: 'IBD' | 'OBD';
   property: number;
   unit: string;
+  payment_id?: number;
   received_from: string;
   paid_to: string;
   amount: string;
@@ -51,6 +65,7 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
     receipt_type: "IBD",
     property: 0,
     unit: "",
+    payment_id: undefined,
     received_from: "",
     paid_to: "",
     amount: "",
@@ -81,9 +96,17 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
     enabled: formData?.unit !== "" && formData?.unit !== null && parseInt(formData?.unit) > 0,
   });
 
+  // Query to get payments for the selected unit (for payment selection)
+  const { data: paymentsResponse } = useCustomQuery({
+    queryKey: ["unit-payments", formData?.unit || "0"],
+    url: `/tenants/units/${formData?.unit || 0}/payments/?status=unpaid`,
+    enabled: formData?.unit !== "" && formData?.unit !== null && parseInt(formData?.unit) > 0 && formData.receipt_type === 'IBD',
+  });
+
   const properties = propertiesResponse?.data || [];
   const units = unitsResponse?.data || [];
   const unitDetail = unitDetailResponse?.data || null;
+  const payments: IPayment[] = paymentsResponse?.data || [];
 
   // Auto-fill form when unit is selected
   useEffect(() => {
@@ -107,10 +130,23 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
         }
       }
       
-      // Get outstanding payment amount
+      // Get rent / service charge / outstanding payment
+      let rent = '';
+      let serviceCharge = '';
       let outstandingAmount = '';
+      if (unitDetail.rent !== undefined && unitDetail.rent !== null) {
+        rent = unitDetail.rent.toString();
+      }
+      if (unitDetail.service_charge !== undefined && unitDetail.service_charge !== null) {
+        serviceCharge = unitDetail.service_charge.toString();
+      }
       if (unitDetail.outstanding_payment) {
         outstandingAmount = unitDetail.outstanding_payment.toString();
+      } else if (rent || serviceCharge) {
+        // Fallback compute if outstanding_payment is not present in response
+        const r = parseFloat(rent || '0');
+        const s = parseFloat(serviceCharge || '0');
+        outstandingAmount = (r + s).toFixed(2);
       }
       
       console.log('AddReceiptModal - Extracted data:', { tenantName, outstandingAmount });
@@ -148,6 +184,7 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
       receipt_type: "IBD",
       property: 0,
       unit: "",
+      payment_id: undefined,
       received_from: "",
       paid_to: "",
       amount: "",
@@ -167,12 +204,13 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
       [field]: value
     }));
 
-    // Clear unit and auto-filled fields when property changes
+    // Clear unit, payment, and auto-filled fields when property changes
     if (field === 'property') {
       setFormData(prev => ({
         ...prev,
         property: value as number,
         unit: "", // Clear unit when property changes
+        payment_id: undefined, // Clear payment selection
         received_from: "", // Clear auto-filled fields
         amount: "",
         payment_reference: "",
@@ -180,16 +218,31 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
       }));
     }
 
-    // Clear auto-filled fields when unit changes (they will be re-filled by useEffect)
+    // Clear payment and auto-filled fields when unit changes (they will be re-filled by useEffect)
     if (field === 'unit') {
       setFormData(prev => ({
         ...prev,
         unit: value as string,
+        payment_id: undefined, // Clear payment selection
         received_from: "", // Clear auto-filled fields
         amount: "",
         payment_reference: "",
         purpose: "",
       }));
+    }
+
+    // Auto-fill from selected payment
+    if (field === 'payment_id' && value && formData.receipt_type === 'IBD') {
+      const selectedPayment = payments.find(p => p.id === value);
+      if (selectedPayment) {
+        setFormData(prev => ({
+          ...prev,
+          payment_id: value as number,
+          received_from: selectedPayment.tenant_name,
+          amount: selectedPayment.remaining_amount.toString(),
+          purpose: `${selectedPayment.month} Rent Payment`,
+        }));
+      }
     }
 
     // Auto-populate fields when payment_reference is entered (simulated)
@@ -246,6 +299,7 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
       amount: parseFloat(formData.amount),
       property: formData.property || undefined, // Let backend handle if payment_reference is used
       unit: formData.unit && formData.unit !== "" ? parseInt(formData.unit) : null,
+      payment_id: formData.payment_id || undefined, // Include payment_id for specific payment selection
     });
   };
 
@@ -264,7 +318,7 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="Create New Receipt">
-      <div className="space-y-4">
+      <div className="space-y-4 max-h-[80vh] overflow-auto pr-2">
         {/* Helpful information */}
         <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
           <p className="text-sm text-blue-800">
@@ -425,6 +479,75 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
           </div>
         </div>
 
+        {/* Payment Selection - Only for IBD receipts with multiple payments */}
+        {formData.receipt_type === 'IBD' && formData.unit && payments.length > 1 && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Select Payment *
+            </label>
+            <Listbox
+              as="div"
+              value={formData.payment_id || ''}
+              onChange={(value) => {
+                const paymentId = parseInt(String(value));
+                handleInputChange("payment_id", paymentId);
+              }}
+            >
+              {({ open }) => (
+                <div className="relative">
+                  <ListboxButton className="w-full px-3 py-2 border border-gray-300 rounded-md text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span>
+                      {formData.payment_id 
+                        ? payments.find((payment: IPayment) => payment.id === formData.payment_id)?.display_name || "Select Payment"
+                        : "Select Payment"}
+                    </span>
+                    <HiChevronDown
+                      className={`h-5 w-5 text-gray-500 transform transition-transform duration-300 ${
+                        open ? "rotate-180" : "rotate-0"
+                      }`}
+                    />
+                  </ListboxButton>
+                  <ListboxOptions
+                    static
+                    className={`absolute z-10 mt-1 w-full bg-white shadow-lg border border-gray-300 rounded-md max-h-60 overflow-auto transform transition-all duration-300 ${
+                      open
+                        ? "opacity-100 scale-y-100 translate-y-0"
+                        : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
+                    } origin-top`}
+                  >
+                    {payments.map((payment: IPayment) => (
+                      <ListboxOption
+                        key={payment.id}
+                        value={payment.id.toString()}
+                        as={Fragment}
+                        disabled={false}
+                      >
+                        {({ selected, disabled }) => (
+                          <li
+                            className={`cursor-pointer select-none p-2 list-none transition-colors hover:bg-blue-50 ${
+                              selected ? "bg-blue-500 text-white" : "text-gray-700"
+                            } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                          >
+                            <div>
+                              <div className="font-medium">{payment.display_name}</div>
+                              <div className="text-xs opacity-75">
+                                Status: {payment.status} | Due: {payment.due_date}
+                              </div>
+                            </div>
+                          </li>
+                        )}
+                      </ListboxOption>
+                    ))}
+                  </ListboxOptions>
+                </div>
+              )}
+            </Listbox>
+            <p className="text-xs text-blue-600 mt-1">
+              💡 Multiple payments found for this unit. Select which payment this receipt should be applied to.
+            </p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {formData.receipt_type === 'IBD' ? (
             <div>
@@ -470,6 +593,12 @@ const AddReceiptModal: React.FC<IProps> = ({ isOpen, setIsOpen, refetch }) => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
+            {/* Show rent/service charge breakdown when available */}
+            {unitDetail && (unitDetail.rent || unitDetail.service_charge) && (
+              <p className="text-xs text-gray-500 mt-1">
+                Rent: {unitDetail.rent ?? '0.00'} | Service charge: {unitDetail.service_charge ?? '0.00'}
+              </p>
+            )}
           </div>
         </div>
 

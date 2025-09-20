@@ -20,7 +20,8 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
     tenant: 0,
     property: 0,
     unit_number: "",
-    outstanding_payment: "",
+  rent: "",
+  service_charge: "",
     tims_report: "",
     lease_contract: "",
   });
@@ -88,10 +89,8 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
       formDataToSend.append("tenant", formData.tenant.toString());
       formDataToSend.append("property", formData.property.toString());
       formDataToSend.append("unit_number", formData.unit_number);
-      formDataToSend.append(
-        "outstanding_payment",
-        formData.outstanding_payment
-      );
+  formDataToSend.append("rent", formData.rent);
+  formDataToSend.append("service_charge", formData.service_charge);
       if (formData.tims_report) {
         formDataToSend.append("tims_report", formData.tims_report);
       }
@@ -116,7 +115,8 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
           tenant: 0,
           property: 0,
           unit_number: "",
-          outstanding_payment: "",
+    rent: "",
+    service_charge: "",
           tims_report: "",
           lease_contract: "",
         });
@@ -310,21 +310,33 @@ const AddTenantModal: React.FC<IProps> = ({ isOpen, setIsOpen }) => {
                 </div>
               </div>
             </div>
-            <div>
-              <label
-                htmlFor="outstandingPayment"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Outstanding payment
-              </label>
-              <input
-                type="text"
-                id="outstandingPayment"
-                name="outstanding_payment"
-                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:shadow-md  text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="e.g. 200.00"
-                onChange={handleChange}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="rent" className="block text-sm font-medium text-gray-700">
+                  Rent (KSh)
+                </label>
+                <input
+                  type="text"
+                  id="rent"
+                  name="rent"
+                  className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:shadow-md  text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="e.g. 200.00"
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="serviceCharge" className="block text-sm font-medium text-gray-700">
+                  Service Charge (KSh)
+                </label>
+                <input
+                  type="text"
+                  id="serviceCharge"
+                  name="service_charge"
+                  className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:shadow-md  text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="e.g. 50.00"
+                  onChange={handleChange}
+                />
+              </div>
             </div>
           </div>
           <div className="flex items-center  justify-between gap-2 mt-8">

@@ -8,6 +8,12 @@ import toast from "react-hot-toast";
 import { IErrorrEsponse } from "@interfaces";
 import { AxiosError } from "axios";
 
+interface UnitType {
+  id: number;
+  name: string;
+  category: string;
+}
+
 interface IProps {
   id: number;
   isOpen: boolean;
@@ -21,32 +27,50 @@ const EditUnit: React.FC<IProps> = ({ id, isOpen, setIsOpen, onRefetch }) => {
     queryKey: ["UnitDetails"],
     url: `/owners/units/${id}/details`,
   });
+  
+  // Fetch unit types for selection
+  const { data: unitTypesData } = useCustomQuery({
+    queryKey: ["UnitTypes"],
+    url: `/owners/unit-types/`,
+  });
+  
   const unit = data?.data;
+  const unitTypes: UnitType[] = unitTypesData?.data || [];
+  
   const [formData, setFormData] = useState({
     unit_number: "",
     unit_level: "",
-    // status: "",
+    unit_type: null as number | null,
     tenant: 0,
     is_rented: false,
-    // outstanding_payment: null,
     unit_property: "",
   });
+
   useEffect(() => {
     if (unit) {
       setFormData({
         unit_number: unit.unit_number || "",
         unit_level: unit.unit_level || "",
-        // status: unit.status || "",
+        unit_type: unit.unit_type || null,
         tenant: unit.tenant || null,
         is_rented: unit.is_rented || false,
-        // outstanding_payment: unit.outstanding_payment || null,
         unit_property: unit.unit_property || "",
       });
     }
   }, [unit]);
+
   const handleTenantChange = (selectedTenant: number) => {
     setFormData((prev) => ({ ...prev, tenant: selectedTenant }));
   };
+
+  const handleUnitTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      unit_type: value ? parseInt(value) : null,
+    }));
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -56,6 +80,7 @@ const EditUnit: React.FC<IProps> = ({ id, isOpen, setIsOpen, onRefetch }) => {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -83,12 +108,12 @@ const EditUnit: React.FC<IProps> = ({ id, isOpen, setIsOpen, onRefetch }) => {
       open={isOpen}
       onClose={() => setIsOpen(false)}
       transition
-      className="fixed  top-0 right-0 flex w-screen h-screen items-center justify-center bg-black/30  transition duration-500 ease-out data-[closed]:opacity-0 backdrop-blur-sm"
+      className="fixed top-0 right-0 flex w-screen h-screen items-center justify-center bg-black/30 transition duration-500 ease-out data-[closed]:opacity-0 backdrop-blur-sm"
     >
       <DialogPanel className="w-full sm:w-3/4 lg:top-0 lg:right-0 lg:max-w-xl h-full max-h-screen bg-white shadow-xl transform lg:translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
         <DialogTitle className="text-lg font-medium text-gray-700 p-4 border-b border-gray-200 flex justify-between items-center">
           Edit Unit
-          <div className="flex justify-between items-center p-4 ">
+          <div className="flex justify-between items-center p-4">
             <button onClick={() => setIsOpen(false)} className="text-gray-600">
               <FaTimes />
             </button>
@@ -124,6 +149,27 @@ const EditUnit: React.FC<IProps> = ({ id, isOpen, setIsOpen, onRefetch }) => {
               className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
+
+          {/* Unit Type */}
+          <div>
+            <label className="block text-gray-700 font-medium">
+              Unit Type
+            </label>
+            <select
+              name="unit_type"
+              value={formData.unit_type || ""}
+              onChange={handleUnitTypeChange}
+              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="">Select Unit Type</option>
+              {unitTypes.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.name} ({type.category})
+                </option>
+              ))}
+            </select>
+          </div>
+
           <SelectTenant
             selectedTenant={formData.tenant}
             onSelectTenant={handleTenantChange}

@@ -1,31 +1,7 @@
 import { useState } from "react";
 import RequestsTable from "./RequestsTable";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-
-interface Tenant {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface Request {
-  id: number;
-  req_code: string;
-  category: string;
-  description: string;
-  status: string;
-  urgency: string;
-  preferred_service_date: string;
-}
-
-interface Unit {
-  id: number;
-  unit_number: string;
-  unit_level: number;
-  status: string;
-  tenant: Tenant | null;
-  requests: Request[];
-}
+import { Unit } from "@interfaces";
 
 const UnitAccordion = ({ unit }: { unit: Unit }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +17,18 @@ const UnitAccordion = ({ unit }: { unit: Unit }) => {
             <p className="font-semibold text-lg text-gray-800">
               Unit {unit.unit_number} - Level {unit.unit_level}
             </p>
-            <p className="text-gray-600">Status: {unit.status}</p>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-gray-600">Status: {unit.status}</p>
+              {unit.unit_type && (
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  unit.unit_type.category === 'residential' 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'bg-green-100 text-green-700'
+                }`}>
+                  {unit.unit_type.name}
+                </span>
+              )}
+            </div>
             {unit.tenant && (
               <p className="text-gray-600">Tenant: {unit.tenant.name}</p>
             )}

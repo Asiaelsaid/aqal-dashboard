@@ -4,6 +4,7 @@ import RootLayout from "@layouts/RootLayout";
 import Dashboard from "@pages";
 import Communication from "@pages/Communication";
 import Financials from "@pages/Financials";
+import Finances from "@pages/Finances";
 import FinancialsManagers from "@pages/FinancialsManagers";
 import Login from "@pages/Login";
 import Maintenance from "@pages/Maintenance";
@@ -13,6 +14,7 @@ import Properties from "@pages/Properties/Properties";
 import PropertyDetails from "@pages/Properties/PropertyDetails";
 import Reporting from "@pages/Reporting";
 import Reports from "@pages/Reports";
+import ReportsLegacy from "@pages/ReportsLegacy";
 import Requests from "@pages/Requests";
 import Settings from "@pages/Settings";
 import Support from "@pages/Support";
@@ -23,6 +25,8 @@ import Landing from "@pages/Landing";
 import Receipts from "@pages/Receipts";
 import Invoices from "@pages/Invoices";
 import InvoiceCollections from "@pages/InvoiceCollections";
+import Arrears from "@pages/Arrears";
+import Billing from "@pages/Billing";
 // Property Owner specific imports
 import OwnerReceipts from "@pages/OwnerReceipts";
 import OwnerInvoices from "@pages/OwnerInvoices";
@@ -98,6 +102,14 @@ const router = createBrowserRouter(
           }
         />
         <Route
+          path="finances"
+          element={
+            <ProtectedRoute allowedRoles={["managers", "owners"]}>
+              <Finances />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="reporting"
           element={
             <ProtectedRoute allowedRoles={["owners"]}>
@@ -109,8 +121,17 @@ const router = createBrowserRouter(
         <Route
           path="Reports"
           element={
-            <ProtectedRoute allowedRoles={["managers"]}>
+            <ProtectedRoute allowedRoles={["managers", "owners"]}>
               <Reports />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="reports-legacy"
+          element={
+            <ProtectedRoute allowedRoles={["managers"]}>
+              <ReportsLegacy />
             </ProtectedRoute>
           }
         />
@@ -193,6 +214,22 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute allowedRoles={["managers"]}>
               <Invoices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="billing"
+          element={
+            <ProtectedRoute allowedRoles={["managers", "owners"]}>
+              <Billing />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="arrears"
+          element={
+            <ProtectedRoute allowedRoles={["managers", "owners"]}>
+              <Arrears />
             </ProtectedRoute>
           }
         />

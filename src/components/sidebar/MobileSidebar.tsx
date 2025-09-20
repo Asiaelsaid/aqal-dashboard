@@ -1,4 +1,5 @@
-import { FiLayers, FiPieChart, FiSettings, FiPrinter, FiLogOut } from "react-icons/fi";
+import { FiLayers, FiPieChart, FiSettings, FiPrinter, FiLogOut, FiChevronDown, FiChevronRight } from "react-icons/fi";
+import { useState } from "react";
 import userProfile from "../../assets/images/profile.png";
 import useCustomQuery from "@hooks/useCustomQuery";
 import { useDispatch } from "react-redux";
@@ -31,6 +32,7 @@ const MobileSidebar: React.FC<IProps> = ({
   role,
 }) => {
   const dispatch = useDispatch();
+  const [isFinancesOpen, setIsFinancesOpen] = useState(false);
   const { data } = useCustomQuery({
     queryKey: ["user-details"],
     url: "/users/details/",
@@ -44,21 +46,29 @@ const MobileSidebar: React.FC<IProps> = ({
     { label: "Reporting", icon: <FiPieChart />, path: "reporting" },
   ];
 
+  const financeItems = [
+    { label: "Invoices", icon: <FiPrinter />, path: "invoices" },
+    { label: "Billing", icon: <BsDatabaseCheck />, path: "billing" },
+    { label: "Expenses", icon: <BsDatabaseCheck />, path: "financials-managers" },
+    { label: "Receipts", icon: <FiPrinter />, path: "receipts" },
+    { label: "Arrears", icon: <BsNewspaper />, path: "arrears" },
+  ];
+
   if (role === "managers") {
     sidebarItems = [
       { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
-      {
-        label: "Financials",
-        icon: <BsDatabaseCheck />,
-        path: "financials-managers",
-      },
+      { 
+        label: "Finances", 
+        icon: <BsDatabaseCheck />, 
+        path: "#",
+        isDropdown: true,
+        subItems: financeItems
+      } as any,
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
+      // Legacy financial routes - keeping for backward compatibility
       { label: "Payments", icon: <BsDatabaseCheck />, path: "manager-payments" },
-      { label: "Invoices", icon: <FiPrinter />, path: "invoices" },
-      { label: "Collections", icon: <FiLayers />, path: "invoice-collections" },
       { label: "CCTV", icon: <FiPrinter />, path: "CCTV" },
-      { label: "Receipts", icon: <FiPrinter />, path: "receipts" },
       {
         label: "Communication",
         icon: <HiOutlineHashtag />,
@@ -82,16 +92,19 @@ const MobileSidebar: React.FC<IProps> = ({
       { label: "Dashboard", icon: <BsClipboard2Data />, path: "/dashboard" },
       { label: "Properties", icon: <FiLayers />, path: "properties" },
       { label: "Tenants", icon: <BiSolidSelectMultiple />, path: "tenants" },
-      // Financial related items (view only)
+      // Consolidated Finances dropdown
+      { 
+        label: "Finances", 
+        icon: <BsDatabaseCheck />, 
+        path: "#",
+        isDropdown: true,
+        subItems: financeItems
+      } as any,
+      // Legacy financial routes - keeping for backward compatibility
       { label: "Payments", icon: <BsDatabaseCheck />, path: "owner-payments" },
-      { label: "Receipts", icon: <FiPrinter />, path: "owner-receipts" },
-      { label: "Invoices", icon: <FiPrinter />, path: "owner-invoices" },
-      { label: "Collections", icon: <FiLayers />, path: "owner-collections" },
-      // Additional items (to be implemented later)
-      { label: "Finances", icon: <BsDatabaseCheck />, path: "owner-finances" },
       { label: "CCTV", icon: <FiPrinter />, path: "owner-cctv" },
       { label: "Communication", icon: <HiOutlineHashtag />, path: "owner-communication" },
-      { label: "Reports", icon: <BsNewspaper />, path: "owner-reports" },
+      { label: "Reports", icon: <BsNewspaper />, path: "Reports" },
       { label: "Notifications", icon: <BsClipboard2Data />, path: "owner-notifications" },
     ];
   }
@@ -114,28 +127,76 @@ const MobileSidebar: React.FC<IProps> = ({
 
       {/* Sidebar Content (Visible only when isOpen is true) */}
       {isOpen && (
-        <>
+        <div className="flex flex-col min-h-0 overflow-y-scroll" style={{height: '100vh'}}>
           <div className="flex justify-center p-4">
             <img src={Logo} alt="header logo" className="w-10 h-10" />
           </div>
 
           {/* Main Navigation Links */}
           <div className="flex flex-col space-y-4 mt-6">
-            {sidebarItems.map((item) => (
-              <Link
-                to={item.path}
-                key={item.label}
-                onClick={() => {
-                  setActiveItem(item.label);
-                  handleToggle();
-                }}
-                className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-hoverColor ${
-                  activeItem === item.label ? "bg-hoverColor" : ""
-                }`}
-              >
-                <span className="text-xl mr-3">{item.icon}</span>
-                <span className="text-sm font-medium">{item.label}</span>
-              </Link>
+            {sidebarItems.map((item: any) => (
+              <div key={item.label}>
+                {item.isDropdown ? (
+                  // Dropdown menu item
+                  <div>
+                    <button
+                      onClick={() => setIsFinancesOpen(!isFinancesOpen)}
+                      className={`flex items-center justify-between w-full p-2 rounded-lg cursor-pointer hover:bg-hoverColor ${
+                        activeItem.startsWith("finance") ? "bg-hoverColor" : ""
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <span className="text-xl mr-3">{item.icon}</span>
+                        <span className="text-sm font-medium">
+                          {item.label}
+                        </span>
+                      </div>
+                      <span className="text-sm">
+                        {isFinancesOpen ? <FiChevronDown /> : <FiChevronRight />}
+                      </span>
+                    </button>
+                    
+                    {/* Dropdown submenu */}
+                    {isFinancesOpen && (
+                      <div className="ml-6 mt-2 space-y-1">
+                        {item.subItems?.map((subItem: any) => (
+                          <Link
+                            to={subItem.path}
+                            key={subItem.label}
+                            onClick={() => {
+                              setActiveItem(subItem.label);
+                              handleToggle();
+                            }}
+                            className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-hoverColor ${
+                              activeItem === subItem.label ? "bg-hoverColor" : ""
+                            }`}
+                          >
+                            <span className="text-lg mr-3">{subItem.icon}</span>
+                            <span className="text-sm font-medium">
+                              {subItem.label}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Regular menu item
+                  <Link
+                    to={item.path}
+                    onClick={() => {
+                      setActiveItem(item.label);
+                      handleToggle();
+                    }}
+                    className={`flex items-center p-2 rounded-lg cursor-pointer hover:bg-hoverColor ${
+                      activeItem === item.label ? "bg-hoverColor" : ""
+                    }`}
+                  >
+                    <span className="text-xl mr-3">{item.icon}</span>
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
 
@@ -188,7 +249,7 @@ const MobileSidebar: React.FC<IProps> = ({
               </div>
             )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

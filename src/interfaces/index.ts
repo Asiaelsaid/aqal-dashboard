@@ -23,7 +23,8 @@ export interface ITenantData {
   tenant: number;
   property: number;
   unit_number: string;
-  outstanding_payment: string;
+  rent: string;
+  service_charge: string;
   tims_report: string;
   lease_contract: string;
 }
@@ -99,13 +100,16 @@ export interface Tenant {
 }
 
 export interface Request {
-  id:number
+  id: number;
   req_code: string;
   category: string;
   description: string;
   status: string;
   urgency: string;
   preferred_service_date: string;
+  created_at: string;
+  updated_at: string;
+  receipt_attachment?: string;
 }
 
 export interface Unit {
@@ -113,15 +117,33 @@ export interface Unit {
   unit_number: string;
   unit_level: number;
   status: string;
+  unit_type?: {
+    id: number;
+    name: string;
+    category: string;
+    category_display: string;
+  } | null;
+  is_residential?: boolean;
+  is_commercial?: boolean;
   tenant: Tenant | null;
   requests: Request[];
 }
 
 export interface Property {
-  property_name: string;
+  id: number;
+  name: string;
+  property_type: { name: string };
+  conditions: { name: string | null };
   location: string;
   total_units: number;
+  total_units_count: number;
+  vacant_units_count: number;
+  occupied_units_count: number;
+  bought_units_count: number;
+  residential_units_count: number;
+  commercial_units_count: number;
   units: Unit[];
+  images: { image: string }[];
 }
 
 // Invoice interface for the invoice system

@@ -11,9 +11,10 @@ const RentCollectionProgress: React.FC<IProps> = ({
   rentCollectedThisMonth,
   rentGoal,
 }) => {
-  const collected = rentCollectedThisMonth;
-  const goal = rentGoal;
-  const progress = (collected / goal) * 100;
+  const collected = rentCollectedThisMonth || 0;
+  const goal = rentGoal || 0;
+  const progress = goal > 0 ? Math.min((collected / goal) * 100, 100) : 0;
+  const remaining = Math.max(goal - collected, 0);
 
   const chartOptions: ApexOptions = {
     chart: {
@@ -77,10 +78,14 @@ const RentCollectionProgress: React.FC<IProps> = ({
             width="100%"
           />
         </div>
-        <p className=" text-md font-semibold">Your are almost there!</p>
+        <p className=" text-md font-semibold">
+          {progress >= 100 ? "Congratulations! Goal achieved!" : "You are almost there!"}
+        </p>
         <p className="text-gray-500">
-          You need to collect ${goal - collected} from your tenants to reach
-          your goal
+          {progress >= 100 
+            ? `You have exceeded your goal by $${(collected - goal).toLocaleString()}`
+            : `You need to collect $${remaining.toLocaleString()} from your tenants to reach your goal`
+          }
         </p>
       </div>
     </div>

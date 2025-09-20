@@ -13,9 +13,11 @@ interface IProps {
     property_type: { name: string };
     property_level: string;
     total_units: string;
-    total_units_count:string;
-    bought_units_count:string;
-    occupied_units_count:string;
+    total_units_count: string;
+    bought_units_count: string;
+    occupied_units_count: string;
+    residential_units_count: string;
+    commercial_units_count: string;
     unit_types: string;
     vacant_units_count: string;
     common_areas: {
@@ -34,6 +36,7 @@ interface IIconText {
   id: number;
   name: string;
 }
+
 const PropertyDetails: React.FC<IProps> = ({ property, onRefresh }) => {
   return property ? (
     <div className="grid lg:grid-cols-10 gap-4 bg-white mt-8 p-6 rounded-lg border">
@@ -72,20 +75,35 @@ const PropertyDetails: React.FC<IProps> = ({ property, onRefresh }) => {
             label="Property Levels"
             value={property?.property_level}
           />
-          <PropertyDetailsCard label="Unit Count" value={property?.total_units_count} />
-          <PropertyDetailsCard label="Units bought" value={property?.bought_units_count} />
-          <PropertyDetailsCard label="Units being rented" value={property?.occupied_units_count} />
-          <PropertyDetailsCard
-            label="Total Units"
-            value={property?.total_units}
+          <PropertyDetailsCard label="Total Units" value={property?.total_units_count} />
+          <PropertyDetailsCard 
+            label="Residential Units" 
+            value={property?.residential_units_count || "0"}
+            badgeColor="blue"
+          />
+          <PropertyDetailsCard 
+            label="Commercial Units" 
+            value={property?.commercial_units_count || "0"}
+            badgeColor="green"
+          />
+          <PropertyDetailsCard 
+            label="Units Bought" 
+            value={property?.bought_units_count || "0"}
+            badgeColor="purple"
+          />
+          <PropertyDetailsCard 
+            label="Units Being Rented" 
+            value={property?.occupied_units_count || "0"}
+            badgeColor="yellow"
           />
           <PropertyDetailsCard
             label="Vacant Units"
-            value={property?.vacant_units_count}
+            value={property?.vacant_units_count || "0"}
+            badgeColor="gray"
           />
           <PropertyDetailsCard
-            label="Types of units"
-            value={property?.unit_types}
+            label="Types of Units"
+            value={property?.unit_types || "N/A"}
           />
         </div>
 
